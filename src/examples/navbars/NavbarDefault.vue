@@ -224,7 +224,7 @@ watch(
                         Account
                       </div>
                       <RouterLink
-                        :to="{ name: 'signin-basic' }"
+                        :to="{ name: 'signup' }"
                         class="dropdown-item border-radius-md"
                       >
                         <span>Sign In</span>
