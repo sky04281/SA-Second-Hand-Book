@@ -4,7 +4,7 @@ import MaterialButton from "@/components/MaterialButton.vue";
 
 // image
 const bgImage =
-  "https://images.unsplash.com/photo-1520769945061-0a448c463865?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80";
+  "https://images.theconversation.com/files/45159/original/rptgtpxd-1396254731.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=1356&h=668&fit=crop";
 </script>
 <template>
   <header>
@@ -85,17 +85,16 @@ const bgImage =
           <div
             class="col-lg-6 col-md-7 d-flex justify-content-center flex-column"
           >
-            <h1 class="text-white mb-4">Material Kit</h1>
+            <h1 class="text-white mb-4">到底書在哪==</h1>
             <p class="text-white opacity-8 lead pe-5 me-5">
-              The time is now for it be okay to be great. People in this world
-              shun people for being nice.
+              “到底書在哪==”致力於解決現今大學生買賣二手書之困境，提供使用者一個全新的二手書交易平台！
             </p>
             <div class="buttons">
               <MaterialButton color="white" class="mt-4"
-                >Get Started</MaterialButton
+                >登入／註冊</MaterialButton
               >
               <MaterialButton color="none" class="text-white shadow-none mt-4"
-                >Read more</MaterialButton
+                >瀏覽架上商品</MaterialButton
               >
             </div>
           </div>
