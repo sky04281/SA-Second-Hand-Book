@@ -31,13 +31,13 @@
         <div class="row align-items-center py-3 px-xl-5">
             <div class="col-lg-3 d-none d-lg-block">
                 <a href="" class="text-decoration-none">
-                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
+                    <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>到底書在哪</h1>
                 </a>
             </div>
             <div class="col-lg-6 col-6 text-left">
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="尋找書籍">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -48,12 +48,12 @@
             </div>
             <div class="col-lg-3 col-6 text-right">
                 <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
+                    <i class="fas fa-comments text-primary"></i>
+                    <span class="badge">私訊</span>
                 </a>
                 <a href="" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <i class="fas fa-plus text-primary"></i>
+                    <span class="badge">上架</span>
                 </a>
             </div>
         </div>
@@ -93,9 +93,8 @@
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <textarea class="form-control" rows="6" id="message" placeholder="國際書號"
-                                required="required"
-                                data-validation-required-message="Please enter your message"></textarea>
+                            <input type="text" class="form-control" id="name" placeholder="國際書號"
+                                required="required" data-validation-required-message="Please enter your name" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
@@ -108,9 +107,14 @@
                                 required="required" data-validation-required-message="Please enter your name" />
                             <p class="help-block text-danger"></p>
                         </div>
+                        <div class="control-group">
+                            <textarea class="form-control" rows="6" id="message" placeholder="詳細資訊"
+                                required="required"
+                                data-validation-required-message="Please enter your message"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
                         <div>
-                            <button class="btn btn-primary py-2 px-4" type="submit" id="詳細資訊">Send
-                                Message</button>
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="addbookButton">上架</button>
                         </div>
                     </form>
                 </div>
