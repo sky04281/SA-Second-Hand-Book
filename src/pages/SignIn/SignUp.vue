@@ -4,22 +4,21 @@
     import { createUserWithEmailAndPassword } from "firebase/auth";
 
     import { ref, onMounted } from "vue";
+    import { useRouter } from "vue-router";
     //component
     import MaterialInput from "@/components/MaterialInput.vue";
 
-    const email = ref("");
-    const password = ref("");
+    var email = ref("");
+    var password = ref("");
+    const router = useRouter();
 
     function signUp(){
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-                window.location = "/";
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-            });
+        createUserWithEmailAndPassword(auth, email.value, password.value)
+        .then(() => {
+            email.value = "";
+            password.value = "";
+            router.push({name: "presentation"});
+        });
     }
 
     import setMaterialInput from "@/assets/js/material-input";
@@ -35,7 +34,7 @@
         class="input-group-outline"
         :label="{ text: '信箱', class: 'form-label' }"
         type="text"
-        v-model.lazy="email"
+        v-model="email"
     />
     <br>
     <MaterialInput
@@ -43,9 +42,8 @@
         class="input-group-outline"
         :label="{ text: '密碼', class: 'form-label' }"
         type="text"
-        v-model.lazy="password"
+        v-model="password"
     />
     <br>
     <input type="button" value="註冊" @click="signUp">
-
 </template>
