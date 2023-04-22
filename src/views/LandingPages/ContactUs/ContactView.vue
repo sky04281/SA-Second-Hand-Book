@@ -6,7 +6,7 @@ import DefaultNavbar from "@/examples/navbars/NavbarDefault.vue";
 import DefaultFooter from "@/examples/footers/FooterDefault.vue";
 
 //image
-import image from "@/assets/img/illustrations/illustration-signin.jpg";
+import image from "@/assets/img/upload2.jpg";
 
 //material components
 import MaterialInput from "@/components/MaterialInput.vue";
@@ -62,32 +62,62 @@ onMounted(() => {
                 <div
                   class="bg-gradient-success shadow-success border-radius-lg p-3"
                 >
-                  <h3 class="text-white text-success mb-0">Contact us</h3>
+                  <h3 class="text-white text-success mb-0">上架書籍</h3>
                 </div>
               </div>
               <div class="card-body">
                 <p class="pb-3">
-                  For further questions, including partnership opportunities,
-                  please email hello@creative-tim.com or contact using our
-                  contact form.
+                  請填寫書籍相關資訊。
                 </p>
                 <form id="contact-form" method="post" autocomplete="off">
                   <div class="card-body p-0 my-3">
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-12">
                         <MaterialInput
                           class="input-group-static mb-4"
                           type="text"
-                          label="Full Name"
-                          placeholder="Full Name"
+                          label="書籍名稱"
+                          placeholder="書籍名稱"
                         />
                       </div>
-                      <div class="col-md-6 ps-md-2">
+                      <div class="col-md-12">
                         <MaterialInput
                           class="input-group-static mb-4"
-                          type="email"
-                          label="Email"
-                          placeholder="hello@creative-tim.com"
+                          type="text"
+                          label="作者"
+                          placeholder="作者"
+                        />
+                      </div>
+                      <div class="col-md-12">
+                        <MaterialInput
+                          class="input-group-static mb-4"
+                          type="text"
+                          label="出版社"
+                          placeholder="出版社"
+                        />
+                      </div>
+                      <div class="col-md-12">
+                        <MaterialInput
+                          class="input-group-static mb-4"
+                          type="text"
+                          label="ISBN"
+                          placeholder="ISBN"
+                        />
+                      </div>
+                      <div class="col-md-12">
+                        <MaterialInput
+                          class="input-group-static mb-4"
+                          type="text"
+                          label="價格"
+                          placeholder="價格"
+                        />
+                      </div>
+                      <div class="col-md-12">
+                        <MaterialInput
+                          class="input-group-static mb-4"
+                          type="text"
+                          label="類別"
+                          placeholder="類別"
                         />
                       </div>
                     </div>
@@ -96,8 +126,8 @@ onMounted(() => {
                         id="message"
                         class="input-group-static mb-4"
                         :rows="6"
-                        placeholder="Describe your problem in at least 250 characters"
-                        >How can we help you?</MaterialTextArea
+                        placeholder="描述您所上架書籍之詳細資訊，如書況等"
+                        >詳細資訊</MaterialTextArea
                       >
                     </div>
                     <div class="row">
@@ -106,7 +136,7 @@ onMounted(() => {
                           variant="gradient"
                           color="success"
                           class="mt-3 mb-0"
-                          >Send Message</MaterialButton
+                          >上架書籍</MaterialButton
                         >
                       </div>
                     </div>
