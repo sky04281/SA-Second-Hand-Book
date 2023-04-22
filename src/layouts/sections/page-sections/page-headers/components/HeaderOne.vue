@@ -13,7 +13,7 @@ const bgImage =
     >
       <div class="container">
         <a class="navbar-brand text-white" href="javascript:;"
-          >Material Design</a
+          >二手書交易平台</a
         >
         <button
           class="navbar-toggler"
