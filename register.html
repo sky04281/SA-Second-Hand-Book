@@ -73,45 +73,45 @@
                     <div class="row">
                         <div class="col-md-12 form-group">
                             <label><b>姓名</b></label>
-                            <input class="form-control" type="text" placeholder="ex.王小明">
+                            <input class="form-control" type="text" placeholder="ex.王小明" id="name">
                         </div>
                         <div class="col-md-6 form-group">
                             <label><b>就讀學校所在地區</b></label>
-                            <select class="custom-select">
-                                <option>北北基</option>
-                                <option>桃竹苗</option>
-                                <option>中彰投</option>
-                                <option>雲嘉南</option>
-                                <option>高雄、屏東</option>
-                                <option>花蓮台東</option>
+                            <select class="custom-select" id="area">
+                                <option value="北北基">北北基</option>
+                                <option value="桃竹苗">桃竹苗</option>
+                                <option value="中彰投">中彰投</option>
+                                <option value="雲嘉南">雲嘉南</option>
+                                <option value="高雄、屏東">高雄、屏東</option>
+                                <option value="花蓮台東">花蓮台東</option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group">
                             <label><b>就讀學校</b></label>
-                            <input class="form-control" type="text" placeholder="ex.輔仁大學" required="required">
+                            <input class="form-control" type="text" placeholder="ex.輔仁大學" required="required" id="school">
                         </div>
                         <div class="col-md-6 form-group">
                             <label><b>在讀系所</b></label>
-                            <input class="form-control" type="text" placeholder="ex.管理學院" required="required">
+                            <input class="form-control" type="text" placeholder="ex.管理學院" required="required" id="college">
                         </div>
                         <div class="col-md-6 form-group">
                             <label><b>在讀科系</b></label>
-                            <input class="form-control" type="text" placeholder="ex.資訊管理學系" required="required">
+                            <input class="form-control" type="text" placeholder="ex.資訊管理學系" required="required" id="department">
                         </div>
                         <div class="col-md-12 form-group">
                             <label><b>帳號（學校信箱）</b></label>
-                            <input class="form-control" type="email" placeholder="xxx@fju.edu.tw" required="required">
+                            <input class="form-control" type="email" placeholder="xxx@fju.edu.tw" required="required" id="email">
                         </div>
                         <div class="col-md-12 form-group">
                             <label><b>密碼</b></label>
-                            <input class="form-control" type="password" placeholder="" required="required">
+                            <input class="form-control" type="password" placeholder="" required="required" id="password">
                         </div>
                         <div class="col-md-12 form-group">
                             <label><b>再次輸入密碼</b></label>
                             <input class="form-control" type="password" placeholder="" required="required">
                         </div>
                         <div class="col-md-12 form-group text-md-right">
-                            <button class="btn btn-primary" type="submit">確認註冊</button>
+                            <button class="btn btn-primary" type="submit" id="btn-register">確認註冊</button>
                         </div>
                     </div>
                 </div>
@@ -208,6 +208,9 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- register -->
+    <script type="module" src="./scripts/register.js"></script>
 </body>
 
 </html>
