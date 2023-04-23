@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test-login</title>
+</head>
+<body>
+    <h1>測試登入</h1>
+    <input type="text" placeholder="信箱" id="email">
+    <input type="text" placeholder="密碼" id="password">
+    <input type="button" id="btn" value="登入">
+
+    <script type="module">
+        import { logIn, getUser } from "../scripts/auth.js";
+        var btn = document.getElementById("btn");
+        var email = document.getElementById("email");
+        var password = document.getElementById("password");
+        btn.addEventListener("click", () => {
+            logIn(email.value, password.value);
+            email.value = "";
+            password.value = "";
+            alert("登入成功!");
+            var user = getUser();
+            console.log(user);
+            window.location.replace("./index.html");
+        });
+    </script>
+</body>
+</html>

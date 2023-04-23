@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test-register</title>
+</head>
+<body>
+    <h1>測試註冊</h1>
+    <input type="text" placeholder="信箱" id="email">
+    <input type="text" placeholder="密碼" id="password">
+    <input type="button" id="btn" value="註冊">
+
+    <script type="module">
+        import { register } from "../scripts/auth.js";
+        var btn = document.getElementById("btn");
+        var email = document.getElementById("email");
+        var password = document.getElementById("password");
+        btn.addEventListener("click", () => {
+            register(email.value, password.value);
+            email.value = "";
+            password.value = "";
+            alert("註冊成功!");
+            window.location.replace("./login.html");
+        });
+    </script>
+</body>
+</html>

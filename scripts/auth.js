@@ -3,26 +3,29 @@ import { getAuth,
         createUserWithEmailAndPassword, 
         signInWithEmailAndPassword,
         signOut, 
-        onAuthStateChanged } from "firebase/auth";
+        onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
 
 const auth = getAuth(app);
 
 function register(email, password){
     createUserWithEmailAndPassword(auth, email, password)
-    .then(() => {
-        return "註冊成功";
+    .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+
     })
     .catch((error) => {
+        const errorCode = error.code;
         const errorMessage = error.message;
-        return errorMessage;
+        // ..
     });
 }
 
-function login(email, password){
+function logIn(email, password){
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
         const user = userCredential.user;
-        return user;
+
     })
     .catch((error) => {
         const errorMessage = error.message;
@@ -30,7 +33,7 @@ function login(email, password){
     });
 }
 
-function signout(){
+function logOut(){
     signOut(auth).then(() => {
         // Sign-out successful.
     }).catch((error) => {
@@ -39,10 +42,12 @@ function signout(){
 }
 
 function getUser(){
-    const user = auth.currentUser;
-    if(user){
-        return user;
-    }else{
-        return false;
-    }
+    let cuser;
+    onAuthStateChanged(auth, (user) => {
+        cuser = user;
+        console.log(cuser);
+
+    });
 }
+
+export {register, logIn, logOut, getUser};
