@@ -81,52 +81,51 @@
                     <div id="success"></div>
                     <form name="sentMessage" id="contactForm" novalidate="novalidate">
                         <div class="control-group">
-                            <input type="text" class="form-control" id="name" placeholder="書名"
+                            <input type="text" class="form-control" id="book" placeholder="書名"
                                 required="required" data-validation-required-message="請輸入書名" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="email" class="form-control" id="email" placeholder="作者"
+                            <input type="text" class="form-control" id="author" placeholder="作者"
                                 required="required" data-validation-required-message="請輸入作者" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control" id="subject" placeholder="出版社"
+                            <input type="text" class="form-control" id="publish" placeholder="出版社"
                                 required="required" data-validation-required-message="請輸入出版社" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control" id="name" placeholder="國際書號"
+                            <input type="text" class="form-control" id="isbn" placeholder="國際書號"
                                 required="required" data-validation-required-message="請輸入國際書號" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control" id="name" placeholder="價格"
+                            <input type="text" class="form-control" id="price" placeholder="價格"
                                 required="required" data-validation-required-message="請輸入價格" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control" id="name" placeholder="類別"
+                            <input type="text" class="form-control" id="cate" placeholder="類別"
                                 required="required" data-validation-required-message="請輸入類別" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <textarea class="form-control" rows="6" id="message" placeholder="詳細資訊"></textarea>
+                            <textarea class="form-control" rows="6" id="info" placeholder="詳細資訊"></textarea>
                             <p class="help-block text-danger"></p>
                         </div>
                         <div>
-                            <button class="btn btn-primary py-2 px-4" type="submit" id="addbookButton">上架</button>
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="btn-addbook">上架</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="col-lg-5 mb-5">
                 <div style="background-color:white; padding:40% 15%; margin-right:10%;  margin-left:5%; border:0.5px slategray dashed;">
- 
                     <div style="background-color:white; width:50%; height:100%; margin:auto; text-align: center;">
                         <button class="btn btn-primary py-2 px-4" type="submit" id="addpicButton">上傳圖片</button>
                     </div>
-                     
+                    
                 </div>
             </div>
         </div>
@@ -221,6 +220,9 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- 功能 -->
+    <script type="module" src="./scripts/addbook.js"></script>
 </body>
 
 </html>
