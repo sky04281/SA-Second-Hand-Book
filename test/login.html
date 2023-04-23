@@ -13,19 +13,27 @@
     <input type="button" id="btn" value="登入">
 
     <script type="module">
-        import { logIn, getUser } from "../scripts/auth.js";
+        import { auth } from "../scripts/firebase.js";
+        import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+
         var btn = document.getElementById("btn");
         var email = document.getElementById("email");
         var password = document.getElementById("password");
+
         btn.addEventListener("click", () => {
-            logIn(email.value, password.value);
-            email.value = "";
-            password.value = "";
-            alert("登入成功!");
-            var user = getUser();
-            console.log(user);
-            window.location.replace("./index.html");
+            signInWithEmailAndPassword(auth, email.value, password.value)
+            .then(() => {
+                email.value = "";
+                password.value = "";
+                alert("登入成功!");
+                window.location.replace("./index.html");
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                console.log(errorMessage);
+            });
         });
+
     </script>
 </body>
 </html>

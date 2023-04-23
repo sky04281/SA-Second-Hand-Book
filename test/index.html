@@ -11,12 +11,27 @@
     <a href="./register.html">註冊</a><br>
     <a href="./login.html">登入</a><br>
     <div id="user"></div>
-
+    <a href="#" id="btn-logout">登出</a><br>
     <script type="module">
-        import { getUser, logOut} from "../scripts/auth.js";
-        const user = getUser();
-        console.log(user);
-        var div = document.getElementById("user");
+        import { auth } from "../scripts/firebase.js";
+        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+        
+        onAuthStateChanged(auth, (user) => {
+            const div = document.getElementById("user");
+            if(user){
+                div.innerText = "您好 " + user.email;
+            }else{
+                div.innerText = "尚未登入";
+            }
+        });
+
+        const logOutBtn = document.getElementById("btn-logout");
+        logOutBtn.addEventListener("click", (e) => {
+            e.preventDefault;
+            signOut(auth);
+            alert("登出成功!");
+        })
+
     </script>
 </body>
 </html>

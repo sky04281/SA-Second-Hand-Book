@@ -13,16 +13,25 @@
     <input type="button" id="btn" value="註冊">
 
     <script type="module">
-        import { register } from "../scripts/auth.js";
+        import { auth } from "../scripts/firebase.js";
+        import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+
         var btn = document.getElementById("btn");
         var email = document.getElementById("email");
         var password = document.getElementById("password");
+
         btn.addEventListener("click", () => {
-            register(email.value, password.value);
-            email.value = "";
-            password.value = "";
-            alert("註冊成功!");
-            window.location.replace("./login.html");
+            createUserWithEmailAndPassword(auth, email.value, password.value)
+            .then(() => {
+                email.value = "";
+                password.value = "";
+                alert("註冊成功!");
+                window.location.replace("./login.html");
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                console.log(errorMessage);
+            });
         });
     </script>
 </body>
