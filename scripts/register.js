@@ -1,6 +1,6 @@
 import { auth, db } from "../scripts/firebase.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 const name = document.getElementById("name");
 const area = document.getElementById("area");
@@ -11,10 +11,8 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const btn = document.getElementById("btn-register");
 let uid = "";
-let isSubmit = false;
 
 
-const colRef = collection(db, "Account");
 
 btn.addEventListener("click", (e) =>{
     e.preventDefault();
@@ -23,7 +21,8 @@ btn.addEventListener("click", (e) =>{
         uid = userCredential.user.uid;
         
         //加到 Account
-        addDoc(colRef, {
+        const docRef = doc(db, "Account", uid);
+        setDoc(docRef, {
             uid: uid,
             name: name.value,
             area: area.value,
