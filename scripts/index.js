@@ -7,7 +7,8 @@ const navbar = document.getElementById("nav-account");
 onAuthStateChanged(auth, (user) => {
     if(user){
     console.log(user);
-        navbar.innerHTML = "<a href='#' class='nav-item nav-link' id='btn-logout'>登出</a>";
+        navbar.innerHTML =  "<a href='account.html' class='nav-item nav-link'>帳號管理</a>"+
+                            "<a href='#' class='nav-item nav-link' id='btn-logout'>登出</a>";
         
         const btn = document.getElementById("btn-logout");
         btn.addEventListener("click", (e) => {
