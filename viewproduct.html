@@ -37,7 +37,7 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="尋找書籍">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -46,14 +46,18 @@
                     </div>
                 </form>
             </div>
-            <div class="col-lg-3 col-6 text-right">
+            <div class="col-lg-4 col-6 text-right">
                 <a href="" class="btn border">
-                    <i class="fas fa-heart text-primary"></i>
-                    <span class="badge">0</span>
+                    <i class="fas fa-comments text-primary"></i>
+                    <span class="badge">來聊聊</span>
                 </a>
-                <a href="" class="btn border">
-                    <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                <a href="addbook.html" class="btn border">
+                    <i class="fas fa-plus text-primary"></i>
+                    <span class="badge">要賣書</span>
+                </a>
+                <a href="wanted.html" class="btn border">
+                    <i class="fas fa-book text-primary"></i>
+                    <span class="badge">給我書</span>
                 </a>
             </div>
         </div>
@@ -85,43 +89,8 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody class="align-middle">
-                        <tr>
-                            <td class="align-middle"><img src="" alt="" style="width: 50px;">網路概論的16堂精選課程</td>
-                            <td class="align-middle">
-                                <button class="btn btn-sm"><a href="editbook.html"><i class="fa fa-pen"></i></a></button>
-                                <button class="btn btn-sm"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-2.jpg" alt="" style="width: 50px;"> Colorful Stylish Shirt</td>
-                            <td class="align-middle">
-                                <button class="btn btn-sm"><i class="fa fa-pen"></i></button>
-                                <button class="btn btn-sm"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-3.jpg" alt="" style="width: 50px;"> Colorful Stylish Shirt</td>
-                            <td class="align-middle">
-                                <button class="btn btn-sm"><i class="fa fa-pen"></i></button>
-                                <button class="btn btn-sm"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-4.jpg" alt="" style="width: 50px;"> Colorful Stylish Shirt</td>
-							<td class="align-middle">
-                                <button class="btn btn-sm"><i class="fa fa-pen"></i></button>
-                                <button class="btn btn-sm"><i class="fa fa-trash"></i></button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="align-middle"><img src="img/product-5.jpg" alt="" style="width: 50px;"> Colorful Stylish Shirt</td>
-							<td class="align-middle">
-                                <button class="btn btn-sm"><i class="fa fa-pen"></i></button>
-                                <button class="btn btn-sm"><i class="fa fa-trash"></i></button>
-                            </td>
-                            
-                        </tr>
+                    <tbody class="align-middle" id="viewbook">
+                        
                     </tbody>
                 </table>
             </div>
@@ -216,6 +185,9 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- 功能 -->
+    <script type="module" src="./scripts/viewproduct.js"></script>
 </body>
 
 </html>
