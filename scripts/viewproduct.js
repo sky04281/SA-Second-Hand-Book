@@ -11,19 +11,30 @@ onAuthStateChanged(auth, async (user) => {
         const querySnapshot = await getDocs(q);
         const view = document.getElementById("viewbook");
         
-        
         querySnapshot.forEach( (docs) => {
-            
-
             view.innerHTML = view.innerHTML +
             "<tr>" +
                 "<td class='align-middle'><img src='' alt='' style='width: 50px;'>" + docs.data().book + "</td>" +
                 "<td class='align-middle'>"+
                     "<button class='btn btn-sm'><a href='editbook.html'><i class='fa fa-pen'></i></a></button>"+
-                    "<button class='btn btn-sm' id='"+ docs.id + "'><i class='fa fa-trash'></i></button>"+
+                    "<button class='btn btn-sm btn-delete' id='"+ docs.id + "'><i class='fa fa-trash'></i></button>"+
                 "</td>"+
             "</tr>";
         });
+
+        var btn = document.querySelectorAll('.btn-delete');
+        btn.forEach((b) => {
+            b.addEventListener('click', (e) => {
+                e.preventDefault();
+                var docRef = doc(db, 'Product', b.id);
+                deleteDoc(docRef)
+                .then(() => {
+                    alert("已成功刪除!");
+                    location.reload();
+                });
+            });
+        });
+
     }else{
         alert("請先登入!");
         location.href = "./index.html";
