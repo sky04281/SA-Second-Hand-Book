@@ -6,11 +6,13 @@ import { collection, query, where, getDocs, doc, deleteDoc} from "https://www.gs
 
 onAuthStateChanged(auth, async (user) => {
     if(user){
+        // 用 sellerId 從資料庫抓出使用者上架的書
         const ref = collection(db, "Product");
         const q = query(ref, where("sellerId", "==", user.uid));
         const querySnapshot = await getDocs(q);
         const view = document.getElementById("viewbook");
-        
+
+        // 把書本列出來
         querySnapshot.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
             "<tr>" +
@@ -22,6 +24,7 @@ onAuthStateChanged(auth, async (user) => {
             "</tr>";
         });
 
+        // 給下架按鈕加上刪除的功能
         var btn = document.querySelectorAll('.btn-delete');
         btn.forEach((b) => {
             b.addEventListener('click', (e) => {
