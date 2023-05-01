@@ -3,13 +3,24 @@ import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/fi
 import { collection, query, where, getDocs, doc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 const ref = collection(db, "Product");
+let search = document.querySelector('.input-search');
+const form = document.querySelector('.form-search');
+const btn = document.querySelector('.btn-search');
+let q;
+btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    form.submit();
+    console.log(search.value);
+    // q = query(ref, where("book", "==", search.value));
+});
+
 // const q = query(ref, where("sellerId", "==", user.uid));
 const querySnapshot = await getDocs(ref);
 const view = document.querySelector('.viewbook');
 
 //書籍
 querySnapshot.forEach( (docs) => {
-    console.log(docs.data().book);
+    console.log(docs);
     view.innerHTML = view.innerHTML +
         "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
             "<div class='card product-item border-0 mb-4'>"+

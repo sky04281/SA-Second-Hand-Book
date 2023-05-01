@@ -20,7 +20,7 @@ const navAccount = myNav.querySelector('.myNav-account');
 onAuthStateChanged(auth, (user) => {
     if(user){
     console.log(user);
-        // 導覽列登入登出
+        // 導覽列-登入中
         navAccount.innerHTML =  
             "<a href='account.html' class='nav-item nav-link'>帳號管理</a>" +
             "<a href='#' class='btn-logout nav-item nav-link'>登出</a>" +
@@ -35,7 +35,9 @@ onAuthStateChanged(auth, (user) => {
                 location.href = "./index.html";
             });
         });
+        
     }else{
+        // 導覽列-未登入
         navAccount.innerHTML = 
             "<a href='login.html' class='nav-item nav-link'>登入</a>" +
             "<a href='register.html' class='nav-item nav-link'>註冊</a>";
