@@ -31,7 +31,8 @@ onAuthStateChanged(auth, (user) => {
             e.preventDefault();
             signOut(auth)
             .then(() => {
-                alert("登出成功!");
+                alert("登出成功! 即將返回首頁");
+                location.href = "./index.html";
             });
         });
     }else{
