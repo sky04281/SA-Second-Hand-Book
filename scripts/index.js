@@ -8,7 +8,8 @@ onAuthStateChanged(auth, (user) => {
     if(user){
     console.log(user);
         navbar.innerHTML =  "<a href='account.html' class='nav-item nav-link'>帳號管理</a>"+
-                            "<a href='#' class='nav-item nav-link' id='btn-logout'>登出</a>";
+                            "<a href='#' class='nav-item nav-link' id='btn-logout'>登出</a>"+
+                            "<a href='notify.html' class='nav-item nav-link'><i class='fas fa-bell text-primary'></i></a>";
         
         const btn = document.getElementById("btn-logout");
         btn.addEventListener("click", (e) => {
