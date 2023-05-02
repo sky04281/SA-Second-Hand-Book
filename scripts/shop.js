@@ -44,9 +44,11 @@ form.addEventListener("submit", async (e)=>{
 querySnapshot = await getDocs(ref);
 show();
 
-//書籍
+
 function show(){
     view.innerHTML = "";
+    
+    //書籍
     querySnapshot.forEach( (docs) => {
         view.innerHTML = view.innerHTML +
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
@@ -64,11 +66,9 @@ function show(){
             "</div>";
         
     });
-}
 
-
-//分頁按鈕
-view.innerHTML = view.innerHTML +
+    //分頁按鈕
+    view.innerHTML = view.innerHTML +
     "<div class='col-12 pb-1'>"+
         "<nav aria-label='Page navigation'>"+
             "<ul class='pagination justify-content-center mb-3'>"+
@@ -90,3 +90,6 @@ view.innerHTML = view.innerHTML +
             "</ul>"+
         "</nav>"+
     "</div>";
+}
+
+
