@@ -8,3 +8,6 @@ const payment = document.getElementById("payment");
 const others = document.getElementById("others");
 const btn = document.getElementById("btn-order");
 var date = new Date(); 
+
+
+const colRef = collection(db, "Product", uid);
