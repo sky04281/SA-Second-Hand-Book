@@ -9,5 +9,24 @@ const others = document.getElementById("others");
 const btn = document.getElementById("btn-order");
 var date = new Date(); 
 
+const colRef = document(db, "Product", "ayR4rRGvunlDOkjYA1dC");
 
-const colRef = collection(db, "Product", uid);
+onAuthStateChanged(auth, (user) =>{
+    if(user){
+        console.log(user);
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            addDoc(colRef, {
+                order: [delivery.value, address.value, payment.value, others.value],
+            })
+            .then(() => {
+                alert("訂單已傳送給賣家!")
+                location.href = "./shop.html";
+            });
+        });
+
+    }else{
+        alert("請先登入!");
+        location.href = "./login.html";
+    }   
+});
