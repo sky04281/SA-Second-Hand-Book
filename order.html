@@ -122,7 +122,7 @@
                         </div>
 
                         <div class="form-group">
-                            <select class="custom-select" id="" data-validation-required-message="請選擇寄送方式">
+                            <select class="custom-select" id="delivery" data-validation-required-message="請選擇寄送方式">
                                 <option value="">寄送方式</option>
                                 <option value="">聊聊面交</option>
                                 <option value="">7-11（運費60元）</option>
@@ -131,16 +131,24 @@
                             </select>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control" id="author" placeholder="寄件地址（選選擇面交者填無）"
+                            <input type="text" class="form-control" id="address" placeholder="寄件地址（選選擇面交者填無）"
                                 required="required" data-validation-required-message="請輸入寄件地址" />
                             <p class="help-block text-danger"></p>
                         </div>
+                        <div class="form-group">
+                            <select class="custom-select" id="payment" data-validation-required-message="請選擇付款方式">
+                                <option value="">付款方式</option>
+                                <option value="">貨到付款</option>
+                                <option value="">銀行轉帳</option>
+                                <option value="">ATM轉帳</option>
+                            </select>
+                        </div>
                         <div class="control-group">
-                            <textarea class="form-control" rows="4" id="" placeholder="備註"></textarea>
+                            <textarea class="form-control" rows="4" id="others" placeholder="備註"></textarea>
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="form-group text-md-right">
-                            <button class="btn btn-primary" type="submit" id="btn-register">確認送出訂單</button>
+                            <button class="btn btn-primary" type="submit" id="btn-order">確認送出訂單</button>
                         </div>
                     </form>
                 </div>
