@@ -46,7 +46,26 @@ show();
 
 
 function show(){
-    view.innerHTML = "";
+    view.innerHTML = 
+        "<div class='col-12 pb-1'>" +
+            "<div class='d-flex align-items-center justify-content-between mb-4'>" +
+                "<form action=''>" +
+                    "<a href='shop.html'>全部商品</a> > 地區 > 北北基" +
+                "</form>" +
+                "<div class='dropdown ml-4'>" +
+                    "<button class='btn border dropdown-toggle' type='button' id='triggerId'"  +
+                        "data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
+                                "排序" +
+                    "</button>" +
+"                    <div class='dropdown-menu dropdown-menu-right' aria-labelledby='triggerId'>" +
+                        "<a class='dropdown-item' href='#'>上架日期由近至遠</a>" +
+                        "<a class='dropdown-item' href='#'>上架日期由遠至近</a>" +
+                        "<a class='dropdown-item' href='#'>價格由高至低</a>" +
+                        "<a class='dropdown-item' href='#'>價格由低至高</a>" +
+                    "</div>" +
+                "</div>" +
+            "</div>" +
+        "</div>";
     
     //書籍
     querySnapshot.forEach( (docs) => {
