@@ -57,7 +57,7 @@ function show(){
                         "data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
                                 "排序" +
                     "</button>" +
-"                    <div class='dropdown-menu dropdown-menu-right' aria-labelledby='triggerId'>" +
+                "<div class='dropdown-menu dropdown-menu-right' aria-labelledby='triggerId'>" +
                         "<a class='dropdown-item' href='#'>上架日期由近至遠</a>" +
                         "<a class='dropdown-item' href='#'>上架日期由遠至近</a>" +
                         "<a class='dropdown-item' href='#'>價格由高至低</a>" +

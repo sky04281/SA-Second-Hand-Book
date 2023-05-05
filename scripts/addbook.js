@@ -11,13 +11,13 @@ const price = document.getElementById("price");
 const cate = document.getElementById("cate");
 const info = document.getElementById("info");
 const btn = document.getElementById("btn-addbook");
-var date = new Date(); 
+var date = new Date();
 
 const colRef = collection(db, "Product");
 
 //如果登入再上架
-onAuthStateChanged(auth, async (user) =>{
-    if(user){
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
         console.log(user);
         const userRef = doc(db, "Account", user.uid);
         const userSnap = await getDoc(userRef);
@@ -42,14 +42,14 @@ onAuthStateChanged(auth, async (user) =>{
                 deadline: "",
                 delivery: ""
             })
-            .then(() => {
-                alert("新增成功!")
-                location.href = "./index.html";
-            });
+                .then(() => {
+                    alert("新增成功!")
+                    location.href = "./index.html";
+                });
         });
 
-    }else{
+    } else {
         alert("請先登入!");
         location.href = "./login.html";
-    }   
+    }
 });
