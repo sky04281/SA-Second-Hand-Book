@@ -105,7 +105,7 @@
                 </div>
                 <div class="contact-form">
                     <div id="success"></div>
-                    <form name="sentMessage" id="order" novalidate="novalidate">
+                    <form name="order" id="contactForm" novalidate="novalidate">
                         
                         <!--
                             <div class="order"></div>
@@ -121,33 +121,33 @@
                             <br>
                         </div>
 
-                        <div class="form-group">
+                        <div class="control-group">
                             <select class="custom-select" id="delivery" data-validation-required-message="請選擇寄送方式">
                                 <option value="">寄送方式</option>
-                                <option value="">聊聊面交</option>
-                                <option value="">7-11（運費60元）</option>
-                                <option value="">全家（運費60元）</option>
-                                <option value="">宅配（運費120元）</option>
+                                <option value="聊聊面交">聊聊面交</option>
+                                <option value="7-11（運費60元）">7-11（運費60元）</option>
+                                <option value="全家（運費60元）">全家（運費60元）</option>
+                                <option value="宅配（運費120元）">宅配（運費120元）</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="control-group">
                             <input type="text" class="form-control" id="address" placeholder="寄件地址（選選擇面交者填無）"
                                 required="required" data-validation-required-message="請輸入寄件地址" />
                             <p class="help-block text-danger"></p>
                         </div>
-                        <div class="form-group">
+                        <div class="control-group">
                             <select class="custom-select" id="payment" data-validation-required-message="請選擇付款方式">
                                 <option value="">付款方式</option>
-                                <option value="">貨到付款</option>
-                                <option value="">銀行轉帳</option>
-                                <option value="">ATM轉帳</option>
+                                <option value="貨到付款">貨到付款</option>
+                                <option value="銀行轉帳">銀行轉帳</option>
+                                <option value="ATM轉帳">ATM轉帳</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="control-group">
                             <textarea class="form-control" rows="4" id="others" placeholder="備註"></textarea>
                             <p class="help-block text-danger"></p>
                         </div>
-                        <div class="form-group text-md-right">
+                        <div class="control-group text-md-right">
                             <button class="btn btn-primary" type="submit" id="btn-order">確認送出訂單</button>
                         </div>
                     </form>
@@ -239,15 +239,11 @@
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
-    <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
     <!-- 功能 -->
-    <script type="module" src="./scripts/addbook.js"></script>
+    <script type="module" src="./scripts/order.js"></script>
 </body>
 
 </html>
