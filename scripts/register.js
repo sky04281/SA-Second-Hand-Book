@@ -1,6 +1,6 @@
 import { auth, db } from "../scripts/firebase.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 const name = document.getElementById("name");
 const area = document.getElementById("area");
@@ -18,11 +18,9 @@ let tdepartment = [];
 //抓取已有的學校 學院 科系
 const totalRef = doc(db, "Account", "Account_Total");
 const totalSnap = await getDoc(totalRef);
-tschool = totalSnap.data().t-school;
-tcollege = totalSnap.data().t-college;
-tdepartment = totalSnap.data().t-department;
-
-
+tschool = totalSnap.data().tschool;
+tcollege = totalSnap.data().tcollege;
+tdepartment = totalSnap.data().tdepartment;
 
 
 btn.addEventListener("click", (e) => {
@@ -34,7 +32,6 @@ btn.addEventListener("click", (e) => {
             //加到 Account
             const docRef = doc(db, "Account", uid);
             setDoc(docRef, {
-                uid: uid,
                 name: name.value,
                 area: area.value,
                 school: school.value,
@@ -44,9 +41,23 @@ btn.addEventListener("click", (e) => {
             }).then(async () => {
                 
                 if (tschool.includes(school) == false) {
-                    
+                    tschool.push(school.value);
                 }
 
+                if (tcollege.includes(college) == false) {
+                    tcollege.push(college.value);
+                }
+
+                if (tdepartment.includes(department) == false) {
+                    tdepartment.push(department.value);
+                }
+
+                console.log(tschool, tcollege,tdepartment)
+                await updateDoc(totalRef, {
+                    tschool: tschool,
+                    tcollege: tcollege,
+                    tdepartment: tdepartment
+                });
                 alert("註冊成功!");
                 location.href = "./login.html";
             });
