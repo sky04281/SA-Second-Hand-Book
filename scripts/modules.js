@@ -24,7 +24,7 @@ onAuthStateChanged(auth, (user) => {
         navAccount.innerHTML =  
             "<a href='account.html' class='nav-item nav-link'>帳號管理</a>" +
             "<a href='#' class='btn-logout nav-item nav-link'>登出</a>" +
-            "<a href='notify.html' class='nav-item nav-link'><i class='fas fa-bell text-primary'></i></a>";
+            "<a href='buyernotify.html' class='nav-item nav-link'><i class='fas fa-bell text-primary'></i></a>";
         
         const btn = navAccount.querySelector('.btn-logout');
         btn.addEventListener("click", (e) => {
