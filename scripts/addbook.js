@@ -34,7 +34,7 @@ onAuthStateChanged(auth, (user) =>{
                 buyerId: "",
                 date: date.toLocaleDateString(),
                 deadline: "",
-                delivery: ""
+                order: []
             })
             .then(() => {
                 alert("新增成功!")
