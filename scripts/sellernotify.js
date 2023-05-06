@@ -10,7 +10,7 @@ onAuthStateChanged(auth, async (user) => {
         const ref = collection(db, "Product");
         const q = query(ref, where("sellerId", "==", user.uid));
         const querySnapshot = await getDocs(q);
-        const view = document.getElementById("viewbook");
+        const view = document.getElementById("sellernotify");
 
         // 把書本列出來
         querySnapshot.forEach( (docs) => {
