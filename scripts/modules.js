@@ -1,8 +1,11 @@
-import { auth } from "../scripts/firebase.js";
+import { auth, db } from "../scripts/firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+
+const myNav = document.querySelector('.myNav');
 
 // 導覽列
-const myNav = document.querySelector('.myNav');
+{
 myNav.innerHTML = 
     "<nav class='navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0'>" +
         "<div class='collapse navbar-collapse justify-content-between' id='navbarCollapse'>" +
@@ -15,16 +18,21 @@ myNav.innerHTML =
             "</div>" +
         "</div>" +
     "</nav>";
-const navAccount = myNav.querySelector('.myNav-account');
+}
 
-onAuthStateChanged(auth, (user) => {
+const navAccount = myNav.querySelector('.myNav-account');
+onAuthStateChanged(auth, async (user) => {
     if(user){
     console.log(user);
-        // 導覽列-登入中
-        navAccount.innerHTML =  
-            "<a href='account.html' class='nav-item nav-link'>帳號管理</a>" +
-            "<a href='#' class='btn-logout nav-item nav-link'>登出</a>" +
-            "<a href='notify.html' class='nav-item nav-link'><i class='fas fa-bell text-primary'></i></a>";
+    const userRef = doc(db, "Account", user.uid);
+    const userSnap = await getDoc(userRef);
+    
+    // 導覽列-登入中
+    navAccount.innerHTML =  
+        "<span class = 'nav-item nav-link'>您好 "+ userSnap.data().name +"</span>" + 
+        "<a href='account.html' class='nav-item nav-link'>帳號管理</a>" +
+        "<a href='#' class='btn-logout nav-item nav-link'>登出</a>" +
+        "<a href='notify.html' class='nav-item nav-link'><i class='fas fa-bell text-primary'></i></a>";
         
         const btn = navAccount.querySelector('.btn-logout');
         btn.addEventListener("click", (e) => {
