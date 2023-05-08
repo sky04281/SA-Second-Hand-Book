@@ -19,8 +19,8 @@ onAuthStateChanged(auth, async (user) => {
             "<tr>" +
                 "<td class='align-middle'><img src='' alt='' style='width: 50px;'>" + docs.data().book + "</td>" +
                 "<td class='align-middle'>"+
-                    "<button class='btn btn-sm'><a href='editbook.html'><i class='fa fa-pen'></i></a></button>"+
-                    "<button class='btn btn-sm btn-delete' id='"+ docs.id + "'><i class='fa fa-trash'></i></button>"+
+                    "<button class='btn id='order' btn-sm'><a href=''><i class='fas fa-check'>確認訂單</i></a></button>"+
+                    "<button class='btn btn-sm btn-delete' id='"+ docs.id + "'><i class='fas fa-times'>取消訂單</i></button>"+
                 "</td>"+
             "</tr>";
         });
@@ -30,7 +30,7 @@ onAuthStateChanged(auth, async (user) => {
         btn.forEach((b) => {
             b.addEventListener('click', (e) => {
                 e.preventDefault();
-                var docRef = doc(db, 'Product', b.id);
+                var docRef = doc(db, 'Product', );
                 deleteDoc(docRef)
                 .then(() => {
                     alert("已成功刪除!");
