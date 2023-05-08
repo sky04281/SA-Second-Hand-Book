@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, getDocs, doc, deleteDoc} from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, getDocs, doc, deleteDoc, updateDoc} from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 
 
@@ -30,14 +30,37 @@ onAuthStateChanged(auth, async (user) => {
         btn.forEach((b) => {
             b.addEventListener('click', (e) => {
                 e.preventDefault();
-                var docRef = doc(db, 'Product', );
-                deleteDoc(docRef)
+                var docRef = doc(db, 'Product', b.id);
+                updateDoc(docRef, {
+                    buyerId: "",
+                    order: [], 
+                    ordering: ""
+                })
                 .then(() => {
                     alert("已成功刪除!");
                     location.reload();
                 });
             });
         });
+
+        /*
+        const colRef = doc(db, "Product", docs.id);
+        var btn = document.querySelectorAll('.btn-delete');
+        console.log(user);
+        btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            updateDoc(colRef, {
+                buyerId: "",
+                order: [], 
+                ordering: ""
+            })
+            .then(() => {
+                alert("已取消訂單!")
+                location.href = "./sellernotify.html";
+            });
+        });
+        */
+
 
     }else{
         alert("請先登入!");
