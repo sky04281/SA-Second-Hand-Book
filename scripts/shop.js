@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, and, getDocs, getDoc, doc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 
 const ref = collection(db, "Product");
@@ -185,12 +185,10 @@ function show(){
 async function myQuery(){
     //有選分類
     if((search.value == "") && (cateKey != "")){
-        console.log("123");
         q = query(ref, where("category", "array-contains", cateValue));
         querySnapshot = await getDocs(q);
     }
     else if((search.value != "") && (cateKey != "")){
-        console.log("456");
         q = query(ref, where("category", "array-contains", cateValue), where("book", "==", search.value));
         querySnapshot = await getDocs(q);
     }
@@ -199,7 +197,8 @@ async function myQuery(){
         querySnapshot = await getDocs(ref);
     }
     else{
-        q = query(ref, where("book", "==", search.value));
+        // q = query(ref, orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
+        q = query(ref, where("book", "==" , search.value), orderBy("price"));
         querySnapshot = await getDocs(q);
     }
     show();
