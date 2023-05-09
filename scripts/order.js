@@ -18,8 +18,8 @@ onAuthStateChanged(auth, (user) =>{
             e.preventDefault();
             updateDoc(colRef, {
                 buyerId: user.uid,
-                order: [delivery.value, address.value, payment.value, others.value, "待賣家確認"], 
-                ordering: true
+                order: [delivery.value, address.value, payment.value, others.value, true], 
+                ordering: "待賣家確認"
             })
             .then(() => {
                 alert("訂單已傳送給賣家!")
