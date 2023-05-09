@@ -17,50 +17,48 @@ onAuthStateChanged(auth, async (user) => {
         querySnapshot.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
             "<tr>" +
-                "<td class='align-middle'><img src='' alt='' style='width: 50px;'>" + docs.data().book + "</td>" +
+                "<td class='align-middle'><img src='' alt='' style='width: 50px;'>" + docs.data().book +"</td>" +
+                "<td class='align-middle'>"+ docs.data().order[4]+ "</td>" +
                 "<td class='align-middle'>"+
-                    "<button class='btn id='order' btn-sm'><a href=''><i class='fas fa-check'>確認訂單</i></a></button>"+
+                    "<button class='btn btn-sm btn-check' id='" + docs.id +"'><i class='fas fa-check'>確認訂單</i></button>"+
                     "<button class='btn btn-sm btn-delete' id='"+ docs.id + "'><i class='fas fa-times'>取消訂單</i></button>"+
                 "</td>"+
             "</tr>";
         });
 
-        // 給下架按鈕加上刪除的功能
-        var btn = document.querySelectorAll('.btn-delete');
-        btn.forEach((b) => {
-            b.addEventListener('click', (e) => {
-                e.preventDefault();
-                var docRef = doc(db, 'Product', b.id);
-                updateDoc(docRef, {
-                    buyerId: "",
-                    order: [], 
-                    ordering: ""
-                })
-                .then(() => {
-                    alert("已成功刪除!");
-                    location.reload();
+        if(order[4]=="待確認"){
+            var btn1 = document.querySelectorAll('.btn-check');
+            btn1.forEach((b) => {
+                b.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    var docRef = doc(db, 'Product', b.id);
+                    updateDoc(docRef, {
+                        ordering: "賣家接收訂單，交易成立"
+                    })
+                    .then(() => {
+                        alert("您已確認訂單!");
+                        location.reload();
+                    });
                 });
             });
-        });
-
-        /*
-        const colRef = doc(db, "Product", docs.id);
-        var btn = document.querySelectorAll('.btn-delete');
-        console.log(user);
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            updateDoc(colRef, {
-                buyerId: "",
-                order: [], 
-                ordering: ""
-            })
-            .then(() => {
-                alert("已取消訂單!")
-                location.href = "./sellernotify.html";
+            
+            var btn2 = document.querySelectorAll('.btn-delete');
+            btn2.forEach((b) => {
+                b.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    var docRef = doc(db, 'Product', b.id);
+                    updateDoc(docRef, {
+                        buyerId: "",
+                        order: [], 
+                        ordering: ""
+                    })
+                    .then(() => {
+                        alert("已取消訂單!");
+                        location.reload();
+                    });
+                });
             });
-        });
-        */
-
+        }
 
     }else{
         alert("請先登入!");
