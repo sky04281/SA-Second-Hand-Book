@@ -11,7 +11,7 @@ onAuthStateChanged(auth, async (user) => {
         const q = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "待賣家確認"));
         const p = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家接收訂單，交易成立"));
         const r = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家已出貨，待買家收取並完成訂單"));
-        const s = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成訂單"));
+        const s = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成訂單"));
         const querySnapshot_q = await getDocs(q);
         const querySnapshot_p = await getDocs(p);
         const querySnapshot_r = await getDocs(r);
@@ -49,7 +49,7 @@ onAuthStateChanged(auth, async (user) => {
 
         querySnapshot_r.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
-            "<tr><td colspan='4'>待完成訂單</td></tr><tr>" +
+            "<tr><td colspan='4'>商品已到貨，請取貨並完成訂單</td></tr><tr>" +
                 "<td class='align-middle'><img src='' alt='' style='width: 50px;'>" + docs.data().book +"</td>" +
                 "<td class='align-middle text-left'>寄送方式: " + docs.data().order[0] +
                     "<br>寄送地址: " + docs.data().order[1] +
