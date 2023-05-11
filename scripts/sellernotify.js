@@ -63,7 +63,7 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>"+
-                    "<button class='btn btn-sm btn-sent' id='" + docs.id +"'><i class='fas fa-check'></i></button>"+
+                    "<button class='btn btn-sm btn-sent' id='" + docs.id +"'><i class='fas fa-arrow-right'></i></button>"+
                 "</td>"+
             "</tr>";
         });

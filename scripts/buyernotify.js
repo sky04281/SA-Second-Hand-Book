@@ -29,7 +29,7 @@ onAuthStateChanged(auth, async (user) => {
                     "<br>備註: " + docs.data().order[3] +
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
-                "<td class='align-middle'>待買家取貨後完成訂單</td>"+
+                "<td class='align-middle'><i class='fas fa-times'></i></td>"+
             "</tr><br>";
         });
 
@@ -43,7 +43,7 @@ onAuthStateChanged(auth, async (user) => {
                     "<br>備註: " + docs.data().order[3] +
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
-                "<td class='align-middle'>待買家取貨後完成訂單</td>"+
+                "<td class='align-middle'><i class='fas fa-times'></i></td>"+
             "</tr><br>";
         });
 
@@ -74,7 +74,7 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>" + 
-                    "<button class='btn btn-sm btn-comment' id='" + docs.id +"' href='comment.html'><i class='fas fa-check'>前往評價</i></button>" + 
+                    "<button class='btn btn-sm btn-comment' id='" + docs.id +"' href='comment.html'><i class='fas fa-arrow-right'>前往評價</i></button>" + 
                 "</td>"+
             "</tr><br>";
         });
