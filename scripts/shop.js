@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, and, getDocs, getDoc, doc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 
 const ref = collection(db, "Product");
@@ -141,10 +141,10 @@ function show(){
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
                     "<div class='card-header product-img position-relative overflow-hidden bg-transparent border p-0'>"+
-                        "<a href='buyingbook.html' title=''><img src='img/product-2.jpg' class='img-fluid w-100' alt=''></a>"+
+                        "<a href='buyingbook.html?bookId=" + docs.id + "' title=''><img src='img/product-2.jpg' class='img-fluid w-100' alt=''></a>"+
                     "</div>"+
                     "<div class='card-body border-left border-right text-center p-0 pt-4 pb-3'>"+
-                        "<a href='buyingbook.html' class='active'><h6 class='text-truncate mb-3'>"+ docs.data().book +"</h6></a>"+
+                        "<a href='buyingbook.html?bookId=" + docs.id + "' class='active'><h6 class='text-truncate mb-3'>"+ docs.data().book +"</h6></a>"+
                         "<div class='d-flex justify-content-center'>"+
                             "<h6>" + "NT$" + docs.data().price + "</h6>"+
                         "</div>"+
@@ -185,12 +185,10 @@ function show(){
 async function myQuery(){
     //有選分類
     if((search.value == "") && (cateKey != "")){
-        console.log("123");
         q = query(ref, where("category", "array-contains", cateValue));
         querySnapshot = await getDocs(q);
     }
     else if((search.value != "") && (cateKey != "")){
-        console.log("456");
         q = query(ref, where("category", "array-contains", cateValue), where("book", "==", search.value));
         querySnapshot = await getDocs(q);
     }
@@ -199,7 +197,8 @@ async function myQuery(){
         querySnapshot = await getDocs(ref);
     }
     else{
-        q = query(ref, where("book", "==", search.value));
+        q = query(ref, orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
+        // q = query(ref, where("book", "==" , search.value), orderBy("price"));
         querySnapshot = await getDocs(q);
     }
     show();
