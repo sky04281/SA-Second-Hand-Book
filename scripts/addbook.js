@@ -41,7 +41,9 @@ onAuthStateChanged(auth, async (user) => {
                 date: date.toLocaleDateString(),
                 deadline: "",
                 order: [], 
-                ordering: ""
+                ordering: "",
+                setuptime: "",
+                deadline: ""
             })
                 .then(() => {
                     alert("新增成功!")
