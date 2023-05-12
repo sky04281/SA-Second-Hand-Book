@@ -141,10 +141,10 @@ function show(){
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
                     "<div class='card-header product-img position-relative overflow-hidden bg-transparent border p-0'>"+
-                        "<a href='buyingbook.html' title=''><img src='img/product-2.jpg' class='img-fluid w-100' alt=''></a>"+
+                        "<a href='buyingbook.html?bookId=" + docs.id + "' title=''><img src='img/product-2.jpg' class='img-fluid w-100' alt=''></a>"+
                     "</div>"+
                     "<div class='card-body border-left border-right text-center p-0 pt-4 pb-3'>"+
-                        "<a href='buyingbook.html' class='active'><h6 class='text-truncate mb-3'>"+ docs.data().book +"</h6></a>"+
+                        "<a href='buyingbook.html?bookId=" + docs.id + "' class='active'><h6 class='text-truncate mb-3'>"+ docs.data().book +"</h6></a>"+
                         "<div class='d-flex justify-content-center'>"+
                             "<h6>" + "NT$" + docs.data().price + "</h6>"+
                         "</div>"+
@@ -197,8 +197,8 @@ async function myQuery(){
         querySnapshot = await getDocs(ref);
     }
     else{
-        // q = query(ref, orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
-        q = query(ref, where("book", "==" , search.value), orderBy("price"));
+        q = query(ref, orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
+        // q = query(ref, where("book", "==" , search.value), orderBy("price"));
         querySnapshot = await getDocs(q);
     }
     show();
