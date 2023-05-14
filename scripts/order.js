@@ -1,6 +1,6 @@
 import { auth, db } from "../scripts/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 const delivery = document.getElementById("delivery");
 const address = document.getElementById("address");
@@ -9,7 +9,32 @@ const others = document.getElementById("others");
 const btn = document.getElementById("btn-order");
 var date = new Date(); 
 
-const colRef = doc(db, "Product", "ayR4rRGvunlDOkjYA1dC");
+//接值
+const order = document.querySelector('.order');
+
+let myUrl = new URL(window.location.href);
+let bookId = myUrl.searchParams.get('bookId');
+console.log(bookId);
+
+let bookRef = doc(db, "Product", bookId);
+let bookSnap = await getDoc(bookRef);
+console.log(bookSnap.data());
+
+const colRef = doc(db, "Product", bookId);
+
+show();
+
+//書籍渲染
+function show(){
+        order.innerHTML = order.innerHTML +
+            "<h5>書籍名稱：<font color='gray'>"+bookSnap.data().book+"</font><br>" +
+                "作者：<font color='gray'>"+bookSnap.data().author+"</font><br>"+
+                "出版社：<font color='gray'>"+bookSnap.data().publish+"</font><br>"+
+                "國際書號：<font color='gray'>"+bookSnap.data().isbn+"</font><br>"+
+                "書籍價格：<font color='gray'>$"+bookSnap.data().price+"</font><br>"+
+            "</h5>"+
+            "<br>"
+}
 
 onAuthStateChanged(auth, (user) =>{
     if(user){

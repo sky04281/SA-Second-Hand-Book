@@ -39,7 +39,7 @@ function show(){
                 "<div class='col-lg-7 pb-5'>"+
                     "<h3 class='font-weight-semi-bold'>"+bookSnap.data().book+"</h3>"+
                     
-                    "<h3 class='font-weight-semi-bold mb-4'>$ "+bookSnap.data().price+"</h3>"+
+                    "<h3 class='font-weight-semi-bold mb-4'>NT$ "+bookSnap.data().price+"</h3>"+
                     "<p class='mb-4'>作者："+bookSnap.data().author+"<br>出版社："+bookSnap.data().publish+"<br>國際書號："+bookSnap.data().isbn+"<br>類別："+bookSnap.data().cate+"<br>"+
                         
 
@@ -69,7 +69,7 @@ function show(){
                     "</div>"+
                     
                     "<div class='d-flex align-items-center mb-4 pt-2'>"+
-                        "<a href='order.html'><button class='btn btn-primary py-2 px-4' type='submit' id='editbookButton'><i class='fa fa-shopping-cart mr-1'></i>購買</button></a>"
+                        "<a href='order.html?bookId=" + bookId + "'><button class='btn btn-primary py-2 px-4' type='submit' id='editbookButton'><i class='fa fa-shopping-cart mr-1'></i>購買</button></a>"
                         "&nbsp;"+
                         "<a href='chatroom.html'><button class='btn btn-primary py-2 px-4' type='submit' id='deletebookButton'><i class='fa fa-comments mr-1'></i>私訊</button></a>"+
                     "</div>"+
