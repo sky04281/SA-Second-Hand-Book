@@ -54,3 +54,59 @@ onAuthStateChanged(auth, async (user) => {
         location.href = "./login.html";
     }
 });
+
+//上傳照片
+const upload = document.getElementById('upload');
+const img = document.getElementById('img-img');
+const imginput = document.getElementById('img-input');
+const imgbtn = document.getElementById("img-btn");
+let imgFile;
+
+upload.addEventListener("dragenter", dragenter, false);
+upload.addEventListener("dragover", dragover, false);
+upload.addEventListener("drop", drop, false);
+imgbtn.addEventListener("click", click, false);
+img.addEventListener("click", click, false);
+imginput.addEventListener("change", 
+    function onchange(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleFiles(this.files);
+    }, false);
+
+function dragenter(e){
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function dragover(e){
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function drop(e){
+    e.stopPropagation();
+    e.preventDefault();
+
+    const dt = e.dataTransfer;
+    const files = dt.files;
+    handleFiles(files);
+}
+
+function click(e){
+    e.stopPropagation();
+    e.preventDefault();
+    imginput.click();
+}
+
+function handleFiles(files){
+    imgFile = files[0];
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        img.src = e.target.result;
+    }
+    reader.readAsDataURL(imgFile);
+    img.style.display = 'block';
+    imgbtn.style.display = 'none';
+    upload.style.padding = '5%';
+}
