@@ -1,6 +1,7 @@
-import { auth, db } from "../scripts/firebase.js";
+import { auth, db, storage } from "../scripts/firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
 import { collection, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
 
 //接值
 const book = document.getElementById("book");
@@ -11,7 +12,8 @@ const price = document.getElementById("price");
 const cate = document.getElementById("cate");
 const info = document.getElementById("info");
 const btn = document.getElementById("btn-addbook");
-var date = new Date();
+let date = new Date();
+let imgSrc = "Product/";
 
 const colRef = collection(db, "Product");
 
@@ -23,9 +25,21 @@ onAuthStateChanged(auth, async (user) => {
         const userSnap = await getDoc(userRef);
         const data = userSnap.data();
 
+        imgSrc += (user.uid + "/");
 
         btn.addEventListener("click", (e) => {
             e.preventDefault();
+
+            //存圖片
+            if (imgFile) {
+                const imgRef = ref(storage, imgSrc);
+                uploadBytes(imgRef, imgFile);
+            }else{
+                imgSrc = "Product/NotFound.jpg";
+            }
+            
+
+            //書籍資料
             addDoc(colRef, {
                 book: book.value,
                 author: author.value,
@@ -41,7 +55,8 @@ onAuthStateChanged(auth, async (user) => {
                 date: date.toLocaleDateString(),
                 deadline: "",
                 order: [], 
-                ordering: ""
+                ordering: "",
+                imgsrc: imgSrc
             })
                 .then(() => {
                     alert("新增成功!")
@@ -109,4 +124,5 @@ function handleFiles(files){
     img.style.display = 'block';
     imgbtn.style.display = 'none';
     upload.style.padding = '5%';
+    imgSrc += imgFile.name;
 }
