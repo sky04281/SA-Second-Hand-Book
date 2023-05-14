@@ -141,7 +141,7 @@ function show(){
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
                     "<div class='card-header product-img position-relative overflow-hidden bg-transparent border p-0'>"+
-                        "<a href='buyingbook.html?bookId=" + docs.id + "' title=''><img id='"+ docs.id +"' src='img/product-2.jpg' class='img-fluid w-100' alt=''></a>"+
+                        "<a href='buyingbook.html?bookId=" + docs.id + "' title=''><img id='"+ docs.id +"' src='' class='img-fluid w-100' alt=''></a>"+
                     "</div>"+
                     "<div class='card-body border-left border-right text-center p-0 pt-4 pb-3'>"+
                         "<a href='buyingbook.html?bookId=" + docs.id + "' class='active'><h6 class='text-truncate mb-3'>"+ docs.data().book +"</h6></a>"+
