@@ -15,8 +15,7 @@ console.log(bookSnap.data());
 show();
 
 //書籍渲染
-{
-    bookSnap.forEach( (doc) => {
+function show(){
         buyingbook.innerHTML = buyingbook.innerHTML +
             "<div class='col-lg-5 pb-5'>"+
                     "<div id='product-carousel' class='carousel slide' data-ride='carousel'>"+
@@ -38,14 +37,10 @@ show();
                 "</div>"+
 
                 "<div class='col-lg-7 pb-5'>"+
-                    "<h3 class='font-weight-semi-bold'>網路概論的16堂精選課程</h3>"+
+                    "<h3 class='font-weight-semi-bold'>"+bookSnap.data().book+"</h3>"+
                     
-                    "<h3 class='font-weight-semi-bold mb-4'>$250</h3>"+
-                    "<p class='mb-4'>"+doc.data().book+
-                        "作者：吳燦銘<br>"
-                        "出版社：博碩文化<br>"
-                        "國際書號：978-626-333-187-7<br>"
-                        "類別：<br>"+
+                    "<h3 class='font-weight-semi-bold mb-4'>"+bookSnap.data().price+"</h3>"+
+                    "<p class='mb-4'>作者："+bookSnap.data().author+"<br>出版社："+bookSnap.data().publish+"<br>國際書號："+bookSnap.data().isbn+"<br>類別："+bookSnap.data().cate+"<br>"+
                         
 
 
@@ -76,11 +71,11 @@ show();
                     "<div class='d-flex align-items-center mb-4 pt-2'>"+
                         "<a href='order.html'><button class='btn btn-primary py-2 px-4' type='submit' id='editbookButton'><i class='fa fa-shopping-cart mr-1'></i>購買</button></a>"
                         "&nbsp;"+
-                        "<button class='btn btn-primary py-2 px-4' type='submit' id='deletebookButton'><i class='fa fa-comments mr-1'></i>私訊</button>"+
+                        "<a href='chatroom.html'><button class='btn btn-primary py-2 px-4' type='submit' id='deletebookButton'><i class='fa fa-comments mr-1'></i>私訊</button></a>"+
                     "</div>"+
                     
                 "</div>"
 
         
-    })
+    
 }
