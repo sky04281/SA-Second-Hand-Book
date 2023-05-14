@@ -39,7 +39,7 @@ function show(){
                 "<div class='col-lg-7 pb-5'>"+
                     "<h3 class='font-weight-semi-bold'>"+bookSnap.data().book+"</h3>"+
                     
-                    "<h3 class='font-weight-semi-bold mb-4'>"+bookSnap.data().price+"</h3>"+
+                    "<h3 class='font-weight-semi-bold mb-4'>$ "+bookSnap.data().price+"</h3>"+
                     "<p class='mb-4'>作者："+bookSnap.data().author+"<br>出版社："+bookSnap.data().publish+"<br>國際書號："+bookSnap.data().isbn+"<br>類別："+bookSnap.data().cate+"<br>"+
                         
 
@@ -54,7 +54,7 @@ function show(){
                         "<div class='tab-content'>"+
                             "<div class='tab-pane fade show active' id='tab-pane-1'>"+
                                 
-                                "<p>書況良好，7成新，少許筆記</p>"+
+                                "<p>"+bookSnap.data().info+"</p>"+
                                 
                             "</div>"+
                             "<div class='tab-pane fade' id='tab-pane-2'>"+
