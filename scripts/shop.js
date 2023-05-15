@@ -12,6 +12,7 @@ const form = document.querySelector('.from-search');
 let search = document.getElementById('input-search');
 let cateKey = "";
 let cateValue = "";
+let queryArr = [];
 let q, querySnapshot;
 
 //分類選單-渲染
@@ -108,8 +109,7 @@ form.addEventListener("submit", async (e)=>{
 });
 }
 
-querySnapshot = await getDocs(booksRef);
-show();
+myQuery();
 
 //書籍渲染
 function show(){
@@ -136,7 +136,7 @@ function show(){
         "</div>";
     
     //書籍
-    querySnapshot.forEach( (docs) => {
+    queryArr.forEach((docs) => {
         view.innerHTML = view.innerHTML +
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
@@ -144,15 +144,15 @@ function show(){
                         "<a href='buyingbook.html?bookId=" + docs.id + "' title=''><img id='"+ docs.id +"' src='' class='img-fluid w-100' alt=''></a>"+
                     "</div>"+
                     "<div class='card-body border-left border-right text-center p-0 pt-4 pb-3'>"+
-                        "<a href='buyingbook.html?bookId=" + docs.id + "' class='active'><h6 class='text-truncate mb-3'>"+ docs.data().book +"</h6></a>"+
+                        "<a href='buyingbook.html?bookId=" + docs.id + "' class='active'><h6 class='text-truncate mb-3'>"+ docs.data.book +"</h6></a>"+
                         "<div class='d-flex justify-content-center'>"+
-                            "<h6>" + "NT$" + docs.data().price + "</h6>"+
+                            "<h6>" + "NT$" + docs.data.price + "</h6>"+
                         "</div>"+
                     "</div>"+
                 "</div>"+
             "</div>";
 
-        const imgRef = ref(storage, docs.data().imgsrc);
+        const imgRef = ref(storage, docs.data.imgsrc);
         getDownloadURL(imgRef).then((url) => {
             var img = document.getElementById(docs.id);
             img.setAttribute('src', url);
@@ -194,7 +194,7 @@ async function myQuery(){
         querySnapshot = await getDocs(q);
     }
     else if((search.value != "") && (cateKey != "")){
-        q = query(booksRef, where("category", "array-contains", cateValue), where("book", "==", search.value));
+        q = query(booksRef, where("category", "array-contains", cateValue), orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
         querySnapshot = await getDocs(q);
     }
     //沒選分類
@@ -205,7 +205,53 @@ async function myQuery(){
         q = query(booksRef, orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
         querySnapshot = await getDocs(q);
     }
+
+    //放到自訂的陣列裡處理排序
+    querySnapshot.forEach((docs) => {
+        queryArr.push({
+            id: docs.id,
+            data: docs.data()
+        });
+    });
+
+    //預設價格小到大
+    arrSort(queryArr, "price");
     show();
+    queryArr = [];
     search.value = "";
+}
+
+//排序
+function arrSort(arr = [], key = "price", choose = 1){
+    var temp;
+    switch (key) {
+        case "price":
+            if (choose === -1) {
+                for (let i = 0; i < arr.length; i++) {
+                    for(let j = 0; j < arr.length -1; j++){
+                        if (arr[j].data.price < arr[j + 1].data.price) {
+                            temp = arr[j + 1];
+                            arr[j + 1] = arr[j];
+                            arr[j] = temp;
+                        }
+                    }
+                }
+            }else{
+                for (let i = 0; i < arr.length; i++) {
+                    for(let j = 0; j < arr.length -1; j++){
+                        if (arr[j].data.price > arr[j + 1].data.price) {
+                            temp = arr[j + 1];
+                            arr[j + 1] = arr[j];
+                            arr[j] = temp;
+                        }
+                    }
+                }
+            }
+            
+            break;
+        case "date":
+            break;
+    }
+    
 }
 
