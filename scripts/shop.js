@@ -1,6 +1,6 @@
 import { auth, db, storage } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, getDocs, getDoc, doc, orderBy, startAt, endAt, or } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, getDocs, getDoc, doc, orderBy, startAt, endAt } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 import { ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
 
 const booksRef = collection(db, "Product");
@@ -205,11 +205,11 @@ function show(){
 async function myQuery(){
     //有選分類
     if((search.value == "") && (cateKey != "")){
-        q = query(booksRef, or(where("category", "array-contains", cateValue), where("cate", "==", cateValue)));
+        q = query(booksRef, where("category", "array-contains", cateValue));
         querySnapshot = await getDocs(q);
     }
     else if((search.value != "") && (cateKey != "")){
-        q = query(booksRef, or(where("category", "array-contains", cateValue), where("cate", "==", cateValue)), orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
+        q = query(booksRef, where("category", "array-contains", cateValue), orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
         querySnapshot = await getDocs(q);
     }
     //沒選分類

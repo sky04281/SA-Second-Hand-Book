@@ -47,9 +47,8 @@ onAuthStateChanged(auth, async (user) => {
                 publish: publish.value,
                 isbn: isbn.value,
                 price: parseInt(price.value),
-                cate: cate.value,
-                category: [data.area, data.school, data.college, data.department],
-                // [0: 地區, 1: 學校, 2: 學院, 3: 科系]
+                category: [data.area, data.school, data.college, data.department, cate.value],
+                // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
                 info: info.value,
                 sellerId: user.uid,
                 buyerId: "",
