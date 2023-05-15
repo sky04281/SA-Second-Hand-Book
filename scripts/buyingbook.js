@@ -32,31 +32,27 @@ function show(){
                     "<h3 class='font-weight-semi-bold'>"+bookSnap.data().book+"</h3>"+
                     
                     "<h3 class='font-weight-semi-bold mb-4'>NT$ "+bookSnap.data().price+"</h3>"+
-                    "<p class='mb-4'>作者："+bookSnap.data().author+"<br>出版社："+bookSnap.data().publish+"<br>國際書號："+bookSnap.data().isbn+"<br>類別："+bookSnap.data().cate+"<br>"+
-                        
-
-
+                    "<p class='mb-4'>"+
+                        "作者：" + bookSnap.data().author +"<br>"+
+                        "出版社：" + bookSnap.data().publish + "<br>"+
+                        "國際書號：" + bookSnap.data().isbn + "<br>"+
+                        "類別：" + bookSnap.data().category[4] + "<br>"+
                     "</p>"+
                     "<div class='col'>"+
                         "<div class='nav nav-tabs justify-content border-secondary mb-4'>"+
                             "<a class='nav-item nav-link active' data-toggle='tab' href='#tab-pane-1'>商品描述</a>"+
                             "<a class='nav-item nav-link' data-toggle='tab' href='#tab-pane-2'>配送方式</a>"+
-                            
                         "</div>"+
+                        
                         "<div class='tab-content'>"+
                             "<div class='tab-pane fade show active' id='tab-pane-1'>"+
-                                
                                 "<p>"+bookSnap.data().info+"</p>"+
-                                
                             "</div>"+
                             "<div class='tab-pane fade' id='tab-pane-2'>"+
-                                
                                 "<p>雙北可聊聊面交</p>"+
                                 "<p>超商配送：7-11（運費60元）、全家（運費60元）</p>"+
                                 "<p>宅配（運費120元）</p>"+
-                                
                             "</div>"+
-                            
                         "</div>"+
                     "</div>"+
                     
