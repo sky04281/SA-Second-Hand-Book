@@ -52,7 +52,7 @@ onAuthStateChanged(auth, async (user) => {
                 info: info.value,
                 sellerId: user.uid,
                 buyerId: "",
-                date: date.toLocaleDateString(),
+                date: date,
                 order: [], 
                 ordering: "",
                 setuptime: "",

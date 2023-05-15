@@ -43,7 +43,6 @@ onAuthStateChanged(auth, async (user) => {
                 location.href = "./index.html";
             });
         });
-        
     }else{
         // 導覽列-未登入
         navAccount.innerHTML = 
