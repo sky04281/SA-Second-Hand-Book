@@ -1,5 +1,7 @@
-import { auth, db } from "./firebase.js";
+import { auth, db, storage } from "./firebase.js";
 import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
+
 
 const buyingbook = document.querySelector('.buyingbook');
 
@@ -13,27 +15,17 @@ console.log(bookSnap.data());
 // 接到值了 bookSnap.data().book 是書名，以此類推
 
 show();
+const imgRef = ref(storage, bookSnap.data().imgsrc);
+getDownloadURL(imgRef).then((url)=>{
+    var img = document.getElementById('book-img');
+    img.setAttribute('src', url);
+});
 
 //書籍渲染
 function show(){
         buyingbook.innerHTML = buyingbook.innerHTML +
             "<div class='col-lg-5 pb-5'>"+
-                    "<div id='product-carousel' class='carousel slide' data-ride='carousel'>"+
-                        "<div class='carousel-inner border'>"+
-                            "<div class='carousel-item active'>"+
-                                "<img class='w-100 h-100' src='img/product-1.jpg' alt='Image'>"+
-                            "</div>"+
-                            "<div class='carousel-item'>"+
-                                "<img class='w-100 h-100' src='img/product-2.jpg' alt='Image'>"+
-                            "</div>"+
-                        "</div>"+
-                        "<a class='carousel-control-prev' href='#product-carousel' data-slide='prev'>"+
-                            "<i class='fa fa-2x fa-angle-left text-dark'></i>"+
-                        "</a>"+
-                        "<a class='carousel-control-next' href='#product-carousel' data-slide='next'>"+
-                            "<i class='fa fa-2x fa-angle-right text-dark'></i>"+
-                        "</a>"+
-                    "</div>"+
+                    "<img id='book-img' class='w-100 h-100' src='img/product-1.jpg' alt=''>"+
                 "</div>"+
 
                 "<div class='col-lg-7 pb-5'>"+
@@ -69,9 +61,19 @@ function show(){
                     "</div>"+
                     
                     "<div class='d-flex align-items-center mb-4 pt-2'>"+
-                        "<a href='order.html?bookId=" + bookId + "'><button class='btn btn-primary py-2 px-4' type='submit' id='editbookButton'><i class='fa fa-shopping-cart mr-1'></i>購買</button></a>"
+                        "<a href='chatroom.html?bookId=" + bookId + "'>"+
+                            "<button class='btn btn-primary py-2 px-4' type='submit'>" + 
+                                "<i class='fa fa-comments mr-1'></i>私訊"+
+                            "</button>"+
+                        "</a>" +
+
                         "&nbsp;"+
-                        "<a href='chatroom.html'><button class='btn btn-primary py-2 px-4' type='submit' id='deletebookButton'><i class='fa fa-comments mr-1'></i>私訊</button></a>"+
+
+                        "<a href='order.html?bookId=" + bookId + "'>"+
+                            "<button class='btn btn-primary py-2 px-4' type='submit'>"+
+                                "<i class='fa fa-shopping-cart mr-1'></i>購買"+
+                            "</button>"+
+                        "</a>" +
                     "</div>"+
                     
                 "</div>"

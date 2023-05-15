@@ -1,6 +1,6 @@
 import { auth, db, storage } from "../scripts/firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, addDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, addDoc, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 import { ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
 
 //接值
@@ -14,6 +14,7 @@ const info = document.getElementById("info");
 const btn = document.getElementById("btn-addbook");
 let date = new Date();
 let imgSrc = "Product/";
+let tcate = [];
 
 const colRef = collection(db, "Product");
 
@@ -59,7 +60,17 @@ onAuthStateChanged(auth, async (user) => {
                 deadline: "",
                 imgsrc: imgSrc
             })
-                .then(() => {
+                .then(async () => {
+                    const totalRef = doc(db, "Account", "Account_Total");
+                    const totalSnap = await getDoc(totalRef);
+                    tcate = totalSnap.data().tcate;
+                    if (tcate.includes(cate.value) == false) {
+                        tcate.push(cate.value);
+                        await updateDoc(totalRef, {
+                            tcate: tcate
+                        });
+                    }
+
                     alert("新增成功!")
                     location.href = "./index.html";
                 });
