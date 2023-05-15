@@ -1,6 +1,7 @@
-import { auth, db } from "../scripts/firebase.js";
+import { auth, db, storage } from "../scripts/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
 import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt, updateDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
 
 const delivery = document.getElementById("delivery");
 const address = document.getElementById("address");
@@ -23,6 +24,11 @@ console.log(bookSnap.data());
 const colRef = doc(db, "Product", bookId);
 
 show();
+const imgRef = ref(storage, bookSnap.data().imgsrc);
+getDownloadURL(imgRef).then((url)=>{
+    var img = document.getElementById('book-img');
+    img.setAttribute('src', url);
+});
 
 //書籍渲染
 function show(){

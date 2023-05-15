@@ -25,7 +25,7 @@ getDownloadURL(imgRef).then((url)=>{
 function show(){
         buyingbook.innerHTML = buyingbook.innerHTML +
             "<div class='col-lg-5 pb-5'>"+
-                    "<img id='book-img' class='w-100 h-100' src='img/product-1.jpg' alt=''>"+
+                    "<img id='book-img' class='w-100 h-100' src='' alt=''>"+
                 "</div>"+
 
                 "<div class='col-lg-7 pb-5'>"+
