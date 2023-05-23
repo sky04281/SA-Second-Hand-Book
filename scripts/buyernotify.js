@@ -9,7 +9,7 @@ onAuthStateChanged(auth, async (user) => {
         // 用 sellerId 從資料庫抓出使用者上架的書
         const ref = collection(db, "Product");
         const q = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "待賣家確認"));
-        const n = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", false), where("ordering", "==", "取消訂單"));
+        const n = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "取消訂單"));
         const p = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家接收訂單，交易成立"));
         const r = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家已出貨，待買家收取並完成訂單"));
         const s = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成訂單"));
@@ -109,11 +109,31 @@ onAuthStateChanged(auth, async (user) => {
                 });
             });
         });
+        var btn2 = document.querySelectorAll('.btn-cancel');
+        btn2.forEach((c) => {
+            c.addEventListener('click', (d) => {
+                d.preventDefault();
+                var docRef = doc(db, 'Product', c.id);
+                updateDoc(docRef, {
+                    ordering: "取消訂單"
+                })
+                .then(() => {
+                    alert("取消成功!");
+                    location.reload();
+                });
+            });
+        });
+
 
     }else{
         alert("請先登入!");
         location.href = "./index.html";
     }
+
+    
+
+    
 });
+
 
 
