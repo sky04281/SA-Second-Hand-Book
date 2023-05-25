@@ -39,6 +39,11 @@ onAuthStateChanged(auth, async (user) => {
                 imgSrc = "Product/NotFound.jpg";
             }
             
+            let checked = document.querySelectorAll('input[name="checkbox"]:checked');
+            let output = [];
+            checked.forEach((checkbox) => {
+                output.push(checkbox.value);
+            });
 
             //書籍資料
             addDoc(colRef, {
@@ -57,7 +62,8 @@ onAuthStateChanged(auth, async (user) => {
                 ordering: "",
                 setuptime: "",
                 deadline: "",
-                imgsrc: imgSrc
+                imgsrc: imgSrc,
+                delivery: output
             })
                 .then(async () => {
                     const totalRef = doc(db, "Account", "Account_Total");
