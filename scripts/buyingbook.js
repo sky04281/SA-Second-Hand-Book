@@ -49,9 +49,7 @@ function show(){
                                 "<p>"+bookSnap.data().info+"</p>"+
                             "</div>"+
                             "<div class='tab-pane fade' id='tab-pane-2'>"+
-                                "<p>雙北可聊聊面交</p>"+
-                                "<p>超商配送：7-11（運費60元）、全家（運費60元）</p>"+
-                                "<p>宅配（運費120元）</p>"+
+                                "<p>" + bookSnap.data().delivery + "</p>"+
                             "</div>"+
                         "</div>"+
                     "</div>"+

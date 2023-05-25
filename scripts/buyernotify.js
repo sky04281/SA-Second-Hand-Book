@@ -61,6 +61,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>" + 
                     "<button class='btn btn-sm btn-delete' id='" + docs.id +"'><i class='fas fa-check'>完成訂單</i></button>" + 
+                    "<button class='btn btn-sm btn-unreceive' id='" + docs.id +"'><i class='fas fa-times'>未收到貨</i></button>" + 
                 "</td>"+
             "</tr><br>";
         });
