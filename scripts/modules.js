@@ -42,7 +42,7 @@ myHeader.innerHTML =
             "</form>" +
         "</div>" +
         "<div class='col-lg-4 col-6 text-right'>" +
-            "<a href='' class='btn border'>" +
+            "<a href='chatroom.html' class='btn border'>" +
                 "<i class='fas fa-comments text-primary'></i>" +
                 "<span class='badge'>來聊聊</span>" +
             "</a>" +
