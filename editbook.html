@@ -72,11 +72,13 @@
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">編輯書籍資訊</span></h2>
         </div>
-        <div class="row px-xl-5">
+        <div class="editbook row px-xl-5">
+            <!--
             <div class="col-lg-7 mb-5">
                 <div class="contact-form">
                     <div id="success"></div>
-                    <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                    <form class="editbook" name="sentMessage" id="contactForm" novalidate="novalidate">
+
                         <div class="control-group">
                             <input type="text" class="form-control" id="name" placeholder="書名"
                                 required="required" data-validation-required-message="Please enter your name" />
@@ -115,18 +117,20 @@
                         </div>
                         <div>
                             <button class="btn btn-primary py-2 px-4" type="submit" id="editbookButton">完成編輯</button>
-                            <button class="btn btn-primary py-2 px-4" type="submit" id="deletebookButton">下架</button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="col-lg-5 mb-5">
-                <div style="background-color:white; padding:180px 163px; margin:30px 50px 50px 50px; border:0.5px slategray dashed;">
-                    <div style="background-color:white;width:120px;height:60px; text-align: center;">
-                        <button class="btn btn-primary py-2 px-4" type="submit" id="addpicButton">更改圖片</button>
+                <div id="upload" style="background-color:white; padding:40% 15%; margin-right:10%;  margin-left:5%; border:0.5px slategray dashed;">
+                    <img id="img-img" src="" alt="" style="height: 100%; width: 100%; display: none;">
+                    <div style="background-color:white; width:50%; height:100%; margin:auto; text-align: center;">
+                        <button id="img-btn" class="btn btn-primary py-2 px-4" type="submit">點擊/拖曳<br>更改圖片</button>
+                        <input id="img-input" type="file" accept="image/*" style="display: none;" placeholder="1">
                     </div>
-                </div>
+                </div> 
             </div>
+-->
         </div>
     </div>
     <!-- Contact End -->
@@ -219,6 +223,10 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- 功能 -->
+    <script type="module" src="./scripts/editbook.js"></script>
+
 </body>
 
 </html>
