@@ -12,6 +12,7 @@ var date = new Date();
 
 //接值
 const bookinform = document.querySelector('.bookinform');
+const selectdel = document.querySelector('.custom-select');
 
 let myUrl = new URL(window.location.href);
 let bookId = myUrl.searchParams.get('bookId');
@@ -39,6 +40,13 @@ function show(){
                 "國際書號：<font color='gray'>"+bookSnap.data().isbn+"</font><br>"+
                 "書籍價格：<font color='gray'>$"+bookSnap.data().price+"</font><br>"+
             "</h5>"
+
+    selectdel.innerHTML = selectdel.innerHTML +
+            "<option value=''>寄送方式</option>" +
+            "<option value='" + bookSnap.data().delivery[0] + "'>" + bookSnap.data().delivery[0] + "</option>" +
+            "<option value='" + bookSnap.data().delivery[1] + "'>" + bookSnap.data().delivery[1] + "</option>" +
+            "<option value='" + bookSnap.data().delivery[2] + "'>" + bookSnap.data().delivery[2] + "</option>" +
+            "<option value='" + bookSnap.data().delivery[3] + "'>" + bookSnap.data().delivery[3] + "</option>" 
 }
 
 onAuthStateChanged(auth, (user) =>{

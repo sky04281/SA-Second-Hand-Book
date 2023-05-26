@@ -633,8 +633,9 @@ mark,
 }
 
 .img-fluid {
-  max-width: 100%;
-  height: auto;
+  width: 100%;
+  height: 300px;
+  object-fit: scale-down;
 }
 
 .img-thumbnail {
@@ -4946,6 +4947,8 @@ input[type="button"].btn-block {
 .card {
   position: relative;
   display: flex;
+  height: 100%;
+  align-items: stretch;
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;

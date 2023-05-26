@@ -27,40 +27,9 @@
 
 <body>
     <!-- Topbar Start -->
-    <div class="row align-items-center py-3 px-xl-5">
-        <div class="col-lg-3 d-none d-lg-block">
-            <a href="index.html" class="text-decoration-none">
-                <h3 class="m-0 display-5 font-weight-semi-bold"><i class="fas fa-bookmark text-primary"></i> 到底書在哪==</h3>
-            </a>
-        </div>
-        <div class="col-lg-5 col-6 text-left">
-            <form action="">
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="尋找書籍">
-                    <div class="input-group-append">
-                        <span class="input-group-text bg-transparent text-primary">
-                            <i class="fa fa-search"></i>
-                        </span>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="col-lg-4 col-6 text-right">
-            <a href="" class="btn border">
-                <i class="fas fa-comments text-primary"></i>
-                <span class="badge">來聊聊</span>
-            </a>
-            <a href="addbook.html" class="btn border">
-                <i class="fas fa-plus text-primary"></i>
-                <span class="badge">要賣書</span>
-            </a>
-            <a href="wanted.html" class="btn border">
-                <i class="fas fa-book text-primary"></i>
-                <span class="badge">給我書</span>
-            </a>
-        </div>
+    <div class="myHeader">
+        
     </div>
-</div>
 <!-- Topbar End -->
 
 
@@ -112,6 +81,13 @@
                         </div>
                         <div class="control-group">
                             <textarea class="form-control" rows="6" id="info" placeholder="詳細資訊"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group deliver">
+                            <input type="checkbox" name="checkbox" value="聊聊面交" onclick="check()"><label>聊聊面交</label>
+                            <input type="checkbox" name="checkbox" value="7-11（運費60元）"><label>7-11（運費60元）</label>
+                            <input type="checkbox" name="checkbox" value="全家（運費60元）"><label>全家（運費60元）</label>
+                            <input type="checkbox" name="checkbox" value="宅配（運費120元）"><label>宅配（運費120元）</label>
                             <p class="help-block text-danger"></p>
                         </div>
                         <div>
@@ -223,6 +199,7 @@
     <script src="js/main.js"></script>
 
     <!-- 功能 -->
+    <script type="module" src="./scripts/modules.js"></script>
     <script type="module" src="./scripts/addbook.js"></script>
 </body>
 
