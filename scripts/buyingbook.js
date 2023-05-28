@@ -24,11 +24,11 @@ getDownloadURL(imgRef).then((url)=>{
 //書籍渲染
 function show(){
         buyingbook.innerHTML = buyingbook.innerHTML +
-            "<div class='col-lg-5 pb-5'>"+
+                "<div class='col-lg-5 pb-5'>"+
                     "<img id='book-img' class='w-100 h-100' src='' alt=''>"+
                 "</div>"+
 
-                "<div class='col-lg-7 pb-5'>"+
+                "<div class='col-lg-5 pb-5'>"+
                     "<h3 class='font-weight-semi-bold'>"+bookSnap.data().book+"</h3>"+
                     
                     "<h3 class='font-weight-semi-bold mb-4'>NT$ "+bookSnap.data().price+"</h3>"+
@@ -70,7 +70,10 @@ function show(){
                         "</a>" +
                     "</div>"+
                     
-                "</div>"
+                "</div>" +
+                
+                "<div class='col-lg-2 pb-5'>"+
+                "</div>";
 
         
     
