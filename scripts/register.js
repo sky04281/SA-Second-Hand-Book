@@ -45,15 +45,15 @@ btn.addEventListener("click", (e) => {
                 score: 0
             }).then(async () => {
                 
-                if (tschool.includes(school) == false) {
+                if (tschool.includes(school.value) == false) {
                     tschool.push(school.value);
                 }
 
-                if (tcollege.includes(college) == false) {
+                if (tcollege.includes(college.value) == false) {
                     tcollege.push(college.value);
                 }
 
-                if (tdepartment.includes(department) == false) {
+                if (tdepartment.includes(department.value) == false) {
                     tdepartment.push(department.value);
                 }
 
