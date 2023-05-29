@@ -19,6 +19,37 @@ if(myNav != null){
                 "</div>" +
             "</div>" +
         "</nav>";
+
+    const navAccount = myNav.querySelector('.myNav-account');
+    onAuthStateChanged(auth, async (user) => {
+        if(user){
+        console.log(user);
+        const userRef = doc(db, "Account", user.uid);
+        const userSnap = await getDoc(userRef);
+        
+        // 導覽列-登入中
+        navAccount.innerHTML =  
+            "<span class = 'nav-item nav-link'>您好 "+ userSnap.data().name +"</span>" + 
+            "<a href='account.html' class='nav-item nav-link'>帳號管理</a>" +
+            "<a href='#' class='btn-logout nav-item nav-link'>登出</a>" +
+            "<a href='buyernotify.html' class='nav-item nav-link'><i class='fas fa-bell text-primary'></i></a>";
+            
+            const btn = navAccount.querySelector('.btn-logout');
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                signOut(auth)
+                .then(() => {
+                    alert("登出成功! 即將返回首頁");
+                    location.href = "./index.html";
+                });
+            });
+        }else{
+            // 導覽列-未登入
+            navAccount.innerHTML = 
+                "<a href='login.html' class='nav-item nav-link'>登入</a>" +
+                "<a href='register.html' class='nav-item nav-link'>註冊</a>";
+        }
+    });
 }
 
 myHeader.innerHTML = 
@@ -57,33 +88,3 @@ myHeader.innerHTML =
         "</div>" +
     "</div>" ;
 
-const navAccount = myNav.querySelector('.myNav-account');
-onAuthStateChanged(auth, async (user) => {
-    if(user){
-    console.log(user);
-    const userRef = doc(db, "Account", user.uid);
-    const userSnap = await getDoc(userRef);
-    
-    // 導覽列-登入中
-    navAccount.innerHTML =  
-        "<span class = 'nav-item nav-link'>您好 "+ userSnap.data().name +"</span>" + 
-        "<a href='account.html' class='nav-item nav-link'>帳號管理</a>" +
-        "<a href='#' class='btn-logout nav-item nav-link'>登出</a>" +
-        "<a href='buyernotify.html' class='nav-item nav-link'><i class='fas fa-bell text-primary'></i></a>";
-        
-        const btn = navAccount.querySelector('.btn-logout');
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            signOut(auth)
-            .then(() => {
-                alert("登出成功! 即將返回首頁");
-                location.href = "./index.html";
-            });
-        });
-    }else{
-        // 導覽列-未登入
-        navAccount.innerHTML = 
-            "<a href='login.html' class='nav-item nav-link'>登入</a>" +
-            "<a href='register.html' class='nav-item nav-link'>註冊</a>";
-    }
-});
