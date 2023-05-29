@@ -1,5 +1,5 @@
 import { auth, db } from "../scripts/firebase.js";
-import { createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
 import { doc, setDoc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 const name = document.getElementById("name");
@@ -28,7 +28,11 @@ btn.addEventListener("click", (e) => {
     createUserWithEmailAndPassword(auth, email.value, password.value)
         .then((userCredential) => {
             sendEmailVerification(auth.currentUser);
+            updateProfile(auth.currentUser, {
+                displayName: name.value,
+            });
             uid = userCredential.user.uid;
+
 
             //加到 Account
             const docRef = doc(db, "Account", uid);
@@ -59,7 +63,7 @@ btn.addEventListener("click", (e) => {
                     tcollege: tcollege,
                     tdepartment: tdepartment
                 });
-                alert("註冊成功！ 已發送驗證信！");
+                alert("註冊成功！ 已發送驗證信！\n" + "請至 " + email + " 查看");
                 location.href = "./login.html";
             });
 

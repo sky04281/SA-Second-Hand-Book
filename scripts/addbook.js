@@ -22,64 +22,71 @@ const colRef = collection(db, "Product");
 onAuthStateChanged(auth, async (user) => {
     if (user) {
         console.log(user);
-        const userRef = doc(db, "Account", user.uid);
-        const userSnap = await getDoc(userRef);
-        const data = userSnap.data();
+        if(user.emailVerified == true){
+            const userRef = doc(db, "Account", user.uid);
+            const userSnap = await getDoc(userRef);
+            const data = userSnap.data();
 
-        imgSrc += (user.uid + "/");
+            imgSrc += (user.uid + "/");
 
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
 
-            //存圖片
-            if (imgFile) {
-                const imgRef = ref(storage, imgSrc);
-                uploadBytes(imgRef, imgFile);
-            }else{
-                imgSrc = "Product/NotFound.jpg";
-            }
-            
-            let checked = document.querySelectorAll('input[name="checkbox"]:checked');
-            let output = [];
-            checked.forEach((checkbox) => {
-                output.push(checkbox.value);
+                //存圖片
+                if (imgFile) {
+                    const imgRef = ref(storage, imgSrc);
+                    uploadBytes(imgRef, imgFile);
+                }else{
+                    imgSrc = "Product/NotFound.jpg";
+                }
+                
+                let checked = document.querySelectorAll('input[name="checkbox"]:checked');
+                let output = [];
+                checked.forEach((checkbox) => {
+                    output.push(checkbox.value);
+                });
+
+                //書籍資料
+                addDoc(colRef, {
+                    book: book.value,
+                    author: author.value,
+                    publish: publish.value,
+                    isbn: isbn.value,
+                    price: parseInt(price.value),
+                    category: [data.area, data.school, data.college, data.department, cate.value],
+                    // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
+                    info: info.value,
+                    sellerId: user.uid,
+                    buyerId: "",
+                    date: date,
+                    order: [], 
+                    ordering: "",
+                    setuptime: "",
+                    deadline: "",
+                    imgsrc: imgSrc,
+                    delivery: output
+                })
+                    .then(async () => {
+                        const totalRef = doc(db, "Account", "Account_Total");
+                        const totalSnap = await getDoc(totalRef);
+                        tcate = totalSnap.data().tcate;
+                        if (tcate.includes(cate.value) == false) {
+                            tcate.push(cate.value);
+                            await updateDoc(totalRef, {
+                                tcate: tcate
+                            });
+                        }
+
+                        alert("新增成功!")
+                        location.href = "./index.html";
+                    });
             });
 
-            //書籍資料
-            addDoc(colRef, {
-                book: book.value,
-                author: author.value,
-                publish: publish.value,
-                isbn: isbn.value,
-                price: parseInt(price.value),
-                category: [data.area, data.school, data.college, data.department, cate.value],
-                // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
-                info: info.value,
-                sellerId: user.uid,
-                buyerId: "",
-                date: date,
-                order: [], 
-                ordering: "",
-                setuptime: "",
-                deadline: "",
-                imgsrc: imgSrc,
-                delivery: output
-            })
-                .then(async () => {
-                    const totalRef = doc(db, "Account", "Account_Total");
-                    const totalSnap = await getDoc(totalRef);
-                    tcate = totalSnap.data().tcate;
-                    if (tcate.includes(cate.value) == false) {
-                        tcate.push(cate.value);
-                        await updateDoc(totalRef, {
-                            tcate: tcate
-                        });
-                    }
-
-                    alert("新增成功!")
-                    location.href = "./index.html";
-                });
-        });
+        //假如未驗證
+        }else{
+            alert("請先通過身分驗證！");
+            location.href = "./account.html";
+        }
 
     } else {
         alert("請先登入!");

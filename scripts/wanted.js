@@ -18,28 +18,36 @@ const colRef = collection(db, "Wanted");
 onAuthStateChanged(auth, (user) =>{
     if(user){
         console.log(user);
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            addDoc(colRef, {
-                book: book.value,
-                author: author.value,
-                publish: publish.value,
-                isbn: isbn.value,
-                cate: cate.value,
-                category: [],
-                info: info.value,
-                sellerId: "",
-                buyerId: user.uid,
-                date: date.toLocaleDateString(),
-                deadline: "",
-                delivery: ""
-            })
-            .then(() => {
-                alert("新增成功!");
-                location.href = "./index.html";
+        //已通過身分驗證
+        if(user.emailVerified == true){
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                addDoc(colRef, {
+                    book: book.value,
+                    author: author.value,
+                    publish: publish.value,
+                    isbn: isbn.value,
+                    cate: cate.value,
+                    category: [],
+                    info: info.value,
+                    sellerId: "",
+                    buyerId: user.uid,
+                    date: date.toLocaleDateString(),
+                    deadline: "",
+                    delivery: ""
+                })
+                .then(() => {
+                    alert("新增成功!");
+                    location.href = "./index.html";
+                });
             });
-        });
 
+        //假如未驗證
+        }else{
+            alert("請先通過身分驗證！");
+            location.href = "./account.html";
+        }
+        
     }else{
         alert("請先登入!");
         location.href = "./login.html";

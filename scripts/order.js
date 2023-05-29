@@ -51,20 +51,26 @@ function show(){
 
 onAuthStateChanged(auth, (user) =>{
     if(user){
-        console.log(user);
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            updateDoc(colRef, {
-                buyerId: user.uid,
-                order: [delivery.value, address.value, payment.value, others.value, true], 
-                ordering: "待賣家確認"
-            })
-            .then(() => {
-                alert("訂單已傳送給賣家!")
-                location.href = "./shop.html";
+        //已通過身分驗證
+        if(user.emailVerified == true){
+            btn.addEventListener("click", (e) => {
+                e.preventDefault();
+                updateDoc(colRef, {
+                    buyerId: user.uid,
+                    order: [delivery.value, address.value, payment.value, others.value, true], 
+                    ordering: "待賣家確認"
+                })
+                .then(() => {
+                    alert("訂單已傳送給賣家!")
+                    location.href = "./shop.html";
+                });
             });
-        });
 
+        //假如未驗證
+        }else{
+            alert("請先通過身分驗證！");
+            location.href = "./account.html";
+        }
     }else{
         alert("請先登入!");
         location.href = "./login.html";

@@ -9,69 +9,74 @@ const chatSelect = document.querySelector('.chat-select');
 onAuthStateChanged(auth, async (user)=>{
     const userId = user.uid;
     if (user) {
-        let chatRef, chatSnap;
-        let chat = [];
-        const myUrl = new URL(window.location.href);
+        //已通過身分驗證
+        if(user.emailVerified == true){
+            const myUrl = new URL(window.location.href);
 
-        //新增聊天室
-        if(myUrl.searchParams.has('bookId')){
-            const bookId = myUrl.searchParams.get('bookId');
+            //新增聊天室
+            if(myUrl.searchParams.has('bookId')){
+                const bookId = myUrl.searchParams.get('bookId');
 
-            const bookRef = doc(db, "Product", bookId);
-            const bookSnap = await getDoc(bookRef);
-            const sellerId = bookSnap.data().sellerId;
+                const bookRef = doc(db, "Product", bookId);
+                const bookSnap = await getDoc(bookRef);
+                const sellerId = bookSnap.data().sellerId;
 
-            const chatRef = doc(db, "Chatroom", userId + sellerId);
-            await setDoc(chatRef, {sellerId: sellerId, buyerId: userId}, {merge: true});
-            const chatSnap = await getDoc(chatRef);
-            const accountRef = doc(db, "Account", sellerId);
-            const accountSnap = await getDoc(accountRef);
-            changeChatRoom(chatSnap.id, accountSnap.data().name);
-        }   
-        
-        //左方聊天室-從資料庫抓取
-        const colRef = collection(db, "Chatroom");
-        const colQuery = query(colRef, or(where("sellerId", "==", userId), where("buyerId", "==", userId)));
-        const colSnap = await getDocs(colQuery);
-
-        //左方聊天室-渲染
-        colSnap.forEach(async (chatroom)=>{
-            let name;
-            if (chatroom.data().sellerId == userId) {
-                const accountRef = doc(db, "Account", chatroom.data().buyerId);
+                const chatRef = doc(db, "Chatroom", userId + sellerId);
+                await setDoc(chatRef, {sellerId: sellerId, buyerId: userId}, {merge: true});
+                const chatSnap = await getDoc(chatRef);
+                const accountRef = doc(db, "Account", sellerId);
                 const accountSnap = await getDoc(accountRef);
-                name = accountSnap.data().name;
-            } else {
-                const accountRef = doc(db, "Account", chatroom.data().sellerId);
-                const accountSnap = await getDoc(accountRef);
-                name = accountSnap.data().name;
-            }
+                changeChatRoom(chatSnap.id, accountSnap.data().name);
+            }   
+            
+            //左方聊天室-從資料庫抓取
+            const colRef = collection(db, "Chatroom");
+            const colQuery = query(colRef, or(where("sellerId", "==", userId), where("buyerId", "==", userId)));
+            const colSnap = await getDocs(colQuery);
+
+            //左方聊天室-渲染
+            colSnap.forEach(async (chatroom)=>{
+                let name;
+                if (chatroom.data().sellerId == userId) {
+                    const accountRef = doc(db, "Account", chatroom.data().buyerId);
+                    const accountSnap = await getDoc(accountRef);
+                    name = accountSnap.data().name;
+                } else {
+                    const accountRef = doc(db, "Account", chatroom.data().sellerId);
+                    const accountSnap = await getDoc(accountRef);
+                    name = accountSnap.data().name;
+                }
 
 
-            chatSelect.innerHTML += 
-                "<a href='' id='"+ chatroom.id + "' class='chat-select-btn' name='"+ name +"'>"+
-                    "<div class='d-flex justify-content-between  mb-2 pt-2'>"+
-                        "<div style='height: 30%; width: 20%; margin-bottom: 6%;'>"+
-                            "<img src='https://cdn-icons-png.flaticon.com/512/1946/1946429.png'"+
-                                "style='width:100%; height: 100%;'>"+
+                chatSelect.innerHTML += 
+                    "<a href='' id='"+ chatroom.id + "' class='chat-select-btn' name='"+ name +"'>"+
+                        "<div class='d-flex justify-content-between  mb-2 pt-2'>"+
+                            "<div style='height: 30%; width: 20%; margin-bottom: 6%;'>"+
+                                "<img src='https://cdn-icons-png.flaticon.com/512/1946/1946429.png'"+
+                                    "style='width:100%; height: 100%;'>"+
+                            "</div>"+
+
+                            "<div style='height: 30%; width: 70%; margin-top: 5%'>"+
+                                "<h6>"+ name +"</h6>"+
+                            "</div>"+
                         "</div>"+
+                    "</a>"+
+                    "<hr class='mt-0'>";
 
-                        "<div style='height: 30%; width: 70%; margin-top: 5%'>"+
-                            "<h6>"+ name +"</h6>"+
-                        "</div>"+
-                    "</div>"+
-                "</a>"+
-                "<hr class='mt-0'>";
+                const chatSelectBtn = document.querySelectorAll('.chat-select-btn');
+                chatSelectBtn.forEach((btn)=>{
+                    btn.addEventListener('click',(e)=>{
+                        e.preventDefault();
+                        changeChatRoom(btn.id, btn.name);
+                    });
+                }); 
+            });
 
-            const chatSelectBtn = document.querySelectorAll('.chat-select-btn');
-            chatSelectBtn.forEach((btn)=>{
-                btn.addEventListener('click',(e)=>{
-                    e.preventDefault();
-                    changeChatRoom(btn.id, btn.name);
-                });
-            }); 
-        });
-
+        //假如未驗證
+        }else{
+            alert("請先通過身分驗證！");
+            location.href = "./account.html";
+        }
 
 
     }else{
