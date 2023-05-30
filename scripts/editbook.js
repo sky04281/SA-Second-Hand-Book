@@ -14,6 +14,12 @@ let bookRef = doc(db, "Product", bookId);
 let bookSnap = await getDoc(bookRef);
 console.log(bookSnap.data());
 
+const imgRef = ref(storage, bookSnap.data().imgsrc);
+getDownloadURL(imgRef).then((url)=>{
+    var img = document.getElementById('book-img');
+    img.setAttribute('src', url);
+});
+
 /*
 let date = new Date();
 let imgSrc = "Product/";
@@ -27,42 +33,27 @@ function show(){
     editbook.innerHTML = editbook.innerHTML +
     "<div class='col-lg-7 mb-5'>" +
     "<div class='contact-form'>" +
-        "<div id='success'></div>" +
             "<form class='editbook' name='sentMessage' id='contactForm' novalidate='novalidate'>" +
-                "<div class='col-md-12 form-group'>" +
-                    "<label><b>書名</b></label>" +
+                "<div class='form-group'>" +
                     "<input type='text' class='form-control' id='book' placeholder='書名' value="+ bookSnap.data().book +">" +
-                    "<p class='help-block text-danger'></p>" +
                 "</div>" +
-                "<div class='col-md-6 form-group'>" +
-                    "<label><b>作者</b></label>" +
+                "<div class='form-group'>" +
                     "<input type='text' class='form-control' id='author' placeholder='作者' value="+ bookSnap.data().author +">" +
-                    "<p class='help-block text-danger'></p>" +
                 "</div>" +
-                "<div class='col-md-6 form-group'>" +
-                    "<label><b>出版社</b></label>" +
+                "<div class='form-group'>" +
                     "<input type='text' class='form-control' id='publish' placeholder='出版社' value="+ bookSnap.data().publish +">" +
-                    "<p class='help-block text-danger'></p>" +
                 "</div>" +
-                "<div class='col-md-6 form-group'>" +
-                    "<label><b>國際書號</b></label>" +
+                "<div class='form-group'>" +
                     "<input type='text' class='form-control' id='isbn' placeholder='國際書號' value="+ bookSnap.data().isbn +">" +
-                    "<p class='help-block text-danger'></p>" +
                 "</div>" +
-                "<div class='col-md-6 form-group'>" +
-                    "<label><b>價格</b></label>" +
+                "<div class='form-group'>" +
                     "<input type='text' class='form-control' id='price' placeholder='價格' value="+ bookSnap.data().price +">" +
-                    "<p class='help-block text-danger'></p>" +
                 "</div>" +
-                "<div class='col-md-12 form-group'>" +
-                    "<label><b>類別</b></label>" +
+                "<div class='form-group'>" +
                     "<input type='text' class='form-control' id='cate' placeholder='類別' value='這邊再改'>" +
-                    "<p class='help-block text-danger'></p>" +
                 "</div>" +
-                "<div class='col-md-12 form-group'>" +
-                    "<label><b>詳細資訊</b></label>" +
+                "<div class='form-group'>" +
                     "<input class='form-control' rows='6' id='info' placeholder='詳細資訊' value="+ bookSnap.data().info +">" +
-                    "<p class='help-block text-danger'></p>" +
                 "</div>" +
                 "<div>" +
                     "<button class='btn btn-primary py-2 px-4' type='submit' id='btn-editbook'>完成編輯</button>" +
@@ -72,10 +63,9 @@ function show(){
     "</div>" +
     "<div class='col-lg-5 mb-5'>" +
         "<div id='upload' style='background-color:white; padding:40% 15%; margin-right:10%;  margin-left:5%; border:0.5px slategray dashed;'>" +
-            "<img id='img-img' src='' alt='' style='height: 100%; width: 100%; display: none;'>" +
+            
             "<div style='background-color:white; width:50%; height:100%; margin:auto; text-align: center;'>" +
-                "<button id='img-btn' class='btn btn-primary py-2 px-4' type='submit'>點擊/拖曳<br>更改圖片</button>" +
-                "<input id='img-input' type='file' accept='image/*' style='display: none;' placeholder='1'>" +
+            "<img id='book-img' src='' alt='' style='height: 100%; width: 100%;'>" +
             "</div>" +
         "</div>" + 
     "</div>"

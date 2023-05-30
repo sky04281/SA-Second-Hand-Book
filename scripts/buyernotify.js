@@ -116,6 +116,7 @@ onAuthStateChanged(auth, async (user) => {
                 d.preventDefault();
                 var docRef = doc(db, 'Product', c.id);
                 updateDoc(docRef, {
+                    order:["", "", "", "", ""],
                     ordering: "取消訂單"
                 })
                 .then(() => {
