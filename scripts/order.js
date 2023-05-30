@@ -9,10 +9,12 @@ const payment = document.getElementById("payment");
 const others = document.getElementById("others");
 const btn = document.getElementById("btn-order");
 var date = new Date(); 
+var deadline = new Date();
 
 //接值
 const bookinform = document.querySelector('.bookinform');
-const selectdel = document.querySelector('.custom-select');
+const selectdel = document.querySelector('.delivery');
+const selectpay = document.querySelector('.payment');
 
 let myUrl = new URL(window.location.href);
 let bookId = myUrl.searchParams.get('bookId');
@@ -47,6 +49,12 @@ function show(){
             "<option value='" + bookSnap.data().delivery[1] + "'>" + bookSnap.data().delivery[1] + "</option>" +
             "<option value='" + bookSnap.data().delivery[2] + "'>" + bookSnap.data().delivery[2] + "</option>" +
             "<option value='" + bookSnap.data().delivery[3] + "'>" + bookSnap.data().delivery[3] + "</option>" 
+
+    selectpay.innerHTML = selectpay.innerHTML +
+            "<option value=''>付款方式</option>" +
+            "<option value='" + bookSnap.data().pay[0] + "'>" + bookSnap.data().pay[0] + "</option>" +
+            "<option value='" + bookSnap.data().pay[1] + "'>" + bookSnap.data().pay[1] + "</option>" +
+            "<option value='" + bookSnap.data().pay[2] + "'>" + bookSnap.data().pay[2] + "</option>"
 }
 
 onAuthStateChanged(auth, (user) =>{
@@ -58,7 +66,9 @@ onAuthStateChanged(auth, (user) =>{
                 updateDoc(colRef, {
                     buyerId: user.uid,
                     order: [delivery.value, address.value, payment.value, others.value, true], 
-                    ordering: "待賣家確認"
+                    ordering: "待賣家確認",
+                    setuptime: date,
+                    deadline: deadline.setDate(date.getDate()+7)
                 })
                 .then(() => {
                     alert("訂單已傳送給賣家!")
