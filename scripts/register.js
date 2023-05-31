@@ -11,16 +11,12 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const btn = document.getElementById("btn-register");
 let uid = "";
-let tschool = [];
-let tcollege = [];
-let tdepartment = [];
 
 //抓取已有的學校 學院 科系
 const totalRef = doc(db, "Account", "Account_Total");
 const totalSnap = await getDoc(totalRef);
-tschool = totalSnap.data().tschool;
-tcollege = totalSnap.data().tcollege;
-tdepartment = totalSnap.data().tdepartment;
+let totalArea = totalSnap.data().totalArea;
+console.log(totalArea);
 
 
 btn.addEventListener("click", (e) => {
@@ -42,28 +38,71 @@ btn.addEventListener("click", (e) => {
                 school: school.value,
                 college: college.value,
                 department: department.value,
-                score: 0
+                score: 7
             }).then(async () => {
-                
-                if (tschool.includes(school.value) == false) {
-                    tschool.push(school.value);
-                }
 
-                if (tcollege.includes(college.value) == false) {
-                    tcollege.push(college.value);
-                }
-
-                if (tdepartment.includes(department.value) == false) {
-                    tdepartment.push(department.value);
-                }
-
-                console.log(tschool, tcollege,tdepartment)
-                await updateDoc(totalRef, {
-                    tschool: tschool,
-                    tcollege: tcollege,
-                    tdepartment: tdepartment
+                //分類選單用
+                totalArea.forEach((a)=>{
+                    if (a.area == area.value) {
+                        let totalSchool = a.totalSchool;
+                        let hasSchool = false;
+                        totalSchool.forEach((s)=>{
+                            //假如學校(School)存在
+                            if (s.school == school.value) {
+                                hasSchool = true;
+                                let totalCollege = s.totalCollege;
+                                let hasCollege = false;
+                                //假如學院(College)存在
+                                totalCollege.forEach((c)=>{
+                                    if (c.college == college.value) {
+                                        hasCollege = true;
+                                        let totalDepartment = c.totalDepartment;
+                                        let hasDepartment = false;
+                                        //假如科系(Department)存在
+                                        totalDepartment.forEach((d)=>{
+                                            if (d.department == department.value) {
+                                                hasDepartment = true;
+                                            }
+                                        });
+                                        //假如科系(Department)不存在
+                                        if (hasDepartment == false) {
+                                            totalDepartment.push({
+                                                department: department.value,
+                                                totalCate: []
+                                            });
+                                        }
+                                    }
+                                });
+                                //假如學院(College)不存在
+                                if (hasCollege == false) {
+                                    totalCollege.push({
+                                        college: college.value,
+                                        totalDepartment: [{
+                                            department: department.value,
+                                            totalCate: []
+                                        }]
+                                    });
+                                }
+                            }
+                        });
+                        //假如學校(School)不存在
+                        if (hasSchool == false) {
+                            totalSchool.push({
+                                school: school.value,
+                                totalCollege: [{
+                                    college: college.value,
+                                    totalDepartment: [{
+                                        department: department.value,
+                                        totalCate: []}]
+                                }]
+                            });
+                        }
+                    }
                 });
-                alert("註冊成功！ 已發送驗證信！\n" + "請至 " + email + " 查看");
+                await updateDoc(totalRef, {
+                    totalArea: totalArea
+                });
+                alert("註冊成功！ 已發送驗證信！\n" + "請至 " + email.value + " 查看");
                 location.href = "./login.html";
             });
 
@@ -74,6 +113,4 @@ btn.addEventListener("click", (e) => {
             alert(errorMessage);
         });
 });
-
-
 
