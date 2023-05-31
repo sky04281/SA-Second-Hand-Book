@@ -55,50 +55,50 @@ dropdown.innerHTML =
 }
 
 //分類選單-功能
-{
-const totalRef = doc(db, "Account", "Account_Total");
-const totalSnap = await getDoc(totalRef);
-const tschool = totalSnap.data().tschool; 
-const tcollege = totalSnap.data().tcollege; 
-const tdepartment = totalSnap.data().tdepartment;
-const tcate = totalSnap.data().tcate;
+// {
+// const totalRef = doc(db, "Account", "Account_Total");
+// const totalSnap = await getDoc(totalRef);
+// const tschool = totalSnap.data().tschool; 
+// const tcollege = totalSnap.data().tcollege; 
+// const tdepartment = totalSnap.data().tdepartment;
+// const tcate = totalSnap.data().tcate;
 
-//抓取已有的學校、學院、科系，並且渲染出來
-tschool.forEach((s) =>{
-    document.querySelector('.dropdown-school').innerHTML += 
-        ("<a href='' class='dropdown-item'>" + s + "</a>");
-});
-tcollege.forEach((c) =>{
-    document.querySelector('.dropdown-college').innerHTML += 
-        ("<a href='' class='dropdown-item'>" + c + "</a>");
-});
-tdepartment.forEach((d) =>{
-    document.querySelector('.dropdown-department').innerHTML += 
-        ("<a href='' class='dropdown-item'>" + d + "</a>");
-});
-tcate.forEach((c) =>{
-    document.querySelector('.dropdown-cate').innerHTML +=
-        ("<a href='' class='dropdown-item'>" + c + "</a>");
-});
+// //抓取已有的學校、學院、科系，並且渲染出來
+// tschool.forEach((s) =>{
+//     document.querySelector('.dropdown-school').innerHTML += 
+//         ("<a href='' class='dropdown-item'>" + s + "</a>");
+// });
+// tcollege.forEach((c) =>{
+//     document.querySelector('.dropdown-college').innerHTML += 
+//         ("<a href='' class='dropdown-item'>" + c + "</a>");
+// });
+// tdepartment.forEach((d) =>{
+//     document.querySelector('.dropdown-department').innerHTML += 
+//         ("<a href='' class='dropdown-item'>" + d + "</a>");
+// });
+// tcate.forEach((c) =>{
+//     document.querySelector('.dropdown-cate').innerHTML +=
+//         ("<a href='' class='dropdown-item'>" + c + "</a>");
+// });
 
-//點擊分類按鈕
-const navLink = document.querySelectorAll('.nav-link');
-navLink.forEach((link) => {
-    link.addEventListener("click", () =>{
-        cateKey = link.textContent;
-        console.log(cateKey);
-    });
-});    
-const dropdownItem = document.querySelectorAll('.dropdown-item');
-dropdownItem.forEach((item) => {
-    item.addEventListener("click", (e) => {
-        e.preventDefault();
-        cateValue = item.textContent;
-        console.log(cateValue);
-        myQuery();
-    });
-});
-}
+// //點擊分類按鈕
+// const navLink = document.querySelectorAll('.nav-link');
+// navLink.forEach((link) => {
+//     link.addEventListener("click", () =>{
+//         cateKey = link.textContent;
+//         console.log(cateKey);
+//     });
+// });    
+// const dropdownItem = document.querySelectorAll('.dropdown-item');
+// dropdownItem.forEach((item) => {
+//     item.addEventListener("click", (e) => {
+//         e.preventDefault();
+//         cateValue = item.textContent;
+//         console.log(cateValue);
+//         myQuery();
+//     });
+// });
+// }
 
 //搜尋欄
 {
