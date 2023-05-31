@@ -40,10 +40,18 @@ onAuthStateChanged(auth, async (user) => {
                     imgSrc = "Product/NotFound.jpg";
                 }
                 
-                let checked = document.querySelectorAll('input[name="checkbox"]:checked');
-                let output = [];
-                checked.forEach((checkbox) => {
-                    output.push(checkbox.value);
+                //寄送資料
+                let delchecked = document.querySelectorAll('input[name="checkbox"]:checked');
+                let deloutput = [];
+                delchecked.forEach((checkbox) => {
+                    deloutput.push(checkbox.value);
+                });
+
+                //寄送資料
+                let paychecked = document.querySelectorAll('input[name="checkbox1"]:checked');
+                let payoutput = [];
+                paychecked.forEach((checkbox) => {
+                    payoutput.push(checkbox.value);
                 });
 
                 //書籍資料
@@ -64,7 +72,8 @@ onAuthStateChanged(auth, async (user) => {
                     setuptime: "",
                     deadline: "",
                     imgsrc: imgSrc,
-                    delivery: output
+                    delivery: deloutput,
+                    pay: payoutput
                 })
                     .then(async () => {
                         const totalRef = doc(db, "Account", "Account_Total");
