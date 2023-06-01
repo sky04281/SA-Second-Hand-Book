@@ -4,6 +4,7 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-
 
 const myNav = document.querySelector('.myNav');
 const myHeader = document.querySelector('.myHeader');
+const myFooter = document.querySelector('.myFooter');
 
 // 導覽列
 if(myNav != null){
@@ -88,3 +89,32 @@ myHeader.innerHTML =
         "</div>" +
     "</div>" ;
 
+myFooter.innerHTML = 
+        "<div class='row px-xl-5 pt-5'>" +
+            "<div class='col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5'>" +
+                "<a href='' class='text-decoration-none'>" +
+                    "<h1 class='mb-4 display-5 font-weight-semi-bold'><i class='fas fa-bookmark text-primary'></i> 到底書在哪==</h1>" +
+                "</a>" +
+                "<p>現今大學生在買賣二手書方面會遭遇更種困境，「到底書在哪==」製作團隊期望提供使用者一個全新的平台，創造更便捷的環境！</p>" +
+            "</div>" +
+            "<div class='col-lg-4 col-md-12'>" +
+                "<p class='mb-2' style='font-size: 20px'>聯繫我們</p>" +
+                "<p class='mb-2'><i class='fa fa-map-marker-alt text-primary mr-3'></i>242新北市新莊區中正路510號</p>" +
+                "<p class='mb-2'><i class='fa fa-envelope text-primary mr-3'></i>bighandsomebrother@gmail.com</p>" +
+                "<p class='mb-2'><i class='fa fa-phone-alt text-primary mr-3'></i>+886 0123456789</p>" +
+            "</div>" +
+            "<div class='col-lg-4 col-md-12'>" +
+                "<div class='row'>" +
+                    "<div class='col-md-4 mb-5' style='margin-left: 5%'>" +
+                        "<div class='d-flex flex-column justify-content-start'>" +
+                            "<a class='text-dark mb-2' href='index.html'><i class='fa fa-angle-right mr-2'></i>首頁</a>" +
+                            "<a class='text-dark mb-2' href='shop.html'><i class='fa fa-angle-right mr-2'></i>全部商品</a>" +
+                            "<a class='text-dark mb-2' href='detail.html'><i class='fa fa-angle-right mr-2'></i>來聊聊</a>" +
+                            "<a class='text-dark mb-2' href='addbook.html'><i class='fa fa-angle-right mr-2'></i>要賣書</a>" +
+                            "<a class='text-dark mb-2' href='wanted.html'><i class='fa fa-angle-right mr-2'></i>給我書</a>" +
+                        "</div>" +
+                    "</div>" +
+                    
+                "</div>" +
+            "</div>" +
+        "</div>" ;
