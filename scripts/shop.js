@@ -15,6 +15,8 @@ let cateValue = "";
 let queryArr = [];
 let q, querySnapshot;
 
+console.log(sessionStorage);
+
 //分類選單-渲染
 {
 dropdown.innerHTML = 
@@ -137,11 +139,13 @@ function show(){
                     "</div>" +
                 "</div>" +
             "</div>" +
-        "</div>";
+        "</div>"+
+        "<div class='view-test row'></div>";
     
+    const viewTest = document.querySelector('.view-test');
     //書籍
     queryArr.forEach((docs) => {
-        view.innerHTML = view.innerHTML +
+        viewTest.innerHTML = viewTest.innerHTML +
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
                     "<div class='card-header product-img position-relative overflow-hidden bg-transparent border p-0'>"+

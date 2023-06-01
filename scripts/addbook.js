@@ -14,7 +14,6 @@ const info = document.getElementById("info");
 const btn = document.getElementById("btn-addbook");
 let date = new Date();
 let imgSrc = "Product/";
-let tcate = [];
 
 const colRef = collection(db, "Product");
 
@@ -78,13 +77,40 @@ onAuthStateChanged(auth, async (user) => {
                     .then(async () => {
                         const totalRef = doc(db, "Account", "Account_Total");
                         const totalSnap = await getDoc(totalRef);
-                        tcate = totalSnap.data().tcate;
-                        if (tcate.includes(cate.value) == false) {
-                            tcate.push(cate.value);
-                            await updateDoc(totalRef, {
-                                tcate: tcate
-                            });
-                        }
+                        let totalArea = totalSnap.data().totalArea;
+                        
+                        //新增類別到該科系
+                        totalArea.forEach((a)=>{
+                            //找到相同的地區
+                            if(a.area == data.area){
+                                let totalSchool = a.totalSchool;
+                                totalSchool.forEach((s)=>{
+                                    //找到相同的學校
+                                    if(s.school == data.school){
+                                        let totalCollege = s.totalCollege;
+                                        totalCollege.forEach((c)=>{
+                                            //找到相同的學院
+                                            if(c.college == data.college){
+                                                let totalDepartment = c.totalDepartment;
+                                                totalDepartment.forEach(async (d)=>{
+                                                    //找到相同的科系
+                                                    if (d.department == data.department) {
+                                                        let totalCate = d.totalCate;
+                                                        //假如類別不存在 就加入到該科系底下
+                                                        if(totalCate.includes(cate.value) == false){
+                                                            totalCate.push(cate.value);
+                                                            await updateDoc(totalRef, {
+                                                                totalArea: totalArea
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        });
 
                         alert("新增成功!")
                         location.href = "./index.html";
