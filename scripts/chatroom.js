@@ -7,8 +7,9 @@ const chatText = document.querySelector('.chat-text');
 const chatSelect = document.querySelector('.chat-select');
 
 onAuthStateChanged(auth, async (user)=>{
-    const userId = user.uid;
+    
     if (user) {
+        const userId = user.uid;
         //已通過身分驗證
         if(user.emailVerified == true){
             const myUrl = new URL(window.location.href);
