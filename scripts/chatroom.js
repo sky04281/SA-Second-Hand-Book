@@ -86,12 +86,34 @@ onAuthStateChanged(auth, async (user)=>{
     }
     
     async function changeChatRoom(chatRoomId, chatName){
+
+        //快捷鍵
+        const fastbtn1 = document.getElementById('fastbtn1');
+        const btnValue1 = document.getElementById('fastbtn1').innerText;
+        const fastbtn2 = document.getElementById('fastbtn2');
+        const btnValue2 = document.getElementById('fastbtn2').innerText;
+        const fastbtn3 = document.getElementById('fastbtn3');
+        const btnValue3 = document.getElementById('fastbtn3').innerText;
+
+        document.addEventListener('click', function(e) {
+            let obj = e.target; 
+            if(obj.id == 'fastbtn1') { 
+                chatInput.value += btnValue1 + " ";
+            } else if (obj.id == 'fastbtn2') {
+                chatInput.value += btnValue2 + " "; 
+            } else if(obj.id == 'fastbtn3') {
+                chatInput.value += btnValue3 + " ";
+            }
+            });
+
+
+
         const chatUserName = document.querySelector('.chat-user-name');
         chatUserName.textContent = chatName;
         const chatRef = doc(db, "Chatroom", chatRoomId);
         let chatSnap = await getDoc(chatRef);
 
-        
+
         chatInput.addEventListener("keypress", async (e)=>{
             if (e.key == "Enter") {
                 chatSnap = await getDoc(chatRef);
