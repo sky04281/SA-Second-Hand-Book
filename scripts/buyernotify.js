@@ -20,6 +20,8 @@ onAuthStateChanged(auth, async (user) => {
         const querySnapshot_n = await getDocs(n);
         const view = document.getElementById("buyernotify");
 
+        
+
         // 把書本列出來
         querySnapshot_q.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
@@ -77,7 +79,9 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>" + 
-                    "<button class='btn btn-sm btn-comment' id='" + docs.id +"' href='comment.html'><i class='fas fa-arrow-right'>前往評價</i></button>" + 
+                    "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().buyerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
+                    "<button class='btn btn-sm btn-badcomment' id='" + docs.data().buyerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
+                    "<a class='btn btn-sm btn-inform' href='inform.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
                 "</td>"+
             "</tr><br>";
         });
@@ -101,6 +105,7 @@ onAuthStateChanged(auth, async (user) => {
             b.addEventListener('click', (e) => {
                 e.preventDefault();
                 var docRef = doc(db, 'Product', b.id);
+                console.log(docRef);
                 updateDoc(docRef, {
                     ordering: "買家已完成訂單"
                 })
@@ -125,6 +130,22 @@ onAuthStateChanged(auth, async (user) => {
                 });
             });
         });
+
+        var btn3=document.querySelectorAll('.btn-goodcomment');
+        btn3.forEach((e) => {
+            e.addEventListener('click', (f)=>{
+                f.preventDefault();
+                var docRef=doc(db,'Account',e.id);
+                //console.log(docRef);
+                //console.log(docRef.score);
+                updateDoc(docRef,{
+                    score:score.value
+                 })
+                 .then(()=>{
+                     alert("評價成功!");
+                 })
+            })
+        })
 
 
     }else{
