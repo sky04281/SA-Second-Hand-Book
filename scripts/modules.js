@@ -5,6 +5,7 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-
 const myNav = document.querySelector('.myNav');
 const myHeader = document.querySelector('.myHeader');
 const myFooter = document.querySelector('.myFooter');
+console.log(localStorage);
 
 // 導覽列
 if(myNav != null){
@@ -40,6 +41,7 @@ if(myNav != null){
                 e.preventDefault();
                 signOut(auth)
                 .then(() => {
+                    localStorage.removeItem('userId');
                     alert("登出成功! 即將返回首頁");
                     location.href = "./index.html";
                 });
@@ -62,12 +64,12 @@ myHeader.innerHTML =
             "</a>" +
         "</div>" +
         "<div class='col-lg-5 col-6 text-left'>" +
-            "<form class='from-search'>" +
+            "<form class='search-form'>" +
                 "<div class='input-group'>" +
-                    "<input type='text' class='input-saerch form-control' placeholder='尋找書籍' id='input-search'>" +
+                    "<input type='text' class='search-input form-control' placeholder='尋找書籍' id='search-input'>" +
                     "<div class='input-group-append'>" +
                         "<span class='input-group-text bg-transparent text-primary'>" +
-                            "<i class='btn-search fa fa-search'></i>" +
+                            "<i class='search-btn fa fa-search'></i>" +
                         "</span>" +
                     "</div>" +
                 "</div>" +
