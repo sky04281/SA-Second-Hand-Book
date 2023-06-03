@@ -221,6 +221,7 @@ sup {
   justify-content: flex-end;
 
   .text {
+    margin-top: 2%;
     margin-right: 2%;
     margin-left: 8%;
     order: -1;
