@@ -16,44 +16,16 @@ let selectedSchool = "";
 let selectedCollege = "";
 let selectedDepartment = "";
 let selectedCate = "";
-let queryArr = [];
+let currentArr = [];
 let q, querySnapshot;
 
 
 
 //分類選單-渲染
-{
 const totalRef = doc(db, "Account", "Account_Total");
 const totalSnap = await getDoc(totalRef);
 const totalArea = totalSnap.data().totalArea;
-totalArea.forEach((a)=>{
-    dropdown.innerHTML +=
-        "<div class='nav-item dropdown'>"+
-            "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='area'>"+ a.area + 
-            "</a>"+
-        "</div>";
-});
-        
-    dropdown.innerHTML +=
-        "<div class='nav-item dropdown'>"+
-            "<a href='#' class='nav-link' data-toggle='dropdown' name='cate'>類別 <i"+
-                "class='fa fa-angle-down float-right mt-1'></i></a>"+
-            "<div class='dropdown-cate dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0'>"+
-            "</div>"+
-        "</div>";
-}
-
-//分類選單-功能
-const dropdownSelects = document.querySelectorAll('.dropdown-select');
-dropdownSelects.forEach((select)=>{
-    select.addEventListener('click',(e)=>{
-        e.preventDefault();
-        if(selectedSchool == ""){
-            selectedSchool = select.textContent;
-
-        }
-    });
-});
+showDropdown(totalArea, "全部地區", "reset");
 
 
 //搜尋欄
@@ -69,36 +41,39 @@ form.addEventListener("submit", async (e)=>{
 });
 }
 
+//排序按鈕
+{
+viewSort.innerHTML = 
+"<div class='col-12 pb-1'>" +
+    "<div class='d-flex align-items-center justify-content-between mb-4'>" +
+        "<form>" +
+            "<a href='shop.html'>全部商品</a>" + 
+        "</form>" +
+        "<div class='dropdown ml-4'>" +
+            "<button class='btn border dropdown-toggle' type='button' id='triggerId'"  +
+                "data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
+                        "排序" +
+            "</button>" +
+        "<div class='dropdown-menu dropdown-menu-right' aria-labelledby='triggerId'>" +
+                // "<a class='dropdown-item' href='#'>上架日期由近至遠</a>" +
+                // "<a class='dropdown-item' href='#'>上架日期由遠至近</a>" +
+                "<a class='sort-price dropdown-item' href='#' id='-1'>價格由高至低</a>" +
+                "<a class='sort-price dropdown-item' href='#' id='1'> 價格由低至高</a>" +
+            "</div>" +
+        "</div>" +
+    "</div>" +
+"</div>";
+}
+
 myQuery();
 
 //書籍渲染
-function show(){
-    //排序按鈕
-    viewSort.innerHTML = 
-        "<div class='col-12 pb-1'>" +
-            "<div class='d-flex align-items-center justify-content-between mb-4'>" +
-                "<form>" +
-                    "<a href='shop.html'>全部商品</a>" + 
-                "</form>" +
-                "<div class='dropdown ml-4'>" +
-                    "<button class='btn border dropdown-toggle' type='button' id='triggerId'"  +
-                        "data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>" +
-                                "排序" +
-                    "</button>" +
-                "<div class='dropdown-menu dropdown-menu-right' aria-labelledby='triggerId'>" +
-                        // "<a class='dropdown-item' href='#'>上架日期由近至遠</a>" +
-                        // "<a class='dropdown-item' href='#'>上架日期由遠至近</a>" +
-                        "<a class='sort-price dropdown-item' href='#' id='-1'>價格由高至低</a>" +
-                        "<a class='sort-price dropdown-item' href='#' id='1'> 價格由低至高</a>" +
-                    "</div>" +
-                "</div>" +
-            "</div>" +
-        "</div>";
-        
-    
+//arrToShow: 裝著書本的陣列
+function show(arrToShow = []){
     
     //書籍
-    queryArr.forEach((docs) => {
+    viewBook.innerHTML = "";
+    arrToShow.forEach((docs) => {
         viewBook.innerHTML = viewBook.innerHTML +
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
@@ -113,7 +88,8 @@ function show(){
                     "</div>"+
                 "</div>"+
             "</div>";
-
+        
+        //書籍的圖片
         const imgRef = ref(storage, docs.data.imgsrc);
         getDownloadURL(imgRef).then((url) => {
             var img = document.getElementById(docs.id);
@@ -121,80 +97,152 @@ function show(){
         });
     });
 
-    //分頁按鈕
-    viewBook.innerHTML = viewBook.innerHTML +
-    "<div class='col-12 pb-1'>"+
-        "<nav aria-label='Page navigation'>"+
-            "<ul class='pagination justify-content-center mb-3'>"+
-                "<li class='page-item disabled'>"+
-                    "<a class='page-link' href='#' aria-label='Previous'>"+
-                        "<span aria-hidden='true'>&laquo;</span>"+
-                        "<span class='sr-only'>Previous</span>"+
-                    "</a>"+
-                "</li>"+
-                "<li class='page-item active'><a class='page-link' href='#'>1</a></li>"+
-                "<li class='page-item'><a class='page-link' href='#'>2</a></li>"+
-                "<li class='page-item'><a class='page-link' href='#'>3</a></li>"+
-                "<li class='page-item'>"+
-                    "<a class='page-link' href='#' aria-label='Next'>"+
-                        "<span aria-hidden='true'>&raquo;</span>"+
-                        "<span class='sr-only'>Next</span>"+
-                    "</a>"+
-                "</li>"+
-            "</ul>"+
-        "</nav>"+
-    "</div>";
-
     search.value = "";
 
     const sortPrice = document.querySelectorAll('.sort-price');
     sortPrice.forEach((sp)=>{
-        sp.addEventListener('click', (e)=>{
-            e.preventDefault();
-            arrSort(queryArr, "price", parseInt(sp.id));
-            show();
+    sp.addEventListener('click', (e)=>{
+        e.preventDefault();
+        arrSort(arrToShow, "price", parseInt(sp.id));
+        show(arrToShow);
         });
     });
+
+    //分頁按鈕
+    // viewBook.innerHTML = viewBook.innerHTML +
+    // "<div class='col-12 pb-1'>"+
+    //     "<nav aria-label='Page navigation'>"+
+    //         "<ul class='pagination justify-content-center mb-3'>"+
+    //             "<li class='page-item disabled'>"+
+    //                 "<a class='page-link' href='#' aria-label='Previous'>"+
+    //                     "<span aria-hidden='true'>&laquo;</span>"+
+    //                     "<span class='sr-only'>Previous</span>"+
+    //                 "</a>"+
+    //             "</li>"+
+    //             "<li class='page-item active'><a class='page-link' href='#'>1</a></li>"+
+    //             "<li class='page-item'><a class='page-link' href='#'>2</a></li>"+
+    //             "<li class='page-item'><a class='page-link' href='#'>3</a></li>"+
+    //             "<li class='page-item'>"+
+    //                 "<a class='page-link' href='#' aria-label='Next'>"+
+    //                     "<span aria-hidden='true'>&raquo;</span>"+
+    //                     "<span class='sr-only'>Next</span>"+
+    //                 "</a>"+
+    //             "</li>"+
+    //         "</ul>"+
+    //     "</nav>"+
+    // "</div>";
 }
-
-
 
 //查詢功能
 async function myQuery(){
 
+    //有輸入書名
     if (search.value == "") {
         querySnapshot = await getDocs(booksRef);
     }
+    //沒輸入書名
     else{
         q = query(booksRef, orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
         querySnapshot = await getDocs(q);
     }
 
-    //放到自訂的陣列裡處理排序
-    queryArr = [];
+    //放到自訂的陣列裡處理
+    let queryArr = [];
     querySnapshot.forEach((docs) => {
-        if (localStorage.getItem('userId')){
-            if (docs.data().sellerId != localStorage.getItem('userId')) {
+        const category = docs.data().category;
+        const area = category[0];
+        const school = category[1];
+        const college = category[2];
+        const department = category[3];
+        
+        //假如有登入
+        if(localStorage.getItem("userId")){
+            //找到 sellerId 不等於 使用者Id 的書
+            if (docs.data().sellerId != localStorage.getItem("userId")) {
+                //判斷分類選取的情況
+                if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
+                    if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
+                        queryArr.push({
+                            id: docs.id,
+                            data: docs.data()
+                        });
+                    }
+                }else if((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "")) {
+                    if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege)){
+                        queryArr.push({
+                            id: docs.id,
+                            data: docs.data()
+                        });
+                    }
+                }else if((selectedArea != "") & (selectedSchool != "")) {
+                    if((area == selectedArea) & (school == selectedSchool)){
+                        queryArr.push({
+                            id: docs.id,
+                            data: docs.data()
+                        });
+                    }
+                }else if((selectedArea != "")) {
+                    if((area == selectedArea)){
+                        queryArr.push({
+                            id: docs.id,
+                            data: docs.data()
+                        });
+                    }
+                }else{
+                    queryArr.push({
+                        id: docs.id,
+                        data: docs.data()
+                    });
+                }
+            }   
+        }
+        //假如沒登入
+        else{
+            if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
+                if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
+                    queryArr.push({
+                        id: docs.id,
+                        data: docs.data()
+                    });
+                }
+            }else if((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "")) {
+                if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege)){
+                    queryArr.push({
+                        id: docs.id,
+                        data: docs.data()
+                    });
+                }
+            }else if((selectedArea != "") & (selectedSchool != "")) {
+                if((area == selectedArea) & (school == selectedSchool)){
+                    queryArr.push({
+                        id: docs.id,
+                        data: docs.data()
+                    });
+                }
+            }else if((selectedArea != "")) {
+                if((area == selectedArea)){
+                    queryArr.push({
+                        id: docs.id,
+                        data: docs.data()
+                    });
+                }
+            }else{
                 queryArr.push({
                     id: docs.id,
                     data: docs.data()
                 });
             }
-        }else{
-            queryArr.push({
-                id: docs.id,
-                data: docs.data()
-            });
         }
     });
 
     //預設價格小到大
     arrSort(queryArr, "price");
-    show();
+    show(queryArr);
     search.value = "";
 }
 
 //排序
+//arr: 要排序的陣列, key: 排序的依據, choose: 1=小到大 -1=大到小
 function arrSort(arr = [], key = "price", choose = 1){
     var temp;
     switch (key) {
@@ -228,8 +276,122 @@ function arrSort(arr = [], key = "price", choose = 1){
     
 }
 
-async function showDropdown(totalArea = [], selected = "" , type = "area"){
-    if(type = "area"){
-        
+//分類選單的顯示
+//selectedArr: TotalArea、TotalSchool...等, selected: "北北基"、"輔仁大學"...等, Type: "area"、"school"...等 
+async function showDropdown(currentTotal = [], selectedValue = "" , type = "area"){
+    const dropdwonHeader = document.querySelector('.select-header');
+    dropdwonHeader.textContent = selectedValue;
+    dropdown.innerHTML = "";
+    //重製or第一次進來
+    if (type == "reset") {
+        //清除分類
+        selectedArea = "";
+        selectedSchool = "";
+        selectedCollege = "";
+        selectedDepartment = "";
+
+        currentArr = totalArea;
+        currentTotal.forEach((a)=>{
+            dropdown.innerHTML +=
+                "<div class='nav-item dropdown'>"+
+                    "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='area'>"+ a.area + 
+                    "</a>"+
+                "</div>";
+        });
+
+    //假如顯示的是地區
+    }else if(type == "area"){
+        selectedArea = selectedValue;
+        currentTotal.forEach((a)=>{
+            if (a.area == selectedValue) {
+                const totalSchool = a.totalSchool;
+                currentArr = totalSchool;
+                totalSchool.forEach((s)=>{
+                    dropdown.innerHTML +=
+                    "<div class='nav-item dropdown'>"+
+                        "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='school'>"+ s.school + 
+                        "</a>"+
+                    "</div>";
+                });
+            }
+        });
+
+    //假如顯示的是學校
+    }else if(type == "school"){
+        selectedSchool = selectedValue;
+        currentTotal.forEach((s)=>{
+            if (s.school == selectedValue) {
+                const totalCollege = s.totalCollege;
+                currentArr = totalCollege;
+                totalCollege.forEach((c)=>{
+                    dropdown.innerHTML +=
+                    "<div class='nav-item dropdown'>"+
+                        "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='college'>"+ c.college + 
+                        "</a>"+
+                    "</div>";
+                });
+            }
+        });
+
+    //假如是學院
+    }else if(type == "college"){
+        selectedCollege = selectedValue
+        currentTotal.forEach((c)=>{
+            if (c.college == selectedValue) {
+                const totalDepartment = c.totalDepartment;
+                currentArr = totalDepartment;
+                totalDepartment.forEach((d)=>{
+                    dropdown.innerHTML +=
+                    "<div class='nav-item dropdown'>"+
+                        "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='department'>"+ d.department + 
+                        "</a>"+
+                    "</div>";
+                });
+            }
+        });
+    }
+
+    //假如分類是空的
+    if(dropdown.innerHTML == ""){
+        dropdown.innerHTML =
+            "<div class='nav-item dropdown'>"+
+                "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='reset'>"+ "請等待更多人加入此網站!" + 
+                "</a>"+
+            "</div>";
+    }
+
+    dropdown.innerHTML +=
+            "<div class='nav-item dropdown'>"+
+                "<a href='#' class='nav-link' data-toggle='dropdown' name='cate'>類別 <i"+
+                    "class='fa fa-angle-down float-right mt-1'></i></a>"+
+                "<div class='dropdown-cate dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0'>"+
+                "</div>"+
+            "</div>";
+    
+    dropdown.innerHTML +=
+        "<div class='nav-item dropdown'>"+
+            "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='reset'>"+ "重製分類" + 
+            "</a>"+
+        "</div>";
+    //給按鈕加上功能
+    if (type != "department") {
+        const dropdownSelects = document.querySelectorAll('.dropdown-select');
+        dropdownSelects.forEach((select)=>{
+            select.addEventListener('click',(e)=>{
+                e.preventDefault();
+                e.stopPropagation();
+                if(select.name == "reset"){
+                    showDropdown(totalArea, "全部地區", "reset");
+                    const dropdownList = document.querySelector('.dropdown-list');
+                    dropdownList.classList.remove("show");
+                }else if(select.name == "department"){
+                    console.log("點擊科系!");
+                    selectedDepartment = select.textContent;
+                }else{
+                    showDropdown(currentArr, select.textContent, select.name);
+                }
+                myQuery();
+            });
+        });
     }
 }
