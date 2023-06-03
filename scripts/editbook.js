@@ -55,6 +55,20 @@ function show(){
                 "<div class='form-group'>" +
                     "<input class='form-control' rows='6' id='info' placeholder='詳細資訊' value="+ bookSnap.data().info +">" +
                 "</div>" +
+                "<div class='control-group deliver'>" +
+                    "<input type='checkbox' name='checkbox' value='聊聊面交'><label  style='margin-right: 5%;'>&nbsp;聊聊面交</label>" +
+                    "<input type='checkbox' name='checkbox' value='7-11（運費60元）'><label  style='margin-right: 5%;'>&nbsp;7-11（運費60元）</label>" +
+                    "<input type='checkbox' name='checkbox' value='全家（運費60元）'><label  style='margin-right: 5%;'>&nbsp;全家（運費60元）</label>" +
+                    "<input type='checkbox' name='checkbox' value='宅配（運費120元）'><label>&nbsp;宅配（運費120元）</label>" +
+                    "<p class='help-block text-danger'></p>" +
+                "</div>" +
+                "<label>付款方式</label>" +
+                "<div class='control-group deliver'>" +
+                    "<input type='checkbox' name='checkbox1' value='貨到付款'><label  style='margin-right: 5%;'>&nbsp;貨到付款</label>" +
+                    "<input type='checkbox' name='checkbox1' value='銀行轉帳'><label  style='margin-right: 5%;'>&nbsp;銀行轉帳</label>" +
+                    "<input type='checkbox' name='checkbox1' value='ATM轉帳'><label  style='margin-right: 5%;'>&nbsp;ATM轉帳</label>" +
+                    "<p class='help-block text-danger'></p>" +
+                "</div>" +
                 "<div>" +
                     "<button class='btn btn-primary py-2 px-4' type='submit' id='btn-editbook'>完成編輯</button>" +
                 "</div>" +
@@ -86,6 +100,29 @@ onAuthStateChanged(auth, (user) =>{
         console.log(user);
         btn.addEventListener("click", (e) => {
             e.preventDefault();
+
+            //寄送方式
+            let delchecked = document.querySelectorAll('input[name="checkbox"]:checked');
+            let deloutput = [];
+            delchecked.forEach((checkbox) => {
+                deloutput.push(checkbox.value);
+            });
+
+            while(deloutput.length<4){
+                deloutput.push("");
+            }
+
+            //付款方式
+            let paychecked = document.querySelectorAll('input[name="checkbox1"]:checked');
+            let payoutput = [];
+            paychecked.forEach((checkbox) => {
+                payoutput.push(checkbox.value);
+            });
+
+            while(payoutput.length<3){
+                payoutput.push("");
+            }
+
             updateDoc(bookRef, {
                 sellerId: user.uid,
                 author: author.value,
@@ -96,7 +133,10 @@ onAuthStateChanged(auth, (user) =>{
                 //category: [data.area, data.school, data.college, data.department, cate.value],
                 // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
                 info: info.value,
+                delivery: deloutput,
+                pay: payoutput
             })
+
             .then(() => {
                 alert("完成編輯!")
                 location.href = "./viewproduct.html";
