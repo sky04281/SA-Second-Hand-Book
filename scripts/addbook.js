@@ -39,19 +39,27 @@ onAuthStateChanged(auth, async (user) => {
                     imgSrc = "Product/NotFound.jpg";
                 }
                 
-                //寄送資料
+                //寄送方式
                 let delchecked = document.querySelectorAll('input[name="checkbox"]:checked');
                 let deloutput = [];
                 delchecked.forEach((checkbox) => {
                     deloutput.push(checkbox.value);
                 });
 
-                //寄送資料
+                while(deloutput.length<4){
+                    deloutput.push("");
+                }
+
+                //付款方式
                 let paychecked = document.querySelectorAll('input[name="checkbox1"]:checked');
                 let payoutput = [];
                 paychecked.forEach((checkbox) => {
                     payoutput.push(checkbox.value);
                 });
+
+                while(payoutput.length<3){
+                    payoutput.push("");
+                }
 
                 //書籍資料
                 addDoc(colRef, {

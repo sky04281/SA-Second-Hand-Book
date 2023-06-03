@@ -42,23 +42,31 @@ function show(){
                 "國際書號：<font color='gray'>"+bookSnap.data().isbn+"</font><br>"+
                 "書籍價格：<font color='gray'>$"+bookSnap.data().price+"</font><br>"+
             "</h5>"
-
-    selectdel.innerHTML = selectdel.innerHTML +
-            "<option value=''>寄送方式</option>" +
-            "<option value='" + bookSnap.data().delivery[0] + "'>" + bookSnap.data().delivery[0] + "</option>" +
-            "<option value='" + bookSnap.data().delivery[1] + "'>" + bookSnap.data().delivery[1] + "</option>" +
-            "<option value='" + bookSnap.data().delivery[2] + "'>" + bookSnap.data().delivery[2] + "</option>" +
-            "<option value='" + bookSnap.data().delivery[3] + "'>" + bookSnap.data().delivery[3] + "</option>" 
-
-    selectpay.innerHTML = selectpay.innerHTML +
-            "<option value=''>付款方式</option>" +
-            "<option value='" + bookSnap.data().pay[0] + "'>" + bookSnap.data().pay[0] + "</option>" +
-            "<option value='" + bookSnap.data().pay[1] + "'>" + bookSnap.data().pay[1] + "</option>" +
-            "<option value='" + bookSnap.data().pay[2] + "'>" + bookSnap.data().pay[2] + "</option>"
 }
 
 onAuthStateChanged(auth, (user) =>{
     if(user){
+        
+        for(let i=0;i<4;i++){
+            if(bookSnap.data().delivery[i]!=""){
+                selectdel.innerHTML = selectdel.innerHTML +
+                    "<option value='" + bookSnap.data().delivery[i] + "'>" + bookSnap.data().delivery[i] + "</option>"
+            }
+            else{
+                continue;
+            }
+        }
+
+        for(let i=0;i<4;i++){
+            if(bookSnap.data().pay[i]!=""){
+                selectpay.innerHTML = selectpay.innerHTML +
+                    "<option value='" + bookSnap.data().pay[i] + "'>" + bookSnap.data().pay[i] + "</option>"
+            }
+            else{
+                continue;
+            }
+        }
+        
         //已通過身分驗證
         if(user.emailVerified == true){
             btn.addEventListener("click", (e) => {
