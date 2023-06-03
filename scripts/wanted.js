@@ -26,15 +26,22 @@ onAuthStateChanged(auth, (user) =>{
                     book: book.value,
                     author: author.value,
                     publish: publish.value,
+                    publish:"",
                     isbn: isbn.value,
-                    cate: cate.value,
+                    //cate: cate.value,
                     category: [],
                     info: info.value,
                     sellerId: "",
                     buyerId: user.uid,
                     date: date.toLocaleDateString(),
                     deadline: "",
-                    delivery: ""
+                    order: [], 
+                    ordering: "",
+                    setuptime: "",
+                    deadline: "",
+                    imgsrc: imgSrc,
+                    //delivery: deloutput,
+                    //pay: payoutput
                 })
                 .then(() => {
                     alert("新增成功!");
