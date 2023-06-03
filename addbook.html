@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>二手書交易平台</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Topbar Start -->
+    <div class="myHeader">
+        
+    </div>
+<!-- Topbar End -->
+
+
+    
+
+
+    
+
+
+    <!-- Contact Start -->
+    <div class="container-fluid pt-5">
+        <div class="text-center mb-4">
+            <h2 class="section-title px-5"><span class="px-2">上架書籍資訊</span></h2>
+        </div>
+        <div class="row px-xl-5">
+            <div class="col-lg-7 mb-5">
+                <div class="contact-form">
+                    <div id="success"></div>
+                    <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="book" placeholder="書名"
+                                required="required" data-validation-required-message="請輸入書名" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="author" placeholder="作者"
+                                required="required" data-validation-required-message="請輸入作者" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="publish" placeholder="出版社"
+                                required="required" data-validation-required-message="請輸入出版社" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="isbn" placeholder="國際書號"
+                                required="required" data-validation-required-message="請輸入國際書號" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="number" class="form-control" id="price" placeholder="價格"
+                                required="required" data-validation-required-message="請輸入價格" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control" id="cate" placeholder="類別"
+                                required="required" data-validation-required-message="請輸入類別" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <textarea class="form-control" rows="6" id="info" placeholder="詳細資訊"></textarea>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <label>寄送方式</label>
+                        <div class="control-group deliver">
+                            <input type="checkbox" name="checkbox" value="聊聊面交""><label  style="margin-right: 5%;">&nbsp;聊聊面交</label>
+                            <input type="checkbox" name="checkbox" value="7-11（運費60元）"><label  style="margin-right: 5%;">&nbsp;7-11（運費60元）</label>
+                            <input type="checkbox" name="checkbox" value="全家（運費60元）"><label  style="margin-right: 5%;">&nbsp;全家（運費60元）</label>
+                            <input type="checkbox" name="checkbox" value="宅配（運費120元）"><label>&nbsp;宅配（運費120元）</label>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <label>付款方式</label>
+                        <div class="control-group deliver">
+                            <input type="checkbox" name="checkbox1" value="貨到付款""><label  style="margin-right: 5%;">&nbsp;貨到付款</label>
+                            <input type="checkbox" name="checkbox1" value="銀行轉帳"><label  style="margin-right: 5%;">&nbsp;銀行轉帳</label>
+                            <input type="checkbox" name="checkbox1" value="ATM轉帳"><label  style="margin-right: 5%;">&nbsp;ATM轉帳</label>  
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div>
+                            <button class="btn btn-primary py-2 px-4" type="submit" id="btn-addbook">上架</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-5 mb-5">
+                <div id="upload" style="background-color:white; padding:40% 15%; margin-right:10%;  margin-left:5%; border:0.5px slategray dashed;">
+                    <img id="img-img" src="" alt="" style="height: 100%; width: 100%; display: none;">
+                    <div style="background-color:white; width:50%; height:100%; margin:auto; text-align: center;">
+                        <button id="img-btn" class="btn btn-primary py-2 px-4" type="submit">點擊/拖曳<br>上傳圖片</button>
+                        <input id="img-input" type="file" accept="image/*" style="display: none;" placeholder="1">
+                    </div>
+                </div>                    
+            </div>
+        </div>
+    </div>
+    <!-- Contact End -->
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid bg-secondary text-dark mt-5 pt-5 myFooter">
+        
+    </div>
+    <!-- Footer End -->
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <!-- 功能 -->
+    <script type="module" src="./scripts/modules.js"></script>
+    <script type="module" src="./scripts/addbook.js"></script>
+</body>
+
+</html>
