@@ -8,19 +8,19 @@ const book = document.getElementById("book");
 const author = document.getElementById("author");
 const publish = document.getElementById("publish");
 const isbn = document.getElementById("isbn");
+const price = document.getElementById("price");
 const cate = document.getElementById("cate");
 const info = document.getElementById("info");
 const btn = document.getElementById("btn-wanted");
-var date = new Date(); 
-let imgSrc = "Product/";
+let date = new Date();
+let imgSrc = "Wanted/";
 
 const colRef = collection(db, "Wanted");
 
 //如果登入再上架
-onAuthStateChanged(auth, async(user) =>{
-    if(user){
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
         console.log(user);
-        //已通過身分驗證
         if(user.emailVerified == true){
             const userRef = doc(db, "Account", user.uid);
             const userSnap = await getDoc(userRef);
@@ -30,16 +30,15 @@ onAuthStateChanged(auth, async(user) =>{
 
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
-                
                 //存圖片
                 if (imgFile) {
                     const imgRef = ref(storage, imgSrc);
                     uploadBytes(imgRef, imgFile);
                 }else{
-                    imgSrc = "Product/NotFound.jpg";
+                    imgSrc = "Wanted/NotFound.jpg";
                 }
                 
-                //寄送方式
+                //寄送資料
                 let delchecked = document.querySelectorAll('input[name="checkbox"]:checked');
                 let deloutput = [];
                 delchecked.forEach((checkbox) => {
@@ -61,15 +60,15 @@ onAuthStateChanged(auth, async(user) =>{
                     payoutput.push("");
                 }
 
+                //書籍資料
                 addDoc(colRef, {
                     book: book.value,
                     author: author.value,
                     publish: publish.value,
                     isbn: isbn.value,
                     price: parseInt(price.value),
-                    category: [data.area, data.school, data.college, data.department, cate.value],
-                    // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
                     category: [],
+                    // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
                     info: info.value,
                     sellerId: "",
                     buyerId: user.uid,
@@ -82,8 +81,8 @@ onAuthStateChanged(auth, async(user) =>{
                     delivery: deloutput,
                     pay: payoutput
                 })
-                .then(async () => {
-                    const totalRef = doc(db, "Account", "Account_Total");
+                    .then(async () => {
+                        const totalRef = doc(db, "Account", "Account_Total");
                         const totalSnap = await getDoc(totalRef);
                         let totalArea = totalSnap.data().totalArea;
                         
@@ -120,9 +119,9 @@ onAuthStateChanged(auth, async(user) =>{
                             }
                         });
 
-                    alert("新增成功!");
-                    location.href = "./index.html";
-                });
+                        alert("新增成功!")
+                        location.href = "./index.html";
+                    });
             });
 
         //假如未驗證
@@ -130,11 +129,11 @@ onAuthStateChanged(auth, async(user) =>{
             alert("請先通過身分驗證！");
             location.href = "./account.html";
         }
-        
-    }else{
+
+    } else {
         alert("請先登入!");
         location.href = "./login.html";
-    }   
+    }
 });
 
 //上傳照片

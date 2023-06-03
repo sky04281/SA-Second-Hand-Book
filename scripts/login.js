@@ -7,7 +7,8 @@ const password = document.getElementById("password");
 
 btn.addEventListener("click", () => {
     signInWithEmailAndPassword(auth, email.value, password.value)
-    .then(() => {
+    .then((userCredential) => {
+        localStorage.setItem('userId', userCredential.user.uid);
         alert("登入成功! 點擊返回首頁");
         window.location.replace("./index.html");
     })

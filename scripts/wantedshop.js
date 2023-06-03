@@ -4,103 +4,57 @@ import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, 
 import { ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
 
 const booksRef = collection(db, "Wanted");
-const view = document.querySelector('.viewbook');
-const dropdown = document.querySelector('.dropdown-search');
-const btn = document.querySelector('.btn-search');
-const form = document.querySelector('.from-search');
+const viewSort = document.querySelector('.view-sort');
+const viewBook = document.querySelector('.view-book');
+const dropdown = document.querySelector('.search-dropdown');
+const btn = document.querySelector('.search-btn');
+const form = document.querySelector('.search-form');
 
-let search = document.getElementById('input-search');
-let cateKey = "";
-let cateValue = "";
+let search = document.getElementById('search-input');
+let selectedArea = "";
+let selectedSchool = "";
+let selectedCollege = "";
+let selectedDepartment = "";
+let selectedCate = "";
 let queryArr = [];
 let q, querySnapshot;
 
-console.log(sessionStorage);
+
 
 //分類選單-渲染
 {
-dropdown.innerHTML = 
-    "<div class='nav-item dropdown'>"+
-        "<a href='#' class='nav-link' data-toggle='dropdown' name='area'>地區 <i"+
+const totalRef = doc(db, "Account", "Account_Total");
+const totalSnap = await getDoc(totalRef);
+const totalArea = totalSnap.data().totalArea;
+totalArea.forEach((a)=>{
+    dropdown.innerHTML +=
+        "<div class='nav-item dropdown'>"+
+            "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='area'>"+ a.area + 
+            "</a>"+
+        "</div>";
+});
+        
+    dropdown.innerHTML +=
+        "<div class='nav-item dropdown'>"+
+            "<a href='#' class='nav-link' data-toggle='dropdown' name='cate'>類別 <i"+
                 "class='fa fa-angle-down float-right mt-1'></i></a>"+
-        "<div class='dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0'>"+
-            "<a href='' class='dropdown-item'>北北基</a>"+
-            "<a href='' class='dropdown-item'>桃竹苗</a>"+
-            "<a href='' class='dropdown-item'>中彰投</a>"+
-            "<a href='' class='dropdown-item'>雲嘉南</a>"+
-        "</div>"+
-    "</div>"+
-    "<div class='nav-item dropdown'>"+
-        "<a href='#' class='nav-link' data-toggle='dropdown' name='school'>學校 <i"+
-                "class='fa fa-angle-down float-right mt-1'></i></a>"+
-        "<div class='dropdown-school dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0'>"+
-        "</div>"+
-    "</div>"+
-    "<div class='nav-item dropdown'>"+
-        "<a href='#' class='nav-link' data-toggle='dropdown' name='college'>學院 <i"+
-                "class='fa fa-angle-down float-right mt-1'></i></a>"+
-        "<div class='dropdown-college dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0'>"+
-        "</div>"+
-    "</div>"+
-    "<div class='nav-item dropdown'>"+
-        "<a href='#' class='nav-link' data-toggle='dropdown' name='department'>科系 <i"+
-                "class='fa fa-angle-down float-right mt-1'></i></a>"+
-        "<div class='dropdown-department dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0'>"+
-        "</div>"+
-    "</div>"+
-    "<div class='nav-item dropdown'>"+
-        "<a href='#' class='nav-link' data-toggle='dropdown' name='cate'>類別 <i"+
-                "class='fa fa-angle-down float-right mt-1'></i></a>"+
-        "<div class='dropdown-cate dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0'>"+
-        "</div>"+
-    "</div>";
+            "<div class='dropdown-cate dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0'>"+
+            "</div>"+
+        "</div>";
 }
 
 //分類選單-功能
-// {
-// const totalRef = doc(db, "Account", "Account_Total");
-// const totalSnap = await getDoc(totalRef);
-// const tschool = totalSnap.data().tschool; 
-// const tcollege = totalSnap.data().tcollege; 
-// const tdepartment = totalSnap.data().tdepartment;
-// const tcate = totalSnap.data().tcate;
+const dropdownSelects = document.querySelectorAll('.dropdown-select');
+dropdownSelects.forEach((select)=>{
+    select.addEventListener('click',(e)=>{
+        e.preventDefault();
+        if(selectedSchool == ""){
+            selectedSchool = select.textContent;
 
-// //抓取已有的學校、學院、科系，並且渲染出來
-// tschool.forEach((s) =>{
-//     document.querySelector('.dropdown-school').innerHTML += 
-//         ("<a href='' class='dropdown-item'>" + s + "</a>");
-// });
-// tcollege.forEach((c) =>{
-//     document.querySelector('.dropdown-college').innerHTML += 
-//         ("<a href='' class='dropdown-item'>" + c + "</a>");
-// });
-// tdepartment.forEach((d) =>{
-//     document.querySelector('.dropdown-department').innerHTML += 
-//         ("<a href='' class='dropdown-item'>" + d + "</a>");
-// });
-// tcate.forEach((c) =>{
-//     document.querySelector('.dropdown-cate').innerHTML +=
-//         ("<a href='' class='dropdown-item'>" + c + "</a>");
-// });
+        }
+    });
+});
 
-// //點擊分類按鈕
-// const navLink = document.querySelectorAll('.nav-link');
-// navLink.forEach((link) => {
-//     link.addEventListener("click", () =>{
-//         cateKey = link.textContent;
-//         console.log(cateKey);
-//     });
-// });    
-// const dropdownItem = document.querySelectorAll('.dropdown-item');
-// dropdownItem.forEach((item) => {
-//     item.addEventListener("click", (e) => {
-//         e.preventDefault();
-//         cateValue = item.textContent;
-//         console.log(cateValue);
-//         myQuery();
-//     });
-// });
-// }
 
 //搜尋欄
 {
@@ -120,11 +74,11 @@ myQuery();
 //書籍渲染
 function show(){
     //排序按鈕
-    view.innerHTML = 
+    viewSort.innerHTML = 
         "<div class='col-12 pb-1'>" +
             "<div class='d-flex align-items-center justify-content-between mb-4'>" +
-                "<form action=''>" +
-                    "<a href='shop.html'>全部商品</a> >" + cateKey + ">" + cateValue +
+                "<form>" +
+                    "<a href='shop.html'>全部商品</a>" + 
                 "</form>" +
                 "<div class='dropdown ml-4'>" +
                     "<button class='btn border dropdown-toggle' type='button' id='triggerId'"  +
@@ -139,17 +93,17 @@ function show(){
                     "</div>" +
                 "</div>" +
             "</div>" +
-        "</div>"+
-        "<div class='view-test row'></div>";
+        "</div>";
+        
     
-    const viewTest = document.querySelector('.view-test');
+    
     //書籍
     queryArr.forEach((docs) => {
-        viewTest.innerHTML = viewTest.innerHTML +
+        viewBook.innerHTML = viewBook.innerHTML +
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
                     "<div class='card-header product-img position-relative overflow-hidden bg-transparent border p-0'>"+
-                        "<a href='buyingbook.html?bookId=" + docs.id + "' title=''><img id='"+ docs.id +"' src='' class='img-fluid w-100' alt=''></a>"+
+                        "<a href='wantedbook.html?bookId=" + docs.id + "' title=''><img id='"+ docs.id +"' src='' class='img-fluid w-100' alt=''></a>"+
                     "</div>"+
                     "<div class='card-body border-left border-right text-center p-0 pt-4 pb-3'>"+
                         "<a href='buyingbook.html?bookId=" + docs.id + "' class='active'><h6 class='text-truncate mb-3'>"+ docs.data.book +"</h6></a>"+
@@ -168,7 +122,7 @@ function show(){
     });
 
     //分頁按鈕
-    view.innerHTML = view.innerHTML +
+    viewBook.innerHTML = viewBook.innerHTML +
     "<div class='col-12 pb-1'>"+
         "<nav aria-label='Page navigation'>"+
             "<ul class='pagination justify-content-center mb-3'>"+
@@ -207,17 +161,8 @@ function show(){
 
 //查詢功能
 async function myQuery(){
-    //有選分類
-    if((search.value == "") && (cateKey != "")){
-        q = query(booksRef, where("category", "array-contains", cateValue));
-        querySnapshot = await getDocs(q);
-    }
-    else if((search.value != "") && (cateKey != "")){
-        q = query(booksRef, where("category", "array-contains", cateValue), orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
-        querySnapshot = await getDocs(q);
-    }
-    //沒選分類
-    else if (search.value == "") {
+
+    if (search.value == "") {
         querySnapshot = await getDocs(booksRef);
     }
     else{
@@ -228,10 +173,19 @@ async function myQuery(){
     //放到自訂的陣列裡處理排序
     queryArr = [];
     querySnapshot.forEach((docs) => {
-        queryArr.push({
-            id: docs.id,
-            data: docs.data()
-        });
+        if (localStorage.getItem('userId')){
+            if (docs.data().sellerId != localStorage.getItem('userId')) {
+                queryArr.push({
+                    id: docs.id,
+                    data: docs.data()
+                });
+            }
+        }else{
+            queryArr.push({
+                id: docs.id,
+                data: docs.data()
+            });
+        }
     });
 
     //預設價格小到大
@@ -272,4 +226,10 @@ function arrSort(arr = [], key = "price", choose = 1){
             break;
     }
     
+}
+
+async function showDropdown(totalArea = [], selected = "" , type = "area"){
+    if(type = "area"){
+        
+    }
 }
