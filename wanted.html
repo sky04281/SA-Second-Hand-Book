@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>EShopper - Bootstrap Shop Template</title>
+    <title>二手書交易平台</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -28,8 +28,9 @@
 <body>
     <!-- Topbar Start -->
     <div class="myHeader">
+        
     </div>
-    <!-- Topbar End -->
+<!-- Topbar End -->
 
 
     
@@ -41,7 +42,7 @@
     <!-- Contact Start -->
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">需求書籍資訊</span></h2>
+            <h2 class="section-title px-5"><span class="px-2">上架書籍資訊</span></h2>
         </div>
         <div class="row px-xl-5">
             <div class="col-lg-7 mb-5">
@@ -77,6 +78,21 @@
                             <textarea class="form-control" rows="6" id="info" placeholder="詳細資訊"></textarea>
                             <p class="help-block text-danger"></p>
                         </div>
+                        <label>寄送方式</label>
+                        <div class="control-group deliver">
+                            <input type="checkbox" name="checkbox" value="聊聊面交"><label  style="margin-right: 5%;">&nbsp;聊聊面交</label>
+                            <input type="checkbox" name="checkbox" value="7-11（運費60元）"><label  style="margin-right: 5%;">&nbsp;7-11（運費60元）</label>
+                            <input type="checkbox" name="checkbox" value="全家（運費60元）"><label  style="margin-right: 5%;">&nbsp;全家（運費60元）</label>
+                            <input type="checkbox" name="checkbox" value="宅配（運費120元）"><label>&nbsp;宅配（運費120元）</label>
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <label>付款方式</label>
+                        <div class="control-group deliver">
+                            <input type="checkbox" name="checkbox1" value="貨到付款"><label  style="margin-right: 5%;">&nbsp;貨到付款</label>
+                            <input type="checkbox" name="checkbox1" value="銀行轉帳"><label  style="margin-right: 5%;">&nbsp;銀行轉帳</label>
+                            <input type="checkbox" name="checkbox1" value="ATM轉帳"><label  style="margin-right: 5%;">&nbsp;ATM轉帳</label>  
+                            <p class="help-block text-danger"></p>
+                        </div>
                         <div>
                             <button class="btn btn-primary py-2 px-4" type="submit" id="btn-wanted">上架</button>
                         </div>
@@ -84,11 +100,13 @@
                 </div>
             </div>
             <div class="col-lg-5 mb-5">
-                <div style="background-color:white; padding:40% 15%; margin-right:10%;  margin-left:5%; border:0.5px slategray dashed;">
+                <div id="upload" style="background-color:white; padding:40% 15%; margin-right:10%;  margin-left:5%; border:0.5px slategray dashed;">
+                    <img id="img-img" src="" alt="" style="height: 100%; width: 100%; display: none;">
                     <div style="background-color:white; width:50%; height:100%; margin:auto; text-align: center;">
-                        <button class="btn btn-primary py-2 px-4" type="submit" id="addpicButton">上傳圖片</button>
+                        <button id="img-btn" class="btn btn-primary py-2 px-4" type="submit">點擊/拖曳<br>上傳圖片</button>
+                        <input id="img-input" type="file" accept="image/*" style="display: none;" placeholder="1">
                     </div>
-                </div>
+                </div>                    
             </div>
         </div>
     </div>
@@ -120,9 +138,8 @@
     <script src="js/main.js"></script>
 
     <!-- 功能 -->
-    <script type="module" src="./scripts/wanted.js"></script>
     <script type="module" src="./scripts/modules.js"></script>
-    <script type="module" src="./scripts/buyingbook.js"></script>
+    <script type="module" src="./scripts/wanted.js"></script>
 </body>
 
 </html>

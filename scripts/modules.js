@@ -15,7 +15,7 @@ if(myNav != null){
                 "<div class='navbar-nav mr-auto py-0'>" +
                     "<a href='index.html' class='nav-item nav-link'>首頁</a>" +
                     "<a href='shop.html' class='nav-item nav-link'>全部商品</a>" +
-                    "<a href='shop.html' class='nav-item nav-link'>求書專區</a>" +
+                    "<a href='wantedshop.html' class='nav-item nav-link'>求書專區</a>" +
                 "</div>" +
                 "<div class='myNav-account navbar-nav ml-auto py-0'>" +
                 "</div>" +
