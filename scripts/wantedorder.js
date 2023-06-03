@@ -4,8 +4,8 @@ import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, 
 import { ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
 
 const delivery = document.getElementById("delivery");
-const address = document.getElementById("address");
 const payment = document.getElementById("payment");
+const price = document.getElementById("price");
 const others = document.getElementById("others");
 const btn = document.getElementById("btn-order");
 var date = new Date(); 
@@ -20,9 +20,11 @@ let myUrl = new URL(window.location.href);
 let bookId = myUrl.searchParams.get('bookId');
 console.log(bookId);
 
-let bookRef = doc(db, "Wanted", "2muHEzc2hdRtAYWLWwLJ");
+let bookRef = doc(db, "Wanted", bookId);
 let bookSnap = await getDoc(bookRef);
 console.log(bookSnap.data());
+
+const colRef = doc(db, "Wanted", bookId);
 
 show();
 const imgRef = ref(storage, bookSnap.data().imgsrc);
@@ -38,7 +40,7 @@ function show(){
                 "作者：<font color='gray'>"+bookSnap.data().author+"</font><br>"+
                 "出版社：<font color='gray'>"+bookSnap.data().publish+"</font><br>"+
                 "國際書號：<font color='gray'>"+bookSnap.data().isbn+"</font><br>"+
-                "書籍價格：<font color='gray'>$"+bookSnap.data().price+"</font><br>"+
+                "買家預期價格：<font color='gray'>$"+bookSnap.data().price+"</font><br>"+
             "</h5>"
 }
 
@@ -70,15 +72,14 @@ onAuthStateChanged(auth, (user) =>{
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
                 updateDoc(colRef, {
-                    buyerId: user.uid,
-                    order: [delivery.value, address.value, payment.value, others.value, true], 
+                    sellerId: user.uid,
+                    order: [delivery.value, "",price.value, payment.value, others.value, true], 
+                    //賣家接受的資訊:運送方式, 地址(買家填寫), 賣家出價, 支付方式, 備註, 訂單判斷
                     ordering: "待買家接受訂單",
-                    setuptime: date,
-                    deadline: deadline.setDate(date.getDate()+7)
                 })
                 .then(() => {
                     alert("訂單已傳送給買家!")
-                    location.href = "./shop.html";
+                    location.href = "./wantedshop.html";
                 });
             });
 

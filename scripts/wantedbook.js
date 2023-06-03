@@ -31,7 +31,7 @@ function show(){
                 "<div class='col-lg-5 pb-5'>"+
                     "<h3 class='font-weight-semi-bold'>"+bookSnap.data().book+"</h3>"+
                     
-                    "<h3 class='font-weight-semi-bold mb-4'>NT$ "+bookSnap.data().price+"</h3>"+
+                    "<h3 class='font-weight-semi-bold mb-4'>買家出價:NT$ "+bookSnap.data().price+"</h3>"+
                     "<p class='mb-4'>"+
                         "作者：" + bookSnap.data().author +"<br>"+
                         "出版社：" + bookSnap.data().publish + "<br>"+
@@ -63,7 +63,7 @@ function show(){
 
                         "&nbsp;"+
 
-                        "<a href='order.html?bookId=" + bookId + "'>"+
+                        "<a href='wantedorder.html?bookId=" + bookId + "'>"+
                             "<button class='btn btn-primary py-2 px-4' type='submit'>"+
                                 "<i class='fa fa-shopping-cart mr-1'></i>購買"+
                             "</button>"+

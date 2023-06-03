@@ -50,23 +50,22 @@
             </div>
             <div class="col-lg-7 mb-5">
                 <div class="text-center mb-4">
-                    <h2 class="section-title px-5"><span class="px-2">填寫訂單詳情</span></h2>
+                    <h2 class="section-title px-5"><span class="px-2">填寫您交易資訊</span></h2>
                 </div>
                 <div class="contact-form">
                     <div id="success"></div>
                     <form name="order" id="contactForm" novalidate="novalidate">
                         <div class="bookinform text-left mb-4">
                         </div>
-
+                        <div class="control-group">
+                            <input type="number" class="form-control" id="price" placeholder="期望價格"
+                                required="required" data-validation-required-message="請輸入價格" />
+                            <p class="help-block text-danger"></p>
+                        </div>
                         <div class="form-group">
                             <select class="custom-select delivery" id="delivery" data-validation-required-message="請選擇寄送方式">
                                 
                             </select>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="address" placeholder="寄件地址（選選擇面交者填無）"
-                                required="required" data-validation-required-message="請輸入寄件地址" />
-                            <p class="help-block text-danger"></p>
                         </div>
                         <div class="form-group">
                             <select class="custom-select payment" id="payment" data-validation-required-message="請選擇付款方式">
