@@ -191,10 +191,8 @@ onAuthStateChanged(auth, async (user) => {
        // var btn3 = document.querySelectorAll('.btn-goodcomment');
         //var docRef=doc(db,'Product',"sellerId");
         
-        const reff = collection(db, "Product");
-        const e04=query(reff,"sellerId")
-        const docSnap = await getDoc(e04);
-        console.log(docSnap);
+     
+
 
 <<<<<<< HEAD
         /*const rref=collection(db,"Account","score");

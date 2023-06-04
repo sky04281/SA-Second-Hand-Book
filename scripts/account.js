@@ -1,5 +1,6 @@
-import { auth } from "../scripts/firebase.js";
+import { auth,db } from "../scripts/firebase.js";
 import { onAuthStateChanged,sendEmailVerification } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
+import {  getDocs, getDoc, doc} from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 onAuthStateChanged(auth, (user)=>{
     const userName = document.querySelector('.user-name');
@@ -17,4 +18,11 @@ onAuthStateChanged(auth, (user)=>{
             alert("已發送驗證信！\n" + "請至 " + user.email + " 查看");
         })
     }
+
+    
 })
+
+
+
+
+
