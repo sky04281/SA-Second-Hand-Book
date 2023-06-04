@@ -150,17 +150,56 @@ async function myQuery(){
     //放到自訂的陣列裡處理
     queryArr = [];
     querySnapshot.forEach((docs) => {
-        const category = docs.data().category;
-        const area = category[0];
-        const school = category[1];
-        const college = category[2];
-        const department = category[3];
-        
-        //假如有登入
-        if(localStorage.getItem("userId")){
-            //找到 sellerId 不等於 使用者Id 的書
-            if (docs.data().sellerId != localStorage.getItem("userId")) {
-                //判斷分類選取的情況
+        if (docs.data().category) {
+            const category = docs.data().category;
+            const area = category[0];
+            const school = category[1];
+            const college = category[2];
+            const department = category[3];
+            
+            //假如有登入
+            if(localStorage.getItem("userId")){
+                //找到 sellerId 不等於 使用者Id 的書
+                if (docs.data().sellerId != localStorage.getItem("userId")) {
+                    //判斷分類選取的情況
+                    if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
+                        if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
+                            queryArr.push({
+                                id: docs.id,
+                                data: docs.data()
+                            });
+                        }
+                    }else if((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "")) {
+                        if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege)){
+                            queryArr.push({
+                                id: docs.id,
+                                data: docs.data()
+                            });
+                        }
+                    }else if((selectedArea != "") & (selectedSchool != "")) {
+                        if((area == selectedArea) & (school == selectedSchool)){
+                            queryArr.push({
+                                id: docs.id,
+                                data: docs.data()
+                            });
+                        }
+                    }else if((selectedArea != "")) {
+                        if((area == selectedArea)){
+                            queryArr.push({
+                                id: docs.id,
+                                data: docs.data()
+                            });
+                        }
+                    }else{
+                        queryArr.push({
+                            id: docs.id,
+                            data: docs.data()
+                        });
+                    }
+                }   
+            }
+            //假如沒登入
+            else{
                 if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
                     if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
                         queryArr.push({
@@ -195,43 +234,6 @@ async function myQuery(){
                         data: docs.data()
                     });
                 }
-            }   
-        }
-        //假如沒登入
-        else{
-            if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
-                if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
-                    queryArr.push({
-                        id: docs.id,
-                        data: docs.data()
-                    });
-                }
-            }else if((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "")) {
-                if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege)){
-                    queryArr.push({
-                        id: docs.id,
-                        data: docs.data()
-                    });
-                }
-            }else if((selectedArea != "") & (selectedSchool != "")) {
-                if((area == selectedArea) & (school == selectedSchool)){
-                    queryArr.push({
-                        id: docs.id,
-                        data: docs.data()
-                    });
-                }
-            }else if((selectedArea != "")) {
-                if((area == selectedArea)){
-                    queryArr.push({
-                        id: docs.id,
-                        data: docs.data()
-                    });
-                }
-            }else{
-                queryArr.push({
-                    id: docs.id,
-                    data: docs.data()
-                });
             }
         }
     });
