@@ -85,7 +85,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>" + 
                     "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
                     "<button class='btn btn-sm btn-badcomment' id='" + docs.data().sellerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
-                    "<a class='btn btn-sm btn-inform' href='inform.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
+                    "<a class='btn btn-sm btn-inform' href='comment.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
                 "</td>"+
             "</tr><br>";
         });
@@ -130,7 +130,10 @@ onAuthStateChanged(auth, async (user) => {
                 var docRef = doc(db, 'Product', c.id);
                 updateDoc(docRef, {
                     order:["", "", "", "", false],
-                    ordering: "取消訂單"
+                    ordering: "取消訂單",
+                    deadline: "",
+                    setuptime: "",
+                    buyerId: ""
                 })
                 .then(() => {
                     alert("取消成功!");
@@ -144,10 +147,10 @@ onAuthStateChanged(auth, async (user) => {
         btn3.forEach((e) => {
             e.addEventListener('click', (f)=>{
                 f.preventDefault();
-                var docRef=doc(db,'Account',e.id);
-                console.log(e.id);
+                var docRef=doc(db,'Account',e.id.score);
+                console.log(e.id.score);
                 updateDoc(docRef,{
-                    score:score.increment(1)
+                    score:8
                 })
                 .then(()=>{
                     alert("評價成功!");
@@ -161,7 +164,7 @@ onAuthStateChanged(auth, async (user) => {
                 f.preventDefault();
                 var docRef=doc(db,'Account',e.id);
                 updateDoc(docRef,{
-                    score:score.increment(1)
+                    score:6
                 })
                 .then(()=>{
                     alert("評價成功!");
