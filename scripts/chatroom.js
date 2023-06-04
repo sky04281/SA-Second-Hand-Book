@@ -1,6 +1,6 @@
 import { auth, db, storage } from "../scripts/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, and, or, getDocs, getDoc, doc, updateDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, and, or, getDocs, getDoc, doc, updateDoc, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 const chatInput = document.querySelector('.chat-input');
 const chatText = document.querySelector('.chat-text');
@@ -14,41 +14,67 @@ onAuthStateChanged(auth, async (user)=>{
         if(user.emailVerified == true){
             const myUrl = new URL(window.location.href);
 
-            //新增聊天室
-            if(myUrl.searchParams.has('bookId')){
-                const bookId = myUrl.searchParams.get('bookId');
-
+            //新增聊天室 idArr: 存著雙方uid的array, chat: 存著每則訊息的array [{senderId: (傳送者的id), message: (傳送的訊息), time: (傳送時間)}]
+            if(myUrl.searchParams.has('buyingBookId')){
+                const bookId = myUrl.searchParams.get('buyingBookId');
                 const bookRef = doc(db, "Product", bookId);
                 const bookSnap = await getDoc(bookRef);
                 const sellerId = bookSnap.data().sellerId;
 
-                const chatRef = doc(db, "Chatroom", userId + sellerId);
-                await setDoc(chatRef, {sellerId: sellerId, buyerId: userId}, {merge: true});
-                const chatSnap = await getDoc(chatRef);
-                const accountRef = doc(db, "Account", sellerId);
-                const accountSnap = await getDoc(accountRef);
-                changeChatRoom(chatSnap.id, accountSnap.data().name);
-            }   
+                //chatCollection
+                const chatColRef = collection(db, "Chatroom");
+                const chatColQuery = query(chatColRef, where("idArr", "in", [[userId, sellerId], [sellerId, userId]]));
+                const chatColSnap = await getDocs(chatColQuery);
+                if (chatColSnap.empty) {
+                    addDoc(chatColRef,{
+                        idArr: [userId, sellerId],
+                        chat: []
+                    });
+                }
+            }
+            else if (myUrl.searchParams.has('wantedBookId')) {
+                const bookId = myUrl.searchParams.get('wantedBookId');
+
+                const bookRef = doc(db, "Wanted", bookId);
+                const bookSnap = await getDoc(bookRef);
+                const buyerId = bookSnap.data().buyerId;
+
+                //chatCollection
+                const chatColRef = collection(db, "Chatroom");
+                const chatColQuery = query(chatColRef, where("idArr", "in", [[userId, buyerId], [buyerId, userId]]));
+                const chatColSnap = await getDocs(chatColQuery);
+
+                if (chatColSnap.empty) {
+                    addDoc(chatColRef,{
+                        idArr: [userId, buyerId],
+                        chat: []
+                    });
+                }
+            }
             
             //左方聊天室-從資料庫抓取
             const colRef = collection(db, "Chatroom");
-            const colQuery = query(colRef, or(where("sellerId", "==", userId), where("buyerId", "==", userId)));
+            const colQuery = query(colRef, where("idArr", "array-contains", userId));
             const colSnap = await getDocs(colQuery);
+            colSnap.forEach((docs)=>{
+                console.log(docs.data());
+            });
 
             //左方聊天室-渲染
             colSnap.forEach(async (chatroom)=>{
+                //找對方的名稱
                 let name;
-                if (chatroom.data().sellerId == userId) {
-                    const accountRef = doc(db, "Account", chatroom.data().buyerId);
+                if (chatroom.data().idArr[0] == userId) {
+                    const accountRef = doc(db, "Account", chatroom.data().idArr[1]);
                     const accountSnap = await getDoc(accountRef);
                     name = accountSnap.data().name;
                 } else {
-                    const accountRef = doc(db, "Account", chatroom.data().sellerId);
+                    const accountRef = doc(db, "Account", chatroom.data().idArr[0]);
                     const accountSnap = await getDoc(accountRef);
                     name = accountSnap.data().name;
                 }
 
-
+                //渲染左邊那排
                 chatSelect.innerHTML += 
                     "<a href='' id='"+ chatroom.id + "' class='chat-select-btn' name='"+ name +"'>"+
                         "<div class='d-flex justify-content-between  mb-2 pt-2'>"+
@@ -73,6 +99,26 @@ onAuthStateChanged(auth, async (user)=>{
                 }); 
             });
 
+            //快捷鍵
+            const fastbtn1 = document.getElementById('fastbtn1');
+            const btnValue1 = document.getElementById('fastbtn1').innerText;
+            const fastbtn2 = document.getElementById('fastbtn2');
+            const btnValue2 = document.getElementById('fastbtn2').innerText;
+            const fastbtn3 = document.getElementById('fastbtn3');
+            const btnValue3 = document.getElementById('fastbtn3').innerText;
+
+            document.addEventListener('click', function(e) {
+                let obj = e.target; 
+                if(obj.id == 'fastbtn1') { 
+                    chatInput.value += btnValue1 + " ";
+                } else if (obj.id == 'fastbtn2') {
+                    chatInput.value += btnValue2 + " "; 
+                } else if(obj.id == 'fastbtn3') {
+                    chatInput.value += btnValue3 + " ";
+                }
+            });
+
+
         //假如未驗證
         }else{
             alert("請先通過身分驗證！");
@@ -86,27 +132,6 @@ onAuthStateChanged(auth, async (user)=>{
     }
     
     async function changeChatRoom(chatRoomId, chatName){
-
-        //快捷鍵
-        const fastbtn1 = document.getElementById('fastbtn1');
-        const btnValue1 = document.getElementById('fastbtn1').innerText;
-        const fastbtn2 = document.getElementById('fastbtn2');
-        const btnValue2 = document.getElementById('fastbtn2').innerText;
-        const fastbtn3 = document.getElementById('fastbtn3');
-        const btnValue3 = document.getElementById('fastbtn3').innerText;
-
-        document.addEventListener('click', function(e) {
-            let obj = e.target; 
-            if(obj.id == 'fastbtn1') { 
-                chatInput.value += btnValue1 + " ";
-            } else if (obj.id == 'fastbtn2') {
-                chatInput.value += btnValue2 + " "; 
-            } else if(obj.id == 'fastbtn3') {
-                chatInput.value += btnValue3 + " ";
-            }
-            });
-
-
 
         const chatUserName = document.querySelector('.chat-user-name');
         chatUserName.textContent = chatName;
