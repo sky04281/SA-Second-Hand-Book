@@ -74,7 +74,7 @@ onAuthStateChanged(auth, async (user) => {
                     sellerId: user.uid,
                     buyerId: "",
                     date: date,
-                    order: [], 
+                    order: ["", "", "", "", false], 
                     ordering: "",
                     setuptime: "",
                     deadline: "",

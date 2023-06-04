@@ -62,6 +62,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'><img src='' alt='' style='width: 50px;'>訂單已成立無法變更書籍內容</td>" +
                 "<td class='align-middle'>"+
                     "<button class='btn btn-sm btn-delete' id='"+ docs.id + "'><i class='fa fa-trash'></i></button>"+
+                    "(不影響已成立訂單)"
                 "</td>"+
             "</tr>";
             order.innerHTML = order.innerHTML +
