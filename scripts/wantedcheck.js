@@ -1,6 +1,6 @@
 import { auth, db, storage } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt, updateDoc, Timestamp, addDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt, updateDoc, Timestamp, addDoc, setDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 import { ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
 
 const address = document.getElementById("address");
@@ -19,7 +19,6 @@ let bookRef = doc(db, "Wanted", bookId);
 let bookSnap = await getDoc(bookRef);
 console.log(bookSnap.data());
 
-const colRef = collection(db, "Product");
 
 show();
 const imgRef = ref(storage, bookSnap.data().imgsrc);
@@ -49,8 +48,9 @@ onAuthStateChanged(auth, (user) =>{
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
 
+                const colRef = doc(db, "Product", bookId);
                 const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
-                addDoc(colRef, {
+                setDoc(colRef, {
                     book: bookSnap.data().book,
                     author: bookSnap.data().author,
                     publish: bookSnap.data().publish,

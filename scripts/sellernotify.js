@@ -107,7 +107,7 @@ onAuthStateChanged(auth, async (user) => {
                     var docRef = doc(db, 'Product', b.id);
                     updateDoc(docRef, {
                         buyerId: "",
-                        order: [], 
+                        order: ["", "", "", "", false], 
                         ordering: ""
                     })
                     .then(() => {

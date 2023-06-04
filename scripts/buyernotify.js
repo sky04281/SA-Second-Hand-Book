@@ -129,7 +129,7 @@ onAuthStateChanged(auth, async (user) => {
                 d.preventDefault();
                 var docRef = doc(db, 'Product', c.id);
                 updateDoc(docRef, {
-                    order:["", "", "", "", ""],
+                    order:["", "", "", "", false],
                     ordering: "取消訂單"
                 })
                 .then(() => {
@@ -149,10 +149,10 @@ onAuthStateChanged(auth, async (user) => {
                 //console.log(docRef.score);
                 updateDoc(docRef,{
                     score:score.value
-                 })
-                 .then(()=>{
-                     alert("評價成功!");
-                 })
+                })
+                .then(()=>{
+                    alert("評價成功!");
+                })
             })
         })
 
