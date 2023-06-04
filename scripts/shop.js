@@ -80,7 +80,7 @@ function show(arrToShow = []){
                     "<div class='card-body border-left border-right text-center p-0 pt-4 pb-3'>"+
                         "<a href='buyingbook.html?bookId=" + docs.id + "' class='active'><h6 class='text-truncate mb-3'>"+ docs.data.book +"</h6></a>"+
                         "<div class='d-flex justify-content-center'>"+
-                            "<h6>" + "NT$" + docs.data.price + "</h6>"+
+                            "<h6>" + "價格: NT$" + docs.data.price + "</h6>"+
                         "</div>"+
                     "</div>"+
                 "</div>"+
@@ -93,8 +93,6 @@ function show(arrToShow = []){
             img.setAttribute('src', url);
         });
     });
-
-    search.value = "";
 
     const sortPrice = document.querySelectorAll('.sort-price');
     sortPrice.forEach((sp)=>{
@@ -241,7 +239,6 @@ async function myQuery(){
     //預設價格小到大
     arrSort(queryArr, "price");
     show(queryArr);
-    search.value = "";
 }
 
 //排序
