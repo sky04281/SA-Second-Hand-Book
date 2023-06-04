@@ -130,7 +130,10 @@ onAuthStateChanged(auth, async (user) => {
                 var docRef = doc(db, 'Product', c.id);
                 updateDoc(docRef, {
                     order:["", "", "", "", false],
-                    ordering: "取消訂單"
+                    ordering: "取消訂單",
+                    deadline: "",
+                    setuptime: "",
+                    buyerId: ""
                 })
                 .then(() => {
                     alert("取消成功!");
