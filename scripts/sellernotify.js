@@ -79,8 +79,10 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>"+
-                    "<button class='btn btn-sm btn-comment' id='" + docs.id +"' href='comment.html'><i class='fas fa-arrow-right'>前往評價</i></button>"+
-                "</td>"+
+                "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().buyerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
+                "<button class='btn btn-sm btn-badcomment' id='" + docs.data().buyerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
+                "<a class='btn btn-sm btn-inform' href='inform.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
+            "</td>"+
             "</tr>";
         });
 
@@ -131,6 +133,34 @@ onAuthStateChanged(auth, async (user) => {
                     });
                 });
             }); 
+
+            var btn3=document.querySelectorAll('.btn-goodcomment');
+            btn3.forEach((e) => {
+            e.addEventListener('click', (f)=>{
+                f.preventDefault();
+                var docRef=doc(db,'Account',e.id);
+                updateDoc(docRef,{
+                    score:score.increment(1)
+                })
+                .then(()=>{
+                    alert("評價成功!");
+                })
+            })
+        })
+
+            var btn4=document.querySelectorAll('.btn-goodcomment');
+            btn4.forEach((e) => {
+            e.addEventListener('click', (f)=>{
+                f.preventDefault();
+                var docRef=doc(db,'Account',e.id);
+                updateDoc(docRef,{
+                    score:score.increment(1)
+                })
+                .then(()=>{
+                    alert("評價成功!");
+                })
+            })
+        })
 
     }else{
         alert("請先登入!");
