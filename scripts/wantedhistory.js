@@ -9,7 +9,7 @@ onAuthStateChanged(auth, async (user) => {
         // 用 sellerId 從資料庫抓出使用者上架的書
         const ref = collection(db, "Wanted");
         const q = query(ref, where("buyerId", "==", user.uid), where("ordering", "==", ""));
-        const p = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true));
+        const p = query(ref, where("buyerId", "==", user.uid), where("ordering", "==", "待買家接受訂單"));
         const r = query(ref, where("buyerId", "==", user.uid), where("ordering", "==", "訂單成立，請至訂單追蹤查看"));
         const querySnapshot = await getDocs(q);
         const querySnapshot_hasorder = await getDocs(p);
