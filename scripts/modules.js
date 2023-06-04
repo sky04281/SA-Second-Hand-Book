@@ -40,12 +40,16 @@ if(myNav != null){
             const btn = navAccount.querySelector('.btn-logout');
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
-                signOut(auth)
-                .then(() => {
-                    localStorage.removeItem('userId');
-                    alert("登出成功! 即將返回首頁");
-                    location.href = "./index.html";
-                });
+                let sure = confirm("是否確定登出？");
+                if (sure) {
+                    signOut(auth)
+                    .then(() => {
+                        localStorage.removeItem('userId');
+                        alert("登出成功! 即將返回首頁");
+                        location.href = "./index.html";
+                    });
+                }
+                
             });
         }else{
             // 導覽列-未登入

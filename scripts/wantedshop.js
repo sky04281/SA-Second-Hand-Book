@@ -171,7 +171,7 @@ async function myQuery(){
             
             //假如有登入
             if(localStorage.getItem("userId")){
-                //找到 sellerId 不等於 使用者Id 的書
+                //找到 buyerId 不等於 使用者Id 的書
                 if (docs.data().buyerId != localStorage.getItem("userId")) {
                     //判斷分類選取的情況
                     if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
