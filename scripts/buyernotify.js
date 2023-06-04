@@ -144,10 +144,10 @@ onAuthStateChanged(auth, async (user) => {
         btn3.forEach((e) => {
             e.addEventListener('click', (f)=>{
                 f.preventDefault();
-                var docRef=doc(db,'Account',e.id);
-                console.log(e.id);
+                var docRef=doc(db,'Account',e.id.score);
+                console.log(e.id.score);
                 updateDoc(docRef,{
-                    score:score.increment(1)
+                    score:8
                 })
                 .then(()=>{
                     alert("評價成功!");
@@ -161,7 +161,7 @@ onAuthStateChanged(auth, async (user) => {
                 f.preventDefault();
                 var docRef=doc(db,'Account',e.id);
                 updateDoc(docRef,{
-                    score:score.increment(1)
+                    score:6
                 })
                 .then(()=>{
                     alert("評價成功!");
