@@ -6,6 +6,7 @@ const myNav = document.querySelector('.myNav');
 const myHeader = document.querySelector('.myHeader');
 const myFooter = document.querySelector('.myFooter');
 console.log(localStorage);
+document.title = "到底書在哪==";
 
 // 導覽列
 if(myNav != null){
@@ -55,6 +56,8 @@ if(myNav != null){
     });
 }
 
+//header
+{
 myHeader.innerHTML = 
     "<div class='row align-items-center py-3 px-xl-5'>" +
         "<div class='col-lg-3 d-none d-lg-block'>" +
@@ -90,7 +93,10 @@ myHeader.innerHTML =
             "</a>" +
         "</div>" +
     "</div>" ;
+}
 
+//footer
+{
 myFooter.innerHTML = 
         "<div class='row px-xl-5 pt-5'>" +
             "<div class='col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5'>" +
@@ -120,3 +126,4 @@ myFooter.innerHTML =
                 "</div>" +
             "</div>" +
         "</div>" ;
+}
