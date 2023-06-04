@@ -22,8 +22,9 @@ const sellerRef = doc(db, "Account", bookSnap.data().sellerId);
 const sellerSnap = await getDoc(sellerRef);
 const buyerRef = doc(db, "Account", bookSnap.data().buyerId);
 const buyerSnap = await getDoc(buyerRef);
-/*
+
 show();
+/*
 const imgRef = ref(storage, bookSnap.data().imgsrc);
 getDownloadURL(imgRef).then((url)=>{
     var img = document.getElementById('book-img');
@@ -43,7 +44,7 @@ onAuthStateChanged(auth, (user) =>{
     if(user){
         
         if(user.uid==bookSnap.data().sellerId){
-            btn.addEventListener("click", (e) => {
+            btn.addEventListener("click", async (e) => {
                 e.preventDefault();
 
                 //存圖片
@@ -75,14 +76,19 @@ onAuthStateChanged(auth, (user) =>{
                     imgsrc: imgSrc,
                     reason: reasonoutput
                 })
-                .then(() => {
+                const scoreRef = doc(db, "Account", bookSnap.data().buyerId);
+                const scoreSnap = await getDoc(scoreRef);
+                updateDoc(scoreRef, {
+                    score: scoreSnap.data().score-3
+                })
+                .then(async () => {
                     alert("檢舉已送出!")
                     location.href = "./sellernotify.html";
                 });
             });
 
         }else{
-            btn.addEventListener("click", (e) => {
+            btn.addEventListener("click",async (e) => {
                 e.preventDefault();
 
                 //存圖片
@@ -112,7 +118,12 @@ onAuthStateChanged(auth, (user) =>{
                     others: others.value,
                     reason: reasonoutput
                 })
-                .then(() => {
+                const scoreRef = doc(db, "Account", bookSnap.data().sellerId);
+                const scoreSnap = await getDoc(scoreRef);
+                updateDoc(scoreRef, {
+                    score: scoreSnap.data().score-3
+                })
+                .then(async () => {
                     alert("檢舉已送出!")
                     location.href = "./buyernotify.html";
                 });
