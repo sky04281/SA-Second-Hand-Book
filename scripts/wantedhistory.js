@@ -10,7 +10,7 @@ onAuthStateChanged(auth, async (user) => {
         const ref = collection(db, "Wanted");
         const q = query(ref, where("buyerId", "==", user.uid), where("ordering", "==", ""));
         const p = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true));
-        const r = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", false));
+        const r = query(ref, where("buyerId", "==", user.uid), where("ordering", "==", "訂單成立，請至訂單追蹤查看"));
         const querySnapshot = await getDocs(q);
         const querySnapshot_hasorder = await getDocs(p);
         const querySnapshot_hasproduct = await getDocs(r);
