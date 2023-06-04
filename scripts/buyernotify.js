@@ -85,7 +85,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>" + 
                     "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
                     "<button class='btn btn-sm btn-badcomment' id='" + docs.data().sellerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
-                    "<a class='btn btn-sm btn-inform' href='inform.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
+                    "<a class='btn btn-sm btn-inform' href='comment.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
                 "</td>"+
             "</tr><br>";
         });
