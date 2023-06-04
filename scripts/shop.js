@@ -382,7 +382,7 @@ async function showDropdown(currentTotal = [], selectedValue = "" , type = "area
         
         dropdown.innerHTML +=
             "<div class='nav-item dropdown'>"+
-                "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='reset'>"+ "重製分類" + 
+                "<a href='#' class='dropdown-select nav-link' data-toggle='dropdown' name='reset'>"+ "重置分類" + 
                 "</a>"+
             "</div>";
         getCate(currentTotal, type);
