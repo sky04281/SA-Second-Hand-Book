@@ -79,7 +79,8 @@ onAuthStateChanged(auth, async (user) => {
                     deadline: "",
                     imgsrc: imgSrc,
                     delivery: deloutput,
-                    pay: payoutput
+                    pay: payoutput,
+                    wanted: true
                 })
                     .then(async () => {
                         const totalRef = doc(db, "Account", "Account_Total");

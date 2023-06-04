@@ -8,7 +8,7 @@ onAuthStateChanged(auth, async (user) => {
     if(user){
         // 用 sellerId 從資料庫抓出使用者上架的書
         const ref = collection(db, "Product");
-        const q = query(ref, where("sellerId", "==", user.uid));
+        const q = query(ref, where("sellerId", "==", user.uid), where("wanted", "==", false));
         const querySnapshot = await getDocs(q);
         const view = document.getElementById("viewbook");
 
