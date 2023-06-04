@@ -83,8 +83,8 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>" + 
-                    "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().buyerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
-                    "<button class='btn btn-sm btn-badcomment' id='" + docs.data().buyerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
+                    "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
+                    "<button class='btn btn-sm btn-badcomment' id='" + docs.data().sellerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
                     "<a class='btn btn-sm btn-inform' href='inform.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
                 "</td>"+
             "</tr><br>";
@@ -145,10 +145,23 @@ onAuthStateChanged(auth, async (user) => {
             e.addEventListener('click', (f)=>{
                 f.preventDefault();
                 var docRef=doc(db,'Account',e.id);
-                //console.log(docRef);
-                //console.log(docRef.score);
+                console.log(e.id);
                 updateDoc(docRef,{
-                    score:score.value
+                    score:score.increment(1)
+                })
+                .then(()=>{
+                    alert("評價成功!");
+                })
+            })
+        })
+
+        var btn4=document.querySelectorAll('.btn-goodcomment');
+        btn4.forEach((e) => {
+            e.addEventListener('click', (f)=>{
+                f.preventDefault();
+                var docRef=doc(db,'Account',e.id);
+                updateDoc(docRef,{
+                    score:score.increment(1)
                 })
                 .then(()=>{
                     alert("評價成功!");
@@ -157,8 +170,8 @@ onAuthStateChanged(auth, async (user) => {
         })
 
         // 未收到貨按鈕
-        var btn4 = document.querySelectorAll('.btn-unreceive');
-        btn4.forEach((b) => {
+        var btn5 = document.querySelectorAll('.btn-unreceive');
+        btn5.forEach((b) => {
             b.addEventListener('click', (e) => {
                 e.preventDefault();
                 var docRef = doc(db, 'Product', b.id);
