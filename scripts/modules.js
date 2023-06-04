@@ -68,14 +68,6 @@ myHeader.innerHTML =
         "</div>" +
         "<div class='col-lg-5 col-6 text-left'>" +
             "<form class='search-form'>" +
-                "<div class='input-group'>" +
-                    "<input type='text' class='search-input form-control' placeholder='尋找書籍' id='search-input'>" +
-                    "<div class='input-group-append'>" +
-                        "<span class='input-group-text bg-transparent text-primary'>" +
-                            "<i class='search-btn fa fa-search'></i>" +
-                        "</span>" +
-                    "</div>" +
-                "</div>" +
             "</form>" +
         "</div>" +
         "<div class='col-lg-4 col-6 text-right'>" +

@@ -7,10 +7,7 @@ const booksRef = collection(db, "Product");
 const viewSort = document.querySelector('.view-sort');
 const viewBook = document.querySelector('.view-book');
 const dropdown = document.querySelector('.search-dropdown');
-const btn = document.querySelector('.search-btn');
-const form = document.querySelector('.search-form');
 
-let search = document.getElementById('search-input');
 let selectedArea = "";
 let selectedSchool = "";
 let selectedCollege = "";
@@ -19,7 +16,23 @@ let currentArr = [];
 let queryArr = [];
 let q, querySnapshot;
 
-//搜尋欄
+
+//搜尋欄渲染
+const form = document.querySelector('.search-form');
+form.innerHTML =
+    "<div class='input-group'>" +
+        "<input type='text' class='search-input form-control' placeholder='尋找書籍' id='search-input'>" +
+        "<div class='input-group-append'>" +
+            "<span class='input-group-text bg-transparent text-primary'>" +
+                "<i class='search-btn fa fa-search'></i>" +
+            "</span>" +
+        "</div>" +
+    "</div>";
+
+const btn = document.querySelector('.search-btn');
+let search = document.getElementById('search-input');
+
+//搜尋欄功能
 {
 btn.addEventListener("click", async (e) => {
     e.preventDefault();
@@ -30,6 +43,11 @@ form.addEventListener("submit", async (e)=>{
     e.preventDefault();
     myQuery();
 });
+}
+
+const myUrl = new URL(window.location.href);
+if(myUrl.searchParams.has('search')){
+    search.value = myUrl.searchParams.get('search');
 }
 
 //排序按鈕
@@ -148,7 +166,8 @@ async function myQuery(){
     //放到自訂的陣列裡處理
     queryArr = [];
     querySnapshot.forEach((docs) => {
-        if (docs.data().category) {
+        //假如書籍沒人下單
+        if (docs.data().order[4] !== true) {
             const category = docs.data().category;
             const area = category[0];
             const school = category[1];
