@@ -1,6 +1,6 @@
 import { auth, db, storage } from "../scripts/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt, updateDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, and, getDocs, getDoc, doc, orderBy, startAt, endAt, updateDoc, Timestamp } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 import { ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-storage.js";
 
 const delivery = document.getElementById("delivery");
@@ -9,7 +9,6 @@ const payment = document.getElementById("payment");
 const others = document.getElementById("others");
 const btn = document.getElementById("btn-order");
 var date = new Date(); 
-var deadline = new Date();
 
 //接值
 const bookinform = document.querySelector('.bookinform');
@@ -57,7 +56,7 @@ onAuthStateChanged(auth, (user) =>{
             }
         }
 
-        for(let i=0;i<4;i++){
+        for(let i=0;i<3;i++){
             if(bookSnap.data().pay[i]!=""){
                 selectpay.innerHTML = selectpay.innerHTML +
                     "<option value='" + bookSnap.data().pay[i] + "'>" + bookSnap.data().pay[i] + "</option>"
@@ -71,18 +70,34 @@ onAuthStateChanged(auth, (user) =>{
         if(user.emailVerified == true){
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
+
+                const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
                 updateDoc(colRef, {
                     buyerId: user.uid,
                     order: [delivery.value, address.value, payment.value, others.value, true], 
                     ordering: "待賣家確認",
                     setuptime: date,
-                    deadline: deadline.setDate(date.getDate()+7)
+                    deadline: deadline
                 })
                 .then(() => {
                     alert("訂單已傳送給賣家!")
                     location.href = "./shop.html";
                 });
             });
+
+            if(date==deadline){
+                updateDoc(colRef, {
+                    buyerId: "",
+                    order: ["", "", "", "", ""], 
+                    ordering: "",
+                    setuptime: "",
+                    deadline: ""
+                })
+                .then(() => {
+                    alert("訂單已超時，將自動刪除!")
+                    location.href = "./shop.html";
+                });
+            }
 
         //假如未驗證
         }else{
