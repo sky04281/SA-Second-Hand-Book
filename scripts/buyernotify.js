@@ -6,13 +6,8 @@ import { collection, query, where, getDocs, doc, updateDoc, getDoc } from "https
 
 
 onAuthStateChanged(auth, async (user) => {
-<<<<<<< HEAD
-    if (user) {
-        // 用 sellerId 從資料庫抓出使用者上架的書
-=======
     if(user){
-        // 用 buyerId 從資料庫抓出使用者下單的書
->>>>>>> a64caf5bd6638459825447a4d3f5a39dc26682d8
+        // 用 sellerId 從資料庫抓出使用者上架的書
         const ref = collection(db, "Product");
         const q = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "待賣家確認"));
         const n = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "取消訂單"));
@@ -31,10 +26,6 @@ onAuthStateChanged(auth, async (user) => {
 
 
         // 把書本列出來
-<<<<<<< HEAD
-        querySnapshot_q.forEach((docs) => {
-=======
-        // 賣家待確認訂單
         querySnapshot_q.forEach( (docs) => {
 >>>>>>> a64caf5bd6638459825447a4d3f5a39dc26682d8
             view.innerHTML = view.innerHTML +
@@ -50,10 +41,6 @@ onAuthStateChanged(auth, async (user) => {
                 "</tr><br>";
         });
 
-<<<<<<< HEAD
-        querySnapshot_p.forEach((docs) => {
-=======
-        // 賣家帶出貨訂單
         querySnapshot_p.forEach( (docs) => {
 >>>>>>> a64caf5bd6638459825447a4d3f5a39dc26682d8
             view.innerHTML = view.innerHTML +
@@ -69,10 +56,6 @@ onAuthStateChanged(auth, async (user) => {
                 "</tr><br>";
         });
 
-<<<<<<< HEAD
-        querySnapshot_r.forEach((docs) => {
-=======
-        // 商品已到貨待買家完成訂單
         querySnapshot_r.forEach( (docs) => {
 >>>>>>> a64caf5bd6638459825447a4d3f5a39dc26682d8
             view.innerHTML = view.innerHTML +
@@ -121,11 +104,6 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "</tr><br>";
         });
-<<<<<<< HEAD
-        querySnapshot_n.forEach((docs) => {
-=======
-
-        // 已取消訂單
         querySnapshot_n.forEach( (docs) => {
 >>>>>>> a64caf5bd6638459825447a4d3f5a39dc26682d8
             view.innerHTML = view.innerHTML +
@@ -179,7 +157,7 @@ onAuthStateChanged(auth, async (user) => {
                 d.preventDefault();
                 var docRef = doc(db, 'Product', c.id);
                 updateDoc(docRef, {
-                    order: ["", "", "", "", ""],
+                    order:["", "", "", "", ""],
                     ordering: "取消訂單"
                 })
                     .then(() => {
@@ -188,21 +166,7 @@ onAuthStateChanged(auth, async (user) => {
                     });
             });
         });
-       // var btn3 = document.querySelectorAll('.btn-goodcomment');
-        //var docRef=doc(db,'Product',"sellerId");
-        
-     
 
-
-<<<<<<< HEAD
-        /*const rref=collection(db,"Account","score");
-        const docSnap=await getDoc(rref);*/
-       
-        
-       /* btn3.forEach((e) => {
-            e.addEventListener('click', (f) => {
-=======
-        // 評價按鈕
         var btn3=document.querySelectorAll('.btn-goodcomment');
         btn3.forEach((e) => {
             e.addEventListener('click', (f)=>{
@@ -217,43 +181,15 @@ onAuthStateChanged(auth, async (user) => {
                 /*var docRef=doc(db,'Account',e.id);
                 //console.log(e.id);
                 //console.log(docRef.score);
-                //const db1 =firebase.firestore();
-                //const increment = firebase.firestore.FieldValue.increment(1);
-                //const storyRef = db1.collection('Account').doc('e.id');
-               getDoc(docRef, {
-                    score
-                })
-                console.log(score); 
-                var docRef=doc(db,'Product',e.id);
-                updateDoc(docRef, {
-                    ordering:"已評價訂單"
-                })
+                updateDoc(docRef,{
+                    score:score.value
+                 })
                  .then(()=>{
                      alert("評價成功!");
-                 })*/
-               // });
-            //});
+                 })
+            })
+        })
 
-<<<<<<< HEAD
-            }else {
-                alert("請先登入!");
-=======
-        // 未收到貨按鈕
-        var btn4 = document.querySelectorAll('.btn-unreceive');
-        btn4.forEach((b) => {
-            b.addEventListener('click', (e) => {
-                e.preventDefault();
-                var docRef = doc(db, 'Product', b.id);
-                console.log(docRef);
-                updateDoc(docRef, {
-                    ordering: "買家未收到貨"
-                })
-                .then(() => {
-                    alert("與賣家進行聯絡");
-                    location.href = "./chatroom.html?bookId="+b.id+"";
-                });
-            });
-        });
 
     }else{
         alert("請先登入!");

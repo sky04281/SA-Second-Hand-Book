@@ -50,7 +50,7 @@ function show(){
                     "<input type='text' class='form-control' id='price' placeholder='預期價格' value="+ bookSnap.data().price +">" +
                 "</div>" +
                 "<div class='form-group'>" +
-                    "<input type='text' class='form-control' id='cate' placeholder='類別' value='這邊再改'>" +
+                    "<input type='text' class='form-control' id='cate' placeholder='科目' value=" + bookSnap.data().category[4] + ">" +
                 "</div>" +
                 "<div class='form-group'>" +
                     "<input class='form-control' rows='6' id='info' placeholder='詳細資訊' value="+ bookSnap.data().info +">" +
@@ -130,7 +130,7 @@ onAuthStateChanged(auth, (user) =>{
                 isbn: isbn.value,
                 price: parseInt(price.value),
                 book: book.value,
-                //category: [data.area, data.school, data.college, data.department, cate.value],
+                category: [bookSnap.data().category[0], bookSnap.data().category[1], bookSnap.data().category[2], bookSnap.data().category[3], cate.value],
                 // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
                 info: info.value,
                 delivery: deloutput,

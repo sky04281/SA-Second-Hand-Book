@@ -74,13 +74,14 @@ onAuthStateChanged(auth, async (user) => {
                     sellerId: user.uid,
                     buyerId: "",
                     date: date,
-                    order: [], 
+                    order: ["", "", "", "", false], 
                     ordering: "",
                     setuptime: "",
                     deadline: "",
                     imgsrc: imgSrc,
                     delivery: deloutput,
-                    pay: payoutput
+                    pay: payoutput,
+                    wanted: false
                 })
                     .then(async () => {
                         const totalRef = doc(db, "Account", "Account_Total");
