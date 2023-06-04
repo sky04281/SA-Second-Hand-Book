@@ -15,6 +15,6 @@ btn.addEventListener("click", () => {
     .catch((error) => {
         const errorMessage = error.message;
         console.log(errorMessage);
-        alert(errorMessage);
+        alert("登入失敗！請確認帳號密碼是否正確");
     });
 });

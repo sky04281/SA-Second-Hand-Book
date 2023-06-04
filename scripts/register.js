@@ -9,6 +9,7 @@ const college = document.getElementById("college");
 const department = document.getElementById("department");
 const email = document.getElementById("email");
 const password = document.getElementById("password");
+const passwordCheck = document.getElementById("password-check");
 const btn = document.getElementById("btn-register");
 let uid = "";
 
@@ -20,97 +21,104 @@ console.log(totalArea);
 
 
 btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    createUserWithEmailAndPassword(auth, email.value, password.value)
-        .then((userCredential) => {
-            sendEmailVerification(auth.currentUser);
-            updateProfile(auth.currentUser, {
-                displayName: name.value,
-            });
-            uid = userCredential.user.uid;
+    if (password.value != passwordCheck.value) {
+        alert("兩次輸入的密碼不符合！")
+    }else{
+        let sure = confirm("即將註冊 資料是否無誤？");
+        e.preventDefault();
+        if (sure) {
+            createUserWithEmailAndPassword(auth, email.value, password.value)
+            .then((userCredential) => {
+                sendEmailVerification(auth.currentUser);
+                updateProfile(auth.currentUser, {
+                    displayName: name.value,
+                });
+                uid = userCredential.user.uid;
 
 
-            //加到 Account
-            const docRef = doc(db, "Account", uid);
-            setDoc(docRef, {
-                name: name.value,
-                area: area.value,
-                school: school.value,
-                college: college.value,
-                department: department.value,
-                score: 7
-            }).then(async () => {
+                //加到 Account
+                const docRef = doc(db, "Account", uid);
+                setDoc(docRef, {
+                    name: name.value,
+                    area: area.value,
+                    school: school.value,
+                    college: college.value,
+                    department: department.value,
+                    score: 7
+                }).then(async () => {
 
-                //分類選單用
-                totalArea.forEach((a)=>{
-                    if (a.area == area.value) {
-                        let totalSchool = a.totalSchool;
-                        let hasSchool = false;
-                        totalSchool.forEach((s)=>{
-                            //假如學校(School)存在
-                            if (s.school == school.value) {
-                                hasSchool = true;
-                                let totalCollege = s.totalCollege;
-                                let hasCollege = false;
-                                //假如學院(College)存在
-                                totalCollege.forEach((c)=>{
-                                    if (c.college == college.value) {
-                                        hasCollege = true;
-                                        let totalDepartment = c.totalDepartment;
-                                        let hasDepartment = false;
-                                        //假如科系(Department)存在
-                                        totalDepartment.forEach((d)=>{
-                                            if (d.department == department.value) {
-                                                hasDepartment = true;
+                    //分類選單用
+                    totalArea.forEach((a)=>{
+                        if (a.area == area.value) {
+                            let totalSchool = a.totalSchool;
+                            let hasSchool = false;
+                            totalSchool.forEach((s)=>{
+                                //假如學校(School)存在
+                                if (s.school == school.value) {
+                                    hasSchool = true;
+                                    let totalCollege = s.totalCollege;
+                                    let hasCollege = false;
+                                    //假如學院(College)存在
+                                    totalCollege.forEach((c)=>{
+                                        if (c.college == college.value) {
+                                            hasCollege = true;
+                                            let totalDepartment = c.totalDepartment;
+                                            let hasDepartment = false;
+                                            //假如科系(Department)存在
+                                            totalDepartment.forEach((d)=>{
+                                                if (d.department == department.value) {
+                                                    hasDepartment = true;
+                                                }
+                                            });
+                                            //假如科系(Department)不存在
+                                            if (hasDepartment == false) {
+                                                totalDepartment.push({
+                                                    department: department.value,
+                                                    totalCate: []
+                                                });
                                             }
-                                        });
-                                        //假如科系(Department)不存在
-                                        if (hasDepartment == false) {
-                                            totalDepartment.push({
+                                        }
+                                    });
+                                    //假如學院(College)不存在
+                                    if (hasCollege == false) {
+                                        totalCollege.push({
+                                            college: college.value,
+                                            totalDepartment: [{
                                                 department: department.value,
                                                 totalCate: []
-                                            });
-                                        }
+                                            }]
+                                        });
                                     }
-                                });
-                                //假如學院(College)不存在
-                                if (hasCollege == false) {
-                                    totalCollege.push({
+                                }
+                            });
+                            //假如學校(School)不存在
+                            if (hasSchool == false) {
+                                totalSchool.push({
+                                    school: school.value,
+                                    totalCollege: [{
                                         college: college.value,
                                         totalDepartment: [{
                                             department: department.value,
-                                            totalCate: []
-                                        }]
-                                    });
-                                }
+                                            totalCate: []}]
+                                    }]
+                                });
                             }
-                        });
-                        //假如學校(School)不存在
-                        if (hasSchool == false) {
-                            totalSchool.push({
-                                school: school.value,
-                                totalCollege: [{
-                                    college: college.value,
-                                    totalDepartment: [{
-                                        department: department.value,
-                                        totalCate: []}]
-                                }]
-                            });
                         }
-                    }
+                    });
+                    await updateDoc(totalRef, {
+                        totalArea: totalArea
+                    });
+                    alert("註冊成功！ 已發送驗證信！\n" + "請至 " + email.value + " 查看");
+                    location.href = "./login.html";
                 });
-                await updateDoc(totalRef, {
-                    totalArea: totalArea
-                });
-                alert("註冊成功！ 已發送驗證信！\n" + "請至 " + email.value + " 查看");
-                location.href = "./login.html";
-            });
 
-        })
-        .catch((error) => {
-            const errorMessage = error.message;
-            console.log(errorMessage);
-            alert(errorMessage);
-        });
+            })
+            .catch((error) => {
+                const errorMessage = error.message;
+                console.log(errorMessage);
+                alert("註冊失敗！信箱不符合格式或是帳號已被註冊");
+            });
+        }
+    }
 });
 
