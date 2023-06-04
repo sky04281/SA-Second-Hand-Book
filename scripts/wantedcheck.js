@@ -37,7 +37,7 @@ function show(){
                 "國際書號：<font color='gray'>"+bookSnap.data().isbn+"</font><br>"+
                 "<br>賣家出價價格：<font color='gray'>$"+bookSnap.data().order[2]+"</font><br>"+
                 "寄送方式：<font color='gray'>"+bookSnap.data().order[0]+"</font><br>"+
-                "付款方式：<font color='gray'>"+bookSnap.data().order[2]+"</font><br>"+
+                "付款方式：<font color='gray'>"+bookSnap.data().order[3]+"</font><br>"+
                 "賣家備註：<font color='gray'>"+bookSnap.data().order[4]+"</font><br>"+
             "</h5>"
 }
@@ -56,17 +56,21 @@ onAuthStateChanged(auth, (user) =>{
                     publish: bookSnap.data().publish,
                     isbn: bookSnap.data().isbn,
                     price: parseInt(bookSnap.data().order[2]),
-                    //category: [data.area, data.school, data.college, data.department, cate.value],
+                    category: [bookSnap.data().category[0], bookSnap.data().category[1], bookSnap.data().category[2], bookSnap.data().category[3], bookSnap.data().category[4]],
                     // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
                     info: bookSnap.data().order[4],
                     sellerId: bookSnap.data().sellerId,
                     buyerId: bookSnap.data().buyerId,
                     date: date,
-                    order: [bookSnap.data().order[0], address.value, bookSnap.data().order[2], bookSnap.data().order[4], true], 
+                    order: [bookSnap.data().order[0], address.value, bookSnap.data().order[2], others.value, true], 
                     ordering: "待賣家確認",
                     setuptime: date,
                     deadline: deadline,
                     imgsrc: bookSnap.data().imgsrc
+                })
+                updateDoc(bookRef, {
+                    ordering: "訂單成立，請至訂單追蹤查看", 
+                    order: [bookSnap.data().order[0], bookSnap.data().order[1], bookSnap.data().order[2], bookSnap.data().order[3], bookSnap.data().order[4], false]
                 })
                 .then(() => {
                     alert("訂單資訊已傳送給賣家!")
@@ -76,7 +80,7 @@ onAuthStateChanged(auth, (user) =>{
 
             if(date==deadline){
                 updateDoc(colRef, {
-                    buyerId: "",
+                    sellerId: "",
                     order: ["", "", "", "", ""], 
                     ordering: "",
                     setuptime: "",
