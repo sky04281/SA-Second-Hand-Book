@@ -70,7 +70,7 @@ onAuthStateChanged(auth, (user) =>{
                 })
                 updateDoc(bookRef, {
                     ordering: "訂單成立，請至訂單追蹤查看", 
-                    order: [bookSnap.data().order[0], bookSnap.data().order[1], bookSnap.data().order[2], bookSnap.data().order[3], bookSnap.data().order[4], false]
+                    order: [bookSnap.data().order[0], bookSnap.data().order[1], bookSnap.data().order[2], bookSnap.data().order[3], bookSnap.data().order[4], true]
                 })
                 .then(() => {
                     alert("訂單資訊已傳送給賣家!")
@@ -81,7 +81,7 @@ onAuthStateChanged(auth, (user) =>{
             if(date==deadline){
                 updateDoc(colRef, {
                     sellerId: "",
-                    order: ["", "", "", "", ""], 
+                    order: ["", "", "", "", false], 
                     ordering: "",
                     setuptime: "",
                     deadline: ""

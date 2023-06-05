@@ -34,8 +34,7 @@ if(myNav != null){
         navAccount.innerHTML =  
             "<span class = 'nav-item nav-link'>您好 "+ userSnap.data().name +"</span>" + 
             "<a href='account.html' class='nav-item nav-link'>帳號管理</a>" +
-            "<a href='#' class='btn-logout nav-item nav-link'>登出</a>" +
-            "<a href='#' class='nav-item nav-link'><i class='fas fa-bell text-primary'></i></a>";
+            "<a href='#' class='btn-logout nav-item nav-link'>登出</a>";
             
             const btn = navAccount.querySelector('.btn-logout');
             btn.addEventListener("click", (e) => {
@@ -49,7 +48,6 @@ if(myNav != null){
                         location.href = "./index.html";
                     });
                 }
-                
             });
         }else{
             // 導覽列-未登入

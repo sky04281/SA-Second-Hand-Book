@@ -58,7 +58,7 @@ function show(){
                     "</div>"+
                     
                     "<div class='d-flex align-items-center mb-4 pt-2'>"+
-                        "<a href='chatroom.html?bookId=" + bookId + "'>"+
+                        "<a href='chatroom.html?buyingBookId=" + bookId + "'>"+
                             "<button class='btn btn-primary py-2 px-4' type='submit'>" + 
                                 "<i class='fa fa-comments mr-1'></i>私訊"+
                             "</button>"+

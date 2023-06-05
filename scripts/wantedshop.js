@@ -162,7 +162,7 @@ async function myQuery(){
     queryArr = [];
     querySnapshot.forEach((docs) => {
         //假如書籍沒人下單
-        if (docs.data().order[4] !== true) {
+        if (docs.data().order[5] !== true) {
             const category = docs.data().category;
             const area = category[0];
             const school = category[1];
