@@ -284,13 +284,8 @@ onAuthStateChanged(auth, async (user) => {
                 if (sure) {
                     var docRef = doc(db, 'Product', b.id);
                     console.log(docRef);
-                    updateDoc(docRef, {
-                        ordering: "買家未收到貨"
-                    })
-                    .then(() => {
-                        alert("與賣家進行聯絡");
-                        location.href = "./chatroom.html?someoneId=" + b.id + "";
-                    });
+                    alert("與賣家進行聯絡");
+                    location.href = "./chatroom.html?someoneId=" + b.id + "";
                 }
             });
         })
