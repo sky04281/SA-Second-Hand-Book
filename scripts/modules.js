@@ -36,6 +36,15 @@ if(myNav != null){
             "<a href='account.html' class='nav-item nav-link'>帳號管理</a>" +
             "<a href='#' class='btn-logout nav-item nav-link'>登出</a>";
             
+            if(userSnap.data().score<0){
+                signOut(auth)
+                    .then(() => {
+                        localStorage.removeItem('userId');
+                        alert("信用過低！ 已停用帳號！");
+                        location.href = "./index.html";
+                    });
+            }
+
             const btn = navAccount.querySelector('.btn-logout');
             btn.addEventListener("click", (e) => {
                 e.preventDefault();

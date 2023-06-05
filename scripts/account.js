@@ -29,6 +29,7 @@ onAuthStateChanged(auth,async (user)=>{
     userScore.textContent = "用戶信用分數: " +　scoreSnap.data().score;
     if(scoreSnap.data().score<=1){
         userScoreSign.textContent = "WARNING! 分數過低，再有不良交易行為則停用帳號！";
+        alert("WARNING! 分數過低，再有不良交易行為則停用帳號！");
     }else if(scoreSnap.data().score==10){
         userScoreSign.textContent = "您為本平台優良用戶，請繼續保持！";
     }
