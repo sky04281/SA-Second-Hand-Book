@@ -22,11 +22,6 @@ onAuthStateChanged(auth, async (user) => {
         const querySnapshot_a = await getDocs(a);
         const view = document.getElementById("buyernotify");
 
-        const reff = collection(db, "Account");
-        const c = query(reff, where("buyerId", "==", user.uid), where("ordering", "==", "已完成評價"));
-        const querySnapshot_c = await getDocs(c);
-        const commentview = document.getElementById("buyernotify");
-
         const check = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true));
         const checkdeadline = await getDocs(check);
 

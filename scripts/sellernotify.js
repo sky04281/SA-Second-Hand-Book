@@ -11,11 +11,13 @@ onAuthStateChanged(auth, async (user) => {
         const q = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "待賣家確認"));
         const p = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家接收訂單，交易成立"));
         const r = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家已出貨，待買家收取並完成訂單"));
+        const a = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "已完成評價"));
         const s = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成訂單"));
         const querySnapshot_q = await getDocs(q);
         const querySnapshot_p = await getDocs(p);
         const querySnapshot_r = await getDocs(r);
         const querySnapshot_s = await getDocs(s);
+        const querySnapshot_a = await getDocs(a);
         const view = document.getElementById("sellernotify");
 
         
@@ -90,7 +92,20 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>"+
             "</tr>";
         });
-
+        //已評價
+        querySnapshot_a.forEach((docs) => {
+            view.innerHTML = view.innerHTML +
+                "<tr><td colspan='4'>已評價訂單</td></tr><tr>" +
+                "<td class='align-middle'><img src='' alt='' style='width: 50px;'>" + docs.data().book + "</td>" +
+                "<td class='align-middle text-left'>寄送方式: " + docs.data().order[0] +
+                "<br>寄送地址: " + docs.data().order[1] +
+                "<br>付款方式: " + docs.data().order[2] +
+                "<br>備註: " + docs.data().order[3] +
+                "</td>" +
+                "<td class='align-middle'>" + docs.data().ordering + "</td>" +
+                "<td class='align-middle'> 訂單完成</td>" +
+                "</tr><br>";
+        });
 
             var btn1 = document.querySelectorAll('.btn-check');
             btn1.forEach((b) => {
@@ -140,8 +155,8 @@ onAuthStateChanged(auth, async (user) => {
             }); 
 
    // 評價按鈕
-   var btn3 = document.querySelectorAll('.btn-goodcomment');
-   btn3.forEach((e) => {
+   var btn4 = document.querySelectorAll('.btn-goodcomment');
+   btn4.forEach((e) => {
        e.addEventListener('click', async (f) => {
            f.preventDefault();
            const scoreRef = doc(db, "Account", e.id);
@@ -149,7 +164,7 @@ onAuthStateChanged(auth, async (user) => {
            updateDoc(scoreRef, {
                score: scoreSnap.data().score + 1,
            })
-           const docRef = query(ref, where("sellerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
+           const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
            const docreff = await getDocs(docRef)
            docreff.forEach(async (temp) => {
                const bookid = temp.id
@@ -162,8 +177,8 @@ onAuthStateChanged(auth, async (user) => {
        })
    })
 
-   var btn4 = document.querySelectorAll('.btn-badcomment');
-   btn4.forEach((e) => {
+   var btn5 = document.querySelectorAll('.btn-badcomment');
+   btn5.forEach((e) => {
        e.addEventListener('click', async (f) => {
            f.preventDefault();
            const scoreRef = doc(db, "Account", e.id);
@@ -171,7 +186,7 @@ onAuthStateChanged(auth, async (user) => {
            updateDoc(scoreRef, {
                score: scoreSnap.data().score - 1
            })
-           const docRef = query(ref, where("sellerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
+           const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
            const docreff = await getDocs(docRef)
            docreff.forEach(async (temp) => {
                const bookid = temp.id
