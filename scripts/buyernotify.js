@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 
 
@@ -98,13 +98,13 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "</tr><br>";
 
-                "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
-                "<td class='align-middle'>" + 
-                    "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
-                    "<button class='btn btn-sm btn-badcomment' id='" + docs.data().sellerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
-                    "<a class='btn btn-sm btn-inform' href='comment.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
-                "</td>"+
-            "</tr><br>";
+            "<td class='align-middle'>" + docs.data().ordering + "</td>" +
+                "<td class='align-middle'>" +
+                "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-up'></i></button>" +
+                "<button class='btn btn-sm btn-badcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-down'></i></button>" +
+                "<a class='btn btn-sm btn-inform' href='comment.html?bookId=" + docs.id + "'><i class='fas fa-exclamation'>檢舉</i></button>" +
+                "</td>" +
+                "</tr><br>";
         });
 
         // 已取消訂單
@@ -172,7 +172,7 @@ onAuthStateChanged(auth, async (user) => {
                 updateDoc(docRef, {
                     order: ["", "", "", "", false],
                     ordering: "取消訂單",
-                    order:["", "", "", "", false],
+                    order: ["", "", "", "", false],
                     ordering: "取消訂單",
                     deadline: "",
                     setuptime: "",
@@ -188,59 +188,37 @@ onAuthStateChanged(auth, async (user) => {
 
         // 評價按鈕
         var btn3 = document.querySelectorAll('.btn-goodcomment');
-        const account = collection(db, "Account");
-        const userscore=await getDocs(score);
-        const score = query(account, where("score", "!=", 0),WaveShaperNodere);
-        userscore.forEach((c)=>{
-            console.log(c.data().score);})
-            btn3.forEach((e) => {
-                e.addEventListener('click', (f) => {
-                    f.preventDefault();
-                    //getScore(e.id);
-                    var docRef=doc(db,'Account',e.id);
-                    docRef.forEach(async () => {
-                        
-                    })
+        btn3.forEach((e) => {
+            e.addEventListener('click', async (f) => {
+                f.preventDefault();
+                const scoreRef = doc(db, "Account", e.id);
+                const scoreSnap = await getDoc(docRef);
+                updateDoc(scoreRef, {
+                    score: scoreSnap.data().score + 1,
+                    ordering: "已完成評價"
 
-                     var number=1;
-                     var newscore= 7+number ;
-                     updateDoc(docRef,{
-                         score:newscore,
-                         ordering:"已完成評價"
-                     })
-                     console.log(score)
-                    /*.then(()=>{
-                        alert("確定評價");
-                    })*/
+                })
+                var docRef = doc(db,"Product",e.id);
+                updateDoc(docRef,{
+                    ordering:"已完成評價"
+                })
+                
+            })
+        })
+
+        var btn4 = document.querySelectorAll('.btn-badcomment');
+        btn4.forEach((e) => {
+            e.addEventListener('click', async (f) => {
+                f.preventDefault();
+                const docRef = doc(db, "Account", e.id);
+                const scoreSnap = await getDoc(docRef);
+                updateDoc(docRef, {
+                    score: scoreSnap.data().score -1,
+                    ordering: "已完成評價"
+
                 })
             })
-        
-
-
-
-        async function getScore(sellerId) { 
-            const account = collection(db, "Account");
-            const score = query(account, where("uid", "==", sellerId));
-            const id = await getDocs(score);
-            id.forEach((docs) => {
-                console.log(docs.data())
-            })
-        }
-
-
-        /* var btn4=document.querySelectorAll('.btn-goodcomment');
-         btn4.forEach((e) => {
-             e.addEventListener('click', (f)=>{
-                 f.preventDefault();
-                 var docRef=doc(db,'Account',e.id);
-                 updateDoc(docRef,{
-                     score:6
-                 })
-                 .then(()=>{
-                     alert("評價成功!");
-                 })
-             })
-         })*/
+        })
 
         // 未收到貨按鈕
         var btn5 = document.querySelectorAll('.btn-unreceive');
