@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, getDocs, doc, updateDoc, getDoc,addDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 
 
@@ -22,13 +22,6 @@ onAuthStateChanged(auth, async (user) => {
         const querySnapshot_a = await getDocs(a);
         const view = document.getElementById("buyernotify");
 
-        const reff = collection(db, "Account");
-        const c = query(reff, where("buyerId", "==", user.uid), where("ordering", "==", "已完成評價"));
-        const querySnapshot_c = await getDocs(c);
-        const commentview = document.getElementById("buyernotify");
-
-
-
 
         // 把書本列出來
         // 賣家待確認訂單
@@ -42,7 +35,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<br>備註: " + docs.data().order[3] +
                 "</td>" +
                 "<td class='align-middle'>" + docs.data().ordering + "</td>" +
-                "<td class='align-middle'><button class='btn btn-sm btn-cancel' id='" + docs.id + "'><i class='fas fa-poo'>取消訂單</i></button>" + "</td>" +
+                "<td class='align-middle'><button class='btn btn-sm btn-cancel' id='" + docs.id + "'><i class='fas fa-xmark'>取消訂單</i></button>" + "</td>" +
                 "</tr><br>";
         });
 
@@ -137,15 +130,6 @@ onAuthStateChanged(auth, async (user) => {
                 "</tr><br>";
         });
 
-
-        //確定評價
-        querySnapshot_c.forEach((docs) => {
-            commentview.innerHTML = commentview.innerHTML +
-                "<tr><td colspan='4'>待評價訂單</td></tr><tr>" +
-                "<td class='align-middle'><button class='btn btn-sm btn-check' id='" + docs.id + "'><i class='fas fa-check'>確定評價</i></button>" +
-                "</tr><br>";
-        });
-
         // 完成訂單按鈕
         var btn1 = document.querySelectorAll('.btn-finish');
         btn1.forEach((b) => {
@@ -192,18 +176,24 @@ onAuthStateChanged(auth, async (user) => {
             e.addEventListener('click', async (f) => {
                 f.preventDefault();
                 const scoreRef = doc(db, "Account", e.id);
-                const scoreSnap = await getDoc(docRef);
+                const scoreSnap = await getDoc(scoreRef);
                 updateDoc(scoreRef, {
                     score: scoreSnap.data().score + 1,
-                    ordering: "已完成評價"
+                })
 
-                })
-                var docRef = doc(db,"Product",e.id);
-                updateDoc(docRef,{
-                    ordering:"已完成評價"
-                })
                 
-            })
+                const docRef = query(ref, where("sellerId", "==", e.id),where("ordering","==","買家已完成訂單"));
+                const docreff = await getDocs(docRef)
+                docreff.forEach(async (temp) => {
+                    const bookid = temp.id
+                    console.log(bookid)
+                    const oref = doc(db, "Product", bookid);
+                    //const osnap = await getDocs(oref);
+                    updateDoc(oref, {
+                        ordering:"已完成評價"
+                    })
+                })
+              })
         })
 
         var btn4 = document.querySelectorAll('.btn-badcomment');
@@ -213,7 +203,7 @@ onAuthStateChanged(auth, async (user) => {
                 const docRef = doc(db, "Account", e.id);
                 const scoreSnap = await getDoc(docRef);
                 updateDoc(docRef, {
-                    score: scoreSnap.data().score -1,
+                    score: scoreSnap.data().score - 1,
                     ordering: "已完成評價"
 
                 })
@@ -235,25 +225,7 @@ onAuthStateChanged(auth, async (user) => {
                         location.href = "./chatroom.html?bookId=" + b.id + "";
                     });
             });
-        });
-
-        //確定評價
-        var btn6 = document.querySelectorAll('.btn-check');
-        btn6.forEach((c) => {
-            c.addEventListener('click', (d) => {
-                d.preventDefault();
-                var docRef = doc(db, 'Product', c.id);
-                updateDoc(docRef, {
-                    ordering: "已完成評價"
-                })
-                    .then(() => {
-                        alert("評價成功!");
-                        location.reload();
-                    });
-            });
-        });
-
-
+        })
     } else {
         alert("請先登入!");
         location.href = "./index.html";
