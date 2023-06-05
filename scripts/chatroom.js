@@ -2,9 +2,11 @@ import { auth, db, storage } from "../scripts/firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
 import { collection, query, where, and, or, getDocs, getDoc, doc, updateDoc, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
-const chatInput = document.querySelector('.chat-input');
-const chatText = document.querySelector('.chat-text');
-const chatSelect = document.querySelector('.chat-select');
+const chatInput = document.querySelector('.chat-input'); //訊息輸入欄
+const chatText = document.querySelector('.chat-text');  //訊息顯示區域
+const chatList = document.querySelector('.chat-list');  //左方列表
+let currentChatRef; //目前顯示的聊天室的Reference
+let currentScrollTop;   //目前滾輪滾到的位置
 
 //身分驗證
 //假如沒登入
@@ -19,14 +21,12 @@ else if (localStorage.getItem('isVerified') != 'true') {
 }
 
 const userId = localStorage.getItem('userId');
-//已通過身分驗證
-const myUrl = new URL(window.location.href);
 
 //新增聊天室 
 //idArr: 存著雙方uid的array, 
 //nameArr: 存著雙方name的array],
 //chat: 存著每則訊息的array [{senderId: (傳送者的id), message: (傳送的訊息), time: (傳送時間)}]
-
+const myUrl = new URL(window.location.href);
 //從賣書私訊的
 if(myUrl.searchParams.has('buyingBookId')){
     const bookId = myUrl.searchParams.get('buyingBookId');
@@ -47,13 +47,19 @@ if(myUrl.searchParams.has('buyingBookId')){
         const sellerSnap = await getDoc(sellerRef);
         const sellerName = sellerSnap.data().name;
         const userName = localStorage.getItem('userName');
-
+        
         addDoc(chatColRef,{
             idArr: [userId, sellerId],
             nameArr: [userName, sellerName],
             chat: []
         });
     }
+    await changeChatRoom(sellerId);
+
+    const data = bookSnap.data();
+    const text = "您好 我對您上架的書籍有興趣【書名：" + data.book + ", 作者：" + data.author + 
+                    ", 出版社：" + data.publish + ", 價格：NT$" + data.price + "】";
+    sendText(text);
 }
 //從求書私訊的
 else if (myUrl.searchParams.has('wantedBookId')) {
@@ -82,22 +88,51 @@ else if (myUrl.searchParams.has('wantedBookId')) {
             chat: []
         });
     }
+
+    await changeChatRoom(buyerId);
+
+    const data = bookSnap.data();
+    const text = "您好 我有這本書【書名：" + data.book + ", 作者：" + data.author + 
+                    ", 出版社：" + data.publish + ", 期望價格：NT$" + data.price + "】";
+    sendText(text);
+}
+//直接進來
+else{
+    const chatColRef = collection(db, "Chatroom");
+    const chatColQuery = query(chatColRef, where("idArr", "array-contains", userId));
+    const chatColSnap = await getDocs(chatColQuery);
+
+    const firstChat = chatColSnap.docs[0];
+    if (firstChat.data().idArr[0] == userId) {
+        await changeChatRoom(firstChat.data().idArr[1]);
+    }
+    else{
+        await changeChatRoom(firstChat.data().idArr[0]);
+    }
 }
 
-await showChatList(userId, "");
-await showChatList(userId, "林");
-await showChatList(userId, "若");
+//每五秒刷新一次聊天內容
+let clock = setInterval(async function () {await show(currentChatRef);}, 5000);
 
-const chatSelectBtn = document.querySelectorAll('.chat-select-btn');
-chatSelectBtn.forEach((btn)=>{
-    btn.addEventListener('click',async (e)=>{
-        e.preventDefault();
-        console.log(btn.name);
-        await changeChatRoom(btn.id, btn.name);
-    });
+//搜尋欄功能
+const chatListSearch = document.querySelector('.chat-list-search');
+chatListSearch.addEventListener("keydown", async (e)=>{
+    if (e.key == "Enter") {
+        await showChatList(userId, chatListSearch.value);
+    }
 });
 
+//訊息輸入欄功能
+chatInput.addEventListener("keydown", async (e)=>{
+    if (e.key == "Enter") {
+        if (e.shiftKey != true) {
+            await sendText(chatInput.value);
+            chatInput.value = "";
+        }
+    }
+});
 
+await showChatList(userId, "");
 
 //快捷鍵
 const fastbtn1 = document.getElementById('fastbtn1');
@@ -121,7 +156,7 @@ document.addEventListener('click', function(e) {
 //左方聊天室列表
 //uid: 當前使用者id, searchName: 要查詢的名字
 async function showChatList(uid = "", searchName = ""){
-    chatSelect.innerHTML = "";
+    chatList.innerHTML = "";
     let chatArr = [];
     const userId = uid;
     //左方聊天室-從資料庫抓取
@@ -131,13 +166,14 @@ async function showChatList(uid = "", searchName = ""){
     
     if (searchName != "") {
         colSnap.forEach((chatrooms)=>{
-            let name = "";
+            //對方的名字
+            let chatName = "";
             if (chatrooms.data().idArr[0] == userId) {
-                name = chatrooms.data().nameArr[1];
+                chatName = chatrooms.data().nameArr[1];
             } else {
-                name = chatrooms.data().nameArr[0];
+                chatName = chatrooms.data().nameArr[0];
             }
-            if (name.includes(searchName)) {
+            if (chatName.includes(searchName)) {
                 chatArr.push(chatrooms);
             }
         });
@@ -146,18 +182,22 @@ async function showChatList(uid = "", searchName = ""){
     }
 
     //左方聊天室-渲染
-    chatArr.forEach((chatroom)=>{
-        //找對方的名稱
-        let name;
-        if (chatroom.data().idArr[0] == userId) {
-            name = chatroom.data().nameArr[1];
+    chatArr.forEach((chatrooms)=>{
+        //對方的名字
+        let chatName = "";
+        //對方的uid
+        let chatId = "";
+        if (chatrooms.data().idArr[0] == userId) {
+            chatName = chatrooms.data().nameArr[1];
+            chatId = chatrooms.data().idArr[1];
         } else {
-            name = chatroom.data().nameArr[0];
+            chatName = chatrooms.data().nameArr[0];
+            chatId = chatrooms.data().idArr[0];
         }
 
         //渲染左邊那排
-        chatSelect.innerHTML += 
-            "<a href='' id='"+ chatroom.id + "' class='chat-select-btn' name='"+ name +"'>"+
+        chatList.innerHTML += 
+            "<a href='' id='"+ chatId + "' class='chat-select-btn' name='"+ chatName +"'>"+
                 "<div class='d-flex justify-content-between  mb-2 pt-2'>"+
                     "<div style='height: 30%; width: 20%; margin-bottom: 6%;'>"+
                         "<img src='https://cdn-icons-png.flaticon.com/512/1946/1946429.png'"+
@@ -165,65 +205,50 @@ async function showChatList(uid = "", searchName = ""){
                     "</div>"+
 
                     "<div style='height: 30%; width: 70%; margin-top: 5%'>"+
-                        "<h6>"+ name +"</h6>"+
+                        "<h6>"+ chatName +"</h6>"+
                     "</div>"+
                 "</div>"+
             "</a>"+
             "<hr class='mt-0'>";
     });
-}
 
-
-async function changeChatRoom(chatRoomId, chatName){
-
-    const chatUserName = document.querySelector('.chat-user-name');
-    chatUserName.textContent = chatName;
-    const chatRef = doc(db, "Chatroom", chatRoomId);
-    let chatSnap = await getDoc(chatRef);
-
-
-    chatInput.addEventListener("keypress", async (e)=>{
-        if (e.key == "Enter") {
-            chatSnap = await getDoc(chatRef);
-            let chat = chatSnap.data().chat;
-            if (chat == undefined) {
-                await updateDoc(chatRef, {
-                    chat: []
-                });
-                chatSnap = await getDoc(chatRef);
-                chat = chatSnap.data().chat;
-            }
-            
-            chat.push({
-                senderId: userId,
-                message: chatInput.value,
-                time: new Date()
-            });
-
-            await updateDoc(chatRef, {
-                chat: chat
-            }).then(async ()=>{
-                chatInput.value = "";
-            });
-        }
-        chatSnap = await getDoc(chatRef);
-        show(chatRef, chatSnap);
-    });
-
-    show(chatRef, chatSnap);
-}
-
-async function show(chatRef, chatSnap){
-    chatText.innerHTML = "";
-    const chat = chatSnap.data().chat;
-
-    if (chat == undefined) {
-        await updateDoc(chatRef, {
-            chat: []
+    //切換聊天室的按鈕功能
+    const chatSelectBtn = document.querySelectorAll('.chat-select-btn');
+    chatSelectBtn.forEach((btn)=>{
+        btn.addEventListener('click',async (e)=>{
+            e.preventDefault();
+            await changeChatRoom(btn.id);
         });
-        chatSnap = await getDoc(chatRef);
-        chat = chatSnap.data().chat;
-    }
+    });
+}
+
+//更換聊天室
+//chatId: 對方的uid
+async function changeChatRoom(chatId = ""){
+    //找到對方的名字
+    const chatUserName = document.querySelector('.chat-user-name');
+    const accountSnap = await getDoc(doc(db, "Account", chatId));
+    chatUserName.textContent = accountSnap.data().name;
+
+    //找到聊天室
+    const chatColRef = collection(db, "Chatroom");
+    const chatColQuery = query(chatColRef, where("idArr", "in", [[userId, chatId], [chatId, userId]]));
+    const chatColSnap = await getDocs(chatColQuery);
+
+    currentChatRef = doc(db, "Chatroom", chatColSnap.docs[0].id);
+
+    await show(currentChatRef);
+    chatText.scrollTop = chatText.scrollHeight;
+}
+
+//刷新訊息
+//chatRef: 聊天室的Reference
+async function show(chatRef = {}){
+    //紀錄滾輪的位置
+    currentScrollTop = chatText.scrollTop;
+    chatText.innerHTML = "";
+    const chatSnap = await getDoc(chatRef);
+    const chat = chatSnap.data().chat;
 
     chat.forEach((text)=>{
         if (text.senderId == userId) {
@@ -232,4 +257,26 @@ async function show(chatRef, chatSnap){
             chatText.innerHTML += "<div class='user remote'><div class='text'>" + text.message + "</div></div>";
         }
     });
+
+    //移至滾輪位置
+    chatText.scrollTop = currentScrollTop;
+}
+
+//傳送訊息
+//text: 要傳的訊息
+async function sendText(text = ""){
+    let chatSnap = await getDoc(currentChatRef);
+    let chat = chatSnap.data().chat;
+
+    chat.push({
+        senderId: userId,
+        message: text,
+        time: new Date()
+    });
+
+    await updateDoc(currentChatRef, {
+        chat: chat
+    });
+
+    await show(currentChatRef);
 }
