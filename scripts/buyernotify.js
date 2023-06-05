@@ -190,7 +190,7 @@ onAuthStateChanged(auth, async (user) => {
         var btn3 = document.querySelectorAll('.btn-goodcomment');
         const account = collection(db, "Account");
         const userscore=await getDocs(score);
-        const score = query(account, where("score", "!=", 0),where("uid","==",e.id));
+        const score = query(account, where("score", "!=", 0),WaveShaperNodere);
         userscore.forEach((c)=>{
             console.log(c.data().score);})
             btn3.forEach((e) => {
@@ -198,6 +198,10 @@ onAuthStateChanged(auth, async (user) => {
                     f.preventDefault();
                     //getScore(e.id);
                     var docRef=doc(db,'Account',e.id);
+                    docRef.forEach(async () => {
+                        
+                    })
+
                      var number=1;
                      var newscore= 7+number ;
                      updateDoc(docRef,{
