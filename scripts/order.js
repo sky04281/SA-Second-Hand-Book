@@ -71,8 +71,8 @@ onAuthStateChanged(auth, (user) =>{
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
 
-                const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
-                //const deadline = new Date(date.getTime()+10*60*1000);
+                //const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
+                const deadline = new Date(date.getTime()+5*60*1000);
                 updateDoc(colRef, {
                     buyerId: user.uid,
                     order: [delivery.value, address.value, payment.value, others.value, true], 

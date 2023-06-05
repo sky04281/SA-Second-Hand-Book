@@ -35,18 +35,20 @@ onAuthStateChanged(auth, async (user) => {
             const deadline = docs.data().deadline;
             console.log(docs.data().deadline);
             console.log(docs.id);
-            if (Date.now() > deadline.toMillis()) {
-                var docRef = doc(db, 'Product', docs.id);
-                updateDoc(docRef, {
-                    buyerId: "",
-                    order: ["", "", "", "", false],
-                    ordering: "",
-                    setuptime: "",
-                    deadline: ""
-                }).then(() => {
-                    alert("有訂單已超時，將自動刪除!");
-                    location.href = "./buyernotify.html";
-                });
+            if(docs.data().ordering=="待賣家確認"){
+                if (Date.now() > deadline.toMillis()) {
+                    var docRef = doc(db, 'Product', docs.id);
+                    updateDoc(docRef, {
+                        buyerId: "",
+                        order: ["", "", "", "", false],
+                        ordering: "",
+                        setuptime: "",
+                        deadline: ""
+                    }).then(() => {
+                        alert(docs.data().book + "此筆訂單已超時，將自動刪除!");
+                        location.href = "./buyernotify.html";
+                    });
+                }
             }
         });
 
