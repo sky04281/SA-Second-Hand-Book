@@ -71,54 +71,21 @@ onAuthStateChanged(auth, (user) =>{
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
 
-                //const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
-                const deadline = new Date(date.getTime()+2*60*1000);
-                const deadlinetimestamp = Timestamp.fromDate(deadline);
+                const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
+                //const deadline = new Date(date.getTime()+10*60*1000);
                 updateDoc(colRef, {
                     buyerId: user.uid,
                     order: [delivery.value, address.value, payment.value, others.value, true], 
                     ordering: "待賣家確認",
                     setuptime: date,
-                    deadline: deadlinetimestamp
+                    deadline: deadline
                 })
                 .then(() => {
                     alert("訂單已傳送給賣家!")
                     location.href = "./shop.html";
                 });
-
-                function checkDeadline() {
-                    const currentTime = new Date();
-                    console.log(currentTime);
-                
-                    if (currentTime > deadline) {
-                        updateDoc(colRef, {
-                            buyerId: "",
-                            order: ["", "", "", "", false],
-                            ordering: "",
-                            setuptime: "",
-                            deadline: ""
-                        }).then(() => {
-                        alert("訂單已超時，將自動刪除!");
-                        location.href = "./shop.html";
-                    });
-                }}
-                const timer = setInterval(checkDeadline, 1000);
                 
             });
-
-            /*if(date==deadline){
-                updateDoc(colRef, {
-                    buyerId: "",
-                    order: ["", "", "", "", ""], 
-                    ordering: "",
-                    setuptime: "",
-                    deadline: ""
-                })
-                .then(() => {
-                    alert("訂單已超時，將自動刪除!")
-                    location.href = "./shop.html";
-                });
-            }*/
 
         //假如未驗證
         }else{
