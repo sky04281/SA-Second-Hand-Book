@@ -81,6 +81,9 @@ onAuthStateChanged(auth, (user) =>{
                 updateDoc(scoreRef, {
                     score: scoreSnap.data().score-3
                 })
+                updateDoc(bookRef, {
+                    ordering: "已完成評價"
+                })
                 .then(async () => {
                     alert("檢舉已送出!")
                     location.href = "./sellernotify.html";
@@ -122,6 +125,9 @@ onAuthStateChanged(auth, (user) =>{
                 const scoreSnap = await getDoc(scoreRef);
                 updateDoc(scoreRef, {
                     score: scoreSnap.data().score-3
+                })
+                updateDoc(bookRef, {
+                    ordering: "買家已完成評價"
                 })
                 .then(async () => {
                     alert("檢舉已送出!")
