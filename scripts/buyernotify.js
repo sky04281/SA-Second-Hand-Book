@@ -13,7 +13,7 @@ onAuthStateChanged(auth, async (user) => {
         const p = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家接收訂單，交易成立"));
         const r = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家已出貨，待買家收取並完成訂單"));
         const a = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "已完成評價"));
-        const query_sellerscore = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成訂單"))
+        const sellerscore = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成評價 待賣家評價"))
         const s = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成訂單"));
         const querySnapshot_q = await getDocs(q);
         const querySnapshot_p = await getDocs(p);
@@ -148,7 +148,7 @@ onAuthStateChanged(auth, async (user) => {
                     "<br>付款方式: " + docs.data().order[2] +
                     "<br>備註: " + docs.data().order[3] +
                 "</td>" +
-                "<td class='align-middle'>"+ docs.data().ordering+ "，待賣家家評價</td>" +
+                "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>"+
                 "<button class='btn btn-sm''><i class='fas fa-times'></i></button>"+ 
                     "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊買家</i></a>" +
@@ -226,7 +226,7 @@ onAuthStateChanged(auth, async (user) => {
                     console.log(bookid)
                     const oref = doc(db, "Product", bookid);
                     updateDoc(oref, {
-                        ordering: "買家已完成評價"
+                        ordering: "買家已完成評價 待賣家評價"
                     })
                     .then(() => {
                         alert("評價成功!");
@@ -252,7 +252,7 @@ onAuthStateChanged(auth, async (user) => {
                     console.log(bookid)
                     const oref = doc(db, "Product", bookid);
                     updateDoc(oref, {
-                        ordering: "買家已完成評價"
+                        ordering: "買家已完成評價 待賣家評價"
                     })
                     .then(() => {
                         alert("評價成功!");
