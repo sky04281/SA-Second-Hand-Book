@@ -86,9 +86,25 @@ showDropdown(totalArea, "全部地區", "reset");
 //arrToShow: 裝著書本的陣列
 function show(arrToShow = []){
     
+    //處理查詢
+    let searchedArr = [];
+    //假如有查書名
+    if (search.value != "") {
+        arrToShow.forEach((docs)=>{
+            let bookName = docs.data.book;
+            //找到書名中包含這個字
+            if (bookName.includes(search.value)) {
+                searchedArr.push(docs);
+            }
+        });
+    }
+    else{
+        searchedArr = arrToShow;
+    }
+
     //書籍
     viewBook.innerHTML = "";
-    arrToShow.forEach((docs) => {
+    searchedArr.forEach((docs) => {
         viewBook.innerHTML = viewBook.innerHTML +
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
@@ -116,8 +132,8 @@ function show(arrToShow = []){
     sortPrice.forEach((sp)=>{
     sp.addEventListener('click', (e)=>{
         e.preventDefault();
-        arrSort(arrToShow, "price", parseInt(sp.id));
-        show(arrToShow);
+        arrSort(searchedArr, "price", parseInt(sp.id));
+        show(searchedArr);
         });
     });
 
@@ -155,7 +171,7 @@ async function myQuery(){
     querySnapshot = await getDocs(booksRef);
 
     //放到自訂的陣列裡處理
-    let tempQueryArr = [];
+    queryArr = [];
     querySnapshot.forEach((docs) => {
         //假如書籍沒人下單
         if (docs.data().order[4] !== true) {
@@ -172,34 +188,34 @@ async function myQuery(){
                     //判斷分類選取的情況
                     if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
                         if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
-                            tempQueryArr.push({
+                            queryArr.push({
                                 id: docs.id,
                                 data: docs.data()
                             });
                         }
                     }else if((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "")) {
                         if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege)){
-                            tempQueryArr.push({
+                            queryArr.push({
                                 id: docs.id,
                                 data: docs.data()
                             });
                         }
                     }else if((selectedArea != "") & (selectedSchool != "")) {
                         if((area == selectedArea) & (school == selectedSchool)){
-                            tempQueryArr.push({
+                            queryArr.push({
                                 id: docs.id,
                                 data: docs.data()
                             });
                         }
                     }else if((selectedArea != "")) {
                         if((area == selectedArea)){
-                            tempQueryArr.push({
+                            queryArr.push({
                                 id: docs.id,
                                 data: docs.data()
                             });
                         }
                     }else{
-                        tempQueryArr.push({
+                        queryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
@@ -210,34 +226,34 @@ async function myQuery(){
             else{
                 if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
                     if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
-                        tempQueryArr.push({
+                        queryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
                     }
                 }else if((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "")) {
                     if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege)){
-                        tempQueryArr.push({
+                        queryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
                     }
                 }else if((selectedArea != "") & (selectedSchool != "")) {
                     if((area == selectedArea) & (school == selectedSchool)){
-                        tempQueryArr.push({
+                        queryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
                     }
                 }else if((selectedArea != "")) {
                     if((area == selectedArea)){
-                        tempQueryArr.push({
+                        queryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
                     }
                 }else{
-                    tempQueryArr.push({
+                    queryArr.push({
                         id: docs.id,
                         data: docs.data()
                     });
@@ -245,19 +261,6 @@ async function myQuery(){
             }
         }
     });
-
-    //處理查詢
-    queryArr = [];
-    if (search.value != "") {
-        tempQueryArr.forEach((docs)=>{
-            let bookName = docs.data.book;
-            if (bookName.includes(search.value)) {
-                queryArr.push(docs);
-            }
-        });
-    } else {
-        queryArr = tempQueryArr;
-    }
 
     //預設價格小到大
     arrSort(queryArr, "price");
@@ -535,7 +538,6 @@ async function getCate(arr = [], type = "area"){
                 "<a href='shop.html'>全部商品</a>" + " > " + selectedArea + " > " + selectedSchool + 
                 " > " + selectedCollege + " > " + selectedDepartment + " > " + cateBtn.textContent;
             changeCate(queryArr, cateBtn.textContent);
-            search.value = "";
         });
     });
 }
@@ -551,6 +553,7 @@ function changeCate(arr = [], cate = ""){
         }
     });
 
+    search.value = "";
     arrSort(changedArr, "price", 1);
     show(changedArr);
 }
