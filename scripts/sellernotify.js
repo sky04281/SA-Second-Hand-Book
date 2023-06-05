@@ -18,8 +18,9 @@ onAuthStateChanged(auth, async (user) => {
         const querySnapshot_s = await getDocs(s);
         const view = document.getElementById("sellernotify");
 
+        
         // 把書本列出來
-        querySnapshot_q.forEach( (docs) => {
+        querySnapshot_q.forEach(async (docs) => {
             view.innerHTML = view.innerHTML +
             "<tr><td colspan='4'>待處理訂單</td></tr><tr>" +
                 "<td class='align-middle'><img src='' alt='' style='width: 50px;'>" + docs.data().book +"</td>" +
@@ -32,6 +33,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>"+
                     "<button class='btn btn-sm btn-check' id='" + docs.id +"'><i class='fas fa-check'>確認訂單</i></button>"+
                     "<button class='btn btn-sm btn-delete' id='"+ docs.id + "'><i class='fas fa-times'>取消訂單</i></button>"+
+                    "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().buyerId+"'><i class='fas fa-comments text-primary'>私訊買家</i></a>" +
                 "</td>"+
             "</tr><br>";
         });
@@ -48,6 +50,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>"+
                     "<button class='btn btn-sm btn-sent' id='" + docs.id +"'><i class='fas fa-check'>確認出貨</i></button>"+
+                    "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().buyerId+"'><i class='fas fa-comments text-primary'>私訊買家</i></a>" +
                 "</td>"+
             "</tr>";
         });
@@ -64,6 +67,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>"+
                     "<button class='btn btn-sm btn-sent' id='" + docs.id +"'><i class='fas fa-times'></i></button>"+
+                    "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().buyerId+"'><i class='fas fa-comments text-primary'>私訊買家</i></a>" +
                 "</td>"+
             "</tr>";
         });
@@ -79,10 +83,11 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>"+
-                "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().buyerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
-                "<button class='btn btn-sm btn-badcomment' id='" + docs.data().buyerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
-                "<a class='btn btn-sm btn-inform' href='comment.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
-            "</td>"+
+                    "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().buyerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
+                    "<button class='btn btn-sm btn-badcomment' id='" + docs.data().buyerId+"'><i class='fas fa-thumbs-down'></i></button>" + 
+                    "<a class='btn btn-sm btn-inform' href='comment.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></a>" + 
+                    "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().buyerId+"'><i class='fas fa-comments text-primary'>私訊買家</i></a>" +
+                "</td>"+
             "</tr>";
         });
 
