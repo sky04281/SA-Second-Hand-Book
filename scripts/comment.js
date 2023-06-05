@@ -46,93 +46,97 @@ onAuthStateChanged(auth, (user) =>{
         if(user.uid==bookSnap.data().sellerId){
             btn.addEventListener("click", async (e) => {
                 e.preventDefault();
+                let sure = confirm("即將送出檢舉 請確認內容無誤！")
+                if (sure) {
+                    //存圖片
+                    if (imgFile) {
+                        const imgRef = ref(storage, imgSrc);
+                        uploadBytes(imgRef, imgFile);
+                    }else{
+                        imgSrc = "Product/NotFound.jpg";
+                    }
+                    
+                    let reasonchecked = document.querySelectorAll('input[name="checkbox"]:checked');
+                    let reasonoutput = [];
+                    reasonchecked.forEach((checkbox) => {
+                        reasonoutput.push(checkbox.value);
+                    });
 
-                //存圖片
-                if (imgFile) {
-                    const imgRef = ref(storage, imgSrc);
-                    uploadBytes(imgRef, imgFile);
-                }else{
-                    imgSrc = "Product/NotFound.jpg";
+                    while(reasonoutput.length<5){
+                        reasonoutput.push("");
+                    }
+
+                    const colRef = collection(db, "Report");
+                    addDoc(colRef, {
+                        product: bookId,
+                        prosecutor: bookSnap.data().sellerId,
+                        //原告
+                        defendant: bookSnap.data().buyerId,
+                        //被告
+                        others: others.value,
+                        imgsrc: imgSrc,
+                        reason: reasonoutput
+                    })
+                    const scoreRef = doc(db, "Account", bookSnap.data().buyerId);
+                    const scoreSnap = await getDoc(scoreRef);
+                    updateDoc(scoreRef, {
+                        score: scoreSnap.data().score-3
+                    })
+                    updateDoc(bookRef, {
+                        ordering: "已完成評價"
+                    })
+                    .then(async () => {
+                        alert("檢舉已送出!")
+                        location.href = "./sellernotify.html";
+                    });
                 }
-                
-                let reasonchecked = document.querySelectorAll('input[name="checkbox"]:checked');
-                let reasonoutput = [];
-                reasonchecked.forEach((checkbox) => {
-                    reasonoutput.push(checkbox.value);
-                });
-
-                while(reasonoutput.length<5){
-                    reasonoutput.push("");
-                }
-
-                const colRef = collection(db, "Report");
-                addDoc(colRef, {
-                    product: bookId,
-                    prosecutor: bookSnap.data().sellerId,
-                    //原告
-                    defendant: bookSnap.data().buyerId,
-                    //被告
-                    others: others.value,
-                    imgsrc: imgSrc,
-                    reason: reasonoutput
-                })
-                const scoreRef = doc(db, "Account", bookSnap.data().buyerId);
-                const scoreSnap = await getDoc(scoreRef);
-                updateDoc(scoreRef, {
-                    score: scoreSnap.data().score-3
-                })
-                updateDoc(bookRef, {
-                    ordering: "已完成評價"
-                })
-                .then(async () => {
-                    alert("檢舉已送出!")
-                    location.href = "./sellernotify.html";
-                });
             });
 
         }else{
             btn.addEventListener("click",async (e) => {
                 e.preventDefault();
+                let sure = confirm("即將送出檢舉 請確認內容無誤！")
+                if (sure) {
+                    //存圖片
+                    if (imgFile) {
+                        const imgRef = ref(storage, imgSrc);
+                        uploadBytes(imgRef, imgFile);
+                    }else{
+                        imgSrc = "Product/NotFound.jpg";
+                    }
 
-                //存圖片
-                if (imgFile) {
-                    const imgRef = ref(storage, imgSrc);
-                    uploadBytes(imgRef, imgFile);
-                }else{
-                    imgSrc = "Product/NotFound.jpg";
+                    let reasonchecked = document.querySelectorAll('input[name="checkbox"]:checked');
+                    let reasonoutput = [];
+                    reasonchecked.forEach((checkbox) => {
+                        reasonoutput.push(checkbox.value);
+                    });
+
+                    while(reasonoutput.length<5){
+                        reasonoutput.push("");
+                    }
+
+                    const colRef = doc(db, "Report");
+                    addDoc(colRef, {
+                        product: bookId,
+                        defendant: bookSnap.data().sellerId,
+                        prosecutor: bookSnap.data().buyerId,
+                        imgsrc: imgSrc,
+                        others: others.value,
+                        reason: reasonoutput
+                    })
+                    const scoreRef = doc(db, "Account", bookSnap.data().sellerId);
+                    const scoreSnap = await getDoc(scoreRef);
+                    updateDoc(scoreRef, {
+                        score: scoreSnap.data().score-3
+                    })
+                    updateDoc(bookRef, {
+                        ordering: "買家已完成評價"
+                    })
+                    .then(async () => {
+                        alert("檢舉已送出!")
+                        location.href = "./buyernotify.html";
+                    });
                 }
-
-                let reasonchecked = document.querySelectorAll('input[name="checkbox"]:checked');
-                let reasonoutput = [];
-                reasonchecked.forEach((checkbox) => {
-                    reasonoutput.push(checkbox.value);
-                });
-
-                while(reasonoutput.length<5){
-                    reasonoutput.push("");
-                }
-
-                const colRef = doc(db, "Report");
-                addDoc(colRef, {
-                    product: bookId,
-                    defendant: bookSnap.data().sellerId,
-                    prosecutor: bookSnap.data().buyerId,
-                    imgsrc: imgSrc,
-                    others: others.value,
-                    reason: reasonoutput
-                })
-                const scoreRef = doc(db, "Account", bookSnap.data().sellerId);
-                const scoreSnap = await getDoc(scoreRef);
-                updateDoc(scoreRef, {
-                    score: scoreSnap.data().score-3
-                })
-                updateDoc(bookRef, {
-                    ordering: "買家已完成評價"
-                })
-                .then(async () => {
-                    alert("檢舉已送出!")
-                    location.href = "./buyernotify.html";
-                });
             });
         }
     }else{

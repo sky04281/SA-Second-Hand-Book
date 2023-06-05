@@ -85,12 +85,15 @@ onAuthStateChanged(auth, async (user) => {
         btn.forEach((b) => {
             b.addEventListener('click', (e) => {
                 e.preventDefault();
-                var docRef = doc(db, 'Wanted', b.id);
-                deleteDoc(docRef)
-                .then(() => {
-                    alert("已成功刪除!");
-                    location.reload();
-                });
+                let sure = confirm("即將刪除求書 確定嗎？");
+                if (sure) {
+                    var docRef = doc(db, 'Wanted', b.id);
+                    deleteDoc(docRef)
+                    .then(() => {
+                        alert("已成功刪除!");
+                        location.reload();
+                    });
+                }
             });
         });
 

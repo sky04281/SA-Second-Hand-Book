@@ -70,21 +70,22 @@ onAuthStateChanged(auth, (user) =>{
         if(user.emailVerified == true){
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
-
-                //const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
-                const deadline = new Date(date.getTime()+5*60*1000);
-                updateDoc(colRef, {
-                    buyerId: user.uid,
-                    order: [delivery.value, address.value, payment.value, others.value, true], 
-                    ordering: "待賣家確認",
-                    setuptime: date,
-                    deadline: deadline
-                })
-                .then(() => {
-                    alert("訂單已傳送給賣家!")
-                    location.href = "./shop.html";
-                });
-                
+                let sure = confirm("即將傳送訂單給賣家 請確認資料無誤！")
+                if (sure) {
+                    //const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
+                    const deadline = new Date(date.getTime()+5*60*1000);
+                    updateDoc(colRef, {
+                        buyerId: user.uid,
+                        order: [delivery.value, address.value, payment.value, others.value, true], 
+                        ordering: "待賣家確認",
+                        setuptime: date,
+                        deadline: deadline
+                    })
+                    .then(() => {
+                        alert("訂單已傳送給賣家!")
+                        location.href = "./shop.html";
+                    });
+                }
             });
 
         //假如未驗證

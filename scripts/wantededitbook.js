@@ -100,46 +100,48 @@ onAuthStateChanged(auth, (user) =>{
         console.log(user);
         btn.addEventListener("click", (e) => {
             e.preventDefault();
-            
-            //寄送方式
-            let delchecked = document.querySelectorAll('input[name="checkbox"]:checked');
-            let deloutput = [];
-            delchecked.forEach((checkbox) => {
-                deloutput.push(checkbox.value);
-            });
+            let sure = confirm("即將完成編輯 請確認資料無誤！");
+            if (sure) {
+                //寄送方式
+                let delchecked = document.querySelectorAll('input[name="checkbox"]:checked');
+                let deloutput = [];
+                delchecked.forEach((checkbox) => {
+                    deloutput.push(checkbox.value);
+                });
 
-            while(deloutput.length<4){
-                deloutput.push("");
+                while(deloutput.length<4){
+                    deloutput.push("");
+                }
+
+                //付款方式
+                let paychecked = document.querySelectorAll('input[name="checkbox1"]:checked');
+                let payoutput = [];
+                paychecked.forEach((checkbox) => {
+                    payoutput.push(checkbox.value);
+                });
+
+                while(payoutput.length<3){
+                    payoutput.push("");
+                }
+
+                updateDoc(bookRef, {
+                    buyerId: user.uid,
+                    author: author.value,
+                    publish: publish.value,
+                    isbn: isbn.value,
+                    price: parseInt(price.value),
+                    book: book.value,
+                    category: [bookSnap.data().category[0], bookSnap.data().category[1], bookSnap.data().category[2], bookSnap.data().category[3], cate.value],
+                    // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
+                    info: info.value,
+                    delivery: deloutput,
+                    pay: payoutput
+                })
+                .then(() => {
+                    alert("完成編輯!")
+                    location.href = "./wantedhistory.html";
+                });
             }
-
-            //付款方式
-            let paychecked = document.querySelectorAll('input[name="checkbox1"]:checked');
-            let payoutput = [];
-            paychecked.forEach((checkbox) => {
-                payoutput.push(checkbox.value);
-            });
-
-            while(payoutput.length<3){
-                payoutput.push("");
-            }
-
-            updateDoc(bookRef, {
-                buyerId: user.uid,
-                author: author.value,
-                publish: publish.value,
-                isbn: isbn.value,
-                price: parseInt(price.value),
-                book: book.value,
-                category: [bookSnap.data().category[0], bookSnap.data().category[1], bookSnap.data().category[2], bookSnap.data().category[3], cate.value],
-                // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
-                info: info.value,
-                delivery: deloutput,
-                pay: payoutput
-            })
-            .then(() => {
-                alert("完成編輯!")
-                location.href = "./wantedhistory.html";
-            });
         });
 
     }else{

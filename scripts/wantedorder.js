@@ -71,16 +71,19 @@ onAuthStateChanged(auth, (user) =>{
         if(user.emailVerified == true){
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
-                updateDoc(colRef, {
-                    sellerId: user.uid,
-                    order: [delivery.value, "",price.value, payment.value, others.value, true], 
-                    //賣家接受的資訊:運送方式, 地址(買家填寫), 賣家出價, 支付方式, 備註, 訂單判斷
-                    ordering: "待買家接受訂單",
-                })
-                .then(() => {
-                    alert("訂單已傳送給買家!")
-                    location.href = "./wantedshop.html";
-                });
+                let sure = confirm("即將傳送訂單給買家 請確認資料無誤！");
+                if (sure) {
+                    updateDoc(colRef, {
+                        sellerId: user.uid,
+                        order: [delivery.value, "",price.value, payment.value, others.value, true], 
+                        //賣家接受的資訊:運送方式, 地址(買家填寫), 賣家出價, 支付方式, 備註, 訂單判斷
+                        ordering: "待買家接受訂單",
+                    })
+                    .then(() => {
+                        alert("訂單已傳送給買家!")
+                        location.href = "./wantedshop.html";
+                    });
+                }
             });
 
         //假如未驗證

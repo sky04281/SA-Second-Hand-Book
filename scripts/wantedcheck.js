@@ -47,35 +47,37 @@ onAuthStateChanged(auth, (user) =>{
         if(user.emailVerified == true){
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
-
-                const colRef = doc(db, "Product", bookId);
-                const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
-                setDoc(colRef, {
-                    book: bookSnap.data().book,
-                    author: bookSnap.data().author,
-                    publish: bookSnap.data().publish,
-                    isbn: bookSnap.data().isbn,
-                    price: parseInt(bookSnap.data().order[2]),
-                    category: [bookSnap.data().category[0], bookSnap.data().category[1], bookSnap.data().category[2], bookSnap.data().category[3], bookSnap.data().category[4]],
-                    // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
-                    info: bookSnap.data().order[4],
-                    sellerId: bookSnap.data().sellerId,
-                    buyerId: bookSnap.data().buyerId,
-                    date: date,
-                    order: [bookSnap.data().order[0], address.value, bookSnap.data().order[2], others.value, true], 
-                    ordering: "待賣家確認",
-                    setuptime: date,
-                    deadline: deadline,
-                    imgsrc: bookSnap.data().imgsrc
-                })
-                updateDoc(bookRef, {
-                    ordering: "訂單成立，請至訂單追蹤查看", 
-                    order: [bookSnap.data().order[0], bookSnap.data().order[1], bookSnap.data().order[2], bookSnap.data().order[3], bookSnap.data().order[4], true]
-                })
-                .then(() => {
-                    alert("訂單資訊已傳送給賣家!")
-                    location.href = "./wantedshop.html";
-                });
+                let sure = confirm("即將傳送訂單給賣家 請確認資料無誤！")
+                if (sure) {
+                    const colRef = doc(db, "Product", bookId);
+                    const deadline = Timestamp.fromMillis(date.setDate(date.getDate()+7));
+                    setDoc(colRef, {
+                        book: bookSnap.data().book,
+                        author: bookSnap.data().author,
+                        publish: bookSnap.data().publish,
+                        isbn: bookSnap.data().isbn,
+                        price: parseInt(bookSnap.data().order[2]),
+                        category: [bookSnap.data().category[0], bookSnap.data().category[1], bookSnap.data().category[2], bookSnap.data().category[3], bookSnap.data().category[4]],
+                        // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
+                        info: bookSnap.data().order[4],
+                        sellerId: bookSnap.data().sellerId,
+                        buyerId: bookSnap.data().buyerId,
+                        date: date,
+                        order: [bookSnap.data().order[0], address.value, bookSnap.data().order[2], others.value, true], 
+                        ordering: "待賣家確認",
+                        setuptime: date,
+                        deadline: deadline,
+                        imgsrc: bookSnap.data().imgsrc
+                    })
+                    updateDoc(bookRef, {
+                        ordering: "訂單成立，請至訂單追蹤查看", 
+                        order: [bookSnap.data().order[0], bookSnap.data().order[1], bookSnap.data().order[2], bookSnap.data().order[3], bookSnap.data().order[4], true]
+                    })
+                    .then(() => {
+                        alert("訂單資訊已傳送給賣家!")
+                        location.href = "./wantedshop.html";
+                    });
+                }
             });
 
             if(date==deadline){

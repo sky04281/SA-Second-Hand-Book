@@ -30,58 +30,60 @@ onAuthStateChanged(auth, async (user) => {
 
             btn.addEventListener("click", (e) => {
                 e.preventDefault();
-                //存圖片
-                if (imgFile) {
-                    const imgRef = ref(storage, imgSrc);
-                    uploadBytes(imgRef, imgFile);
-                }else{
-                    imgSrc = "Wanted/NotFound.jpg";
-                }
-                
-                //寄送資料
-                let delchecked = document.querySelectorAll('input[name="checkbox"]:checked');
-                let deloutput = [];
-                delchecked.forEach((checkbox) => {
-                    deloutput.push(checkbox.value);
-                });
+                let sure = confirm("即將上架 請確認資料無誤！")
+                if (sure) {
+                    //存圖片
+                    if (imgFile) {
+                        const imgRef = ref(storage, imgSrc);
+                        uploadBytes(imgRef, imgFile);
+                    }else{
+                        imgSrc = "Wanted/NotFound.jpg";
+                    }
+                    
+                    //寄送資料
+                    let delchecked = document.querySelectorAll('input[name="checkbox"]:checked');
+                    let deloutput = [];
+                    delchecked.forEach((checkbox) => {
+                        deloutput.push(checkbox.value);
+                    });
 
-                while(deloutput.length<4){
-                    deloutput.push("");
-                }
+                    while(deloutput.length<4){
+                        deloutput.push("");
+                    }
 
-                //付款方式
-                let paychecked = document.querySelectorAll('input[name="checkbox1"]:checked');
-                let payoutput = [];
-                paychecked.forEach((checkbox) => {
-                    payoutput.push(checkbox.value);
-                });
+                    //付款方式
+                    let paychecked = document.querySelectorAll('input[name="checkbox1"]:checked');
+                    let payoutput = [];
+                    paychecked.forEach((checkbox) => {
+                        payoutput.push(checkbox.value);
+                    });
 
-                while(payoutput.length<3){
-                    payoutput.push("");
-                }
+                    while(payoutput.length<3){
+                        payoutput.push("");
+                    }
 
-                //書籍資料
-                addDoc(colRef, {
-                    book: book.value,
-                    author: author.value,
-                    publish: publish.value,
-                    isbn: isbn.value,
-                    price: parseInt(price.value),
-                    category: [data.area, data.school, data.college, data.department, cate.value],
-                    // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
-                    info: info.value,
-                    sellerId: "",
-                    buyerId: user.uid,
-                    date: date,
-                    order: ["", "", "", "", "", false], 
-                    ordering: "",
-                    setuptime: "",
-                    deadline: "",
-                    imgsrc: imgSrc,
-                    delivery: deloutput,
-                    pay: payoutput,
-                    wanted: true
-                })
+                    //書籍資料
+                    addDoc(colRef, {
+                        book: book.value,
+                        author: author.value,
+                        publish: publish.value,
+                        isbn: isbn.value,
+                        price: parseInt(price.value),
+                        category: [data.area, data.school, data.college, data.department, cate.value],
+                        // [0: 地區, 1: 學校, 2: 學院, 3: 科系, 4: 科目]
+                        info: info.value,
+                        sellerId: "",
+                        buyerId: user.uid,
+                        date: date,
+                        order: ["", "", "", "", "", false], 
+                        ordering: "",
+                        setuptime: "",
+                        deadline: "",
+                        imgsrc: imgSrc,
+                        delivery: deloutput,
+                        pay: payoutput,
+                        wanted: true
+                    })
                     .then(async () => {
                         const totalRef = doc(db, "Account", "Account_Total");
                         const totalSnap = await getDoc(totalRef);
@@ -123,6 +125,7 @@ onAuthStateChanged(auth, async (user) => {
                         alert("新增成功!")
                         location.href = "./index.html";
                     });
+                }
             });
 
         //假如未驗證
