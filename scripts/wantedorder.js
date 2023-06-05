@@ -57,7 +57,7 @@ onAuthStateChanged(auth, (user) =>{
             }
         }
 
-        for(let i=0;i<4;i++){
+        for(let i=0;i<3;i++){
             if(bookSnap.data().pay[i]!=""){
                 selectpay.innerHTML = selectpay.innerHTML +
                     "<option value='" + bookSnap.data().pay[i] + "'>" + bookSnap.data().pay[i] + "</option>"

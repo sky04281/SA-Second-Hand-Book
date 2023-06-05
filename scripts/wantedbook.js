@@ -52,7 +52,10 @@ function show(){
                                 "<p>"+bookSnap.data().info+"</p>"+
                             "</div>"+
                             "<div class='tab-pane fade' id='tab-pane-2'>"+
-                                "<p>" + bookSnap.data().delivery + "</p>"+
+                                "<p>" + bookSnap.data().delivery[0] + "</p>"+
+                                "<p>" + bookSnap.data().delivery[1] + "</p>"+
+                                "<p>" + bookSnap.data().delivery[2] + "</p>"+
+                                "<p>" + bookSnap.data().delivery[3] + "</p>"+
                             "</div>"+
                         "</div>"+
                     "</div>"+
