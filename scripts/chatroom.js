@@ -96,6 +96,32 @@ else if (myUrl.searchParams.has('wantedBookId')) {
                     ", 出版社：" + data.publish + ", 期望價格：NT$" + data.price + "】";
     sendText(text);
 }
+//從訂單過來的
+else if(myUrl.searchParams.has('someoneId')){
+    const someoneId = myUrl.searchParams.get('someoneId');
+    
+    //chatCollection
+    const chatColRef = collection(db, "Chatroom");
+    const chatColQuery = query(chatColRef, where("idArr", "in", [[userId, someoneId], [someoneId, userId]]));
+    const chatColSnap = await getDocs(chatColQuery);
+
+    if (chatColSnap.empty) {
+        //雙方名字
+        const someoneRef = doc(db, "Account", someoneId);
+        const someoneSnap = await getDoc(someoneRef);
+        const someoneName = someoneSnap.data().name;
+        const userName = localStorage.getItem('userName');
+
+        //新增聊天室
+        addDoc(chatColRef,{
+            idArr: [userId, someoneId],
+            nameArr: [userName, someoneName],
+            chat: []
+        });
+    }
+
+    await changeChatRoom(someoneId);
+}
 //直接進來
 else{
     const chatColRef = collection(db, "Chatroom");

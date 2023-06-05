@@ -204,5 +204,3 @@ onAuthStateChanged(auth, async (user) => {
         location.href = "./index.html";
     }
 });
-
-
