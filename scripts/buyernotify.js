@@ -182,8 +182,6 @@ onAuthStateChanged(auth, async (user) => {
                 updateDoc(docRef, {
                     order: ["", "", "", "", false],
                     ordering: "取消訂單",
-                    order: ["", "", "", "", false],
-                    ordering: "取消訂單",
                     deadline: "",
                     setuptime: "",
                     buyerId: ""
