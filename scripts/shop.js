@@ -12,8 +12,8 @@ let selectedArea = "";
 let selectedSchool = "";
 let selectedCollege = "";
 let selectedDepartment = "";
-let currentArr = [];
-let queryArr = [];
+let currentArr = []; //分類用 紀錄目前選到的TotalArray
+let queryArr = []; //書籍顯示的陣列
 let q, querySnapshot;
 
 
@@ -150,21 +150,12 @@ function show(arrToShow = []){
     // "</div>";
 }
 
-//查詢功能
+//分類功能
 async function myQuery(){
-
-    //有輸入書名
-    if (search.value == "") {
-        querySnapshot = await getDocs(booksRef);
-    }
-    //沒輸入書名
-    else{
-        q = query(booksRef, orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
-        querySnapshot = await getDocs(q);
-    }
+    querySnapshot = await getDocs(booksRef);
 
     //放到自訂的陣列裡處理
-    queryArr = [];
+    let tempQueryArr = [];
     querySnapshot.forEach((docs) => {
         //假如書籍沒人下單
         if (docs.data().order[4] !== true) {
@@ -181,34 +172,34 @@ async function myQuery(){
                     //判斷分類選取的情況
                     if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
                         if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
-                            queryArr.push({
+                            tempQueryArr.push({
                                 id: docs.id,
                                 data: docs.data()
                             });
                         }
                     }else if((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "")) {
                         if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege)){
-                            queryArr.push({
+                            tempQueryArr.push({
                                 id: docs.id,
                                 data: docs.data()
                             });
                         }
                     }else if((selectedArea != "") & (selectedSchool != "")) {
                         if((area == selectedArea) & (school == selectedSchool)){
-                            queryArr.push({
+                            tempQueryArr.push({
                                 id: docs.id,
                                 data: docs.data()
                             });
                         }
                     }else if((selectedArea != "")) {
                         if((area == selectedArea)){
-                            queryArr.push({
+                            tempQueryArr.push({
                                 id: docs.id,
                                 data: docs.data()
                             });
                         }
                     }else{
-                        queryArr.push({
+                        tempQueryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
@@ -219,34 +210,34 @@ async function myQuery(){
             else{
                 if ((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "") & (selectedDepartment != "")) {
                     if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege) & (department == selectedDepartment)){
-                        queryArr.push({
+                        tempQueryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
                     }
                 }else if((selectedArea != "") & (selectedSchool != "") & (selectedCollege != "")) {
                     if((area == selectedArea) & (school == selectedSchool) & (college == selectedCollege)){
-                        queryArr.push({
+                        tempQueryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
                     }
                 }else if((selectedArea != "") & (selectedSchool != "")) {
                     if((area == selectedArea) & (school == selectedSchool)){
-                        queryArr.push({
+                        tempQueryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
                     }
                 }else if((selectedArea != "")) {
                     if((area == selectedArea)){
-                        queryArr.push({
+                        tempQueryArr.push({
                             id: docs.id,
                             data: docs.data()
                         });
                     }
                 }else{
-                    queryArr.push({
+                    tempQueryArr.push({
                         id: docs.id,
                         data: docs.data()
                     });
@@ -254,6 +245,19 @@ async function myQuery(){
             }
         }
     });
+
+    //處理查詢
+    queryArr = [];
+    if (search.value != "") {
+        tempQueryArr.forEach((docs)=>{
+            let bookName = docs.data.book;
+            if (bookName.includes(search.value)) {
+                queryArr.push(docs);
+            }
+        });
+    } else {
+        queryArr = tempQueryArr;
+    }
 
     //預設價格小到大
     arrSort(queryArr, "price");
@@ -425,6 +429,7 @@ async function showDropdown(currentTotal = [], selectedValue = "" , type = "area
                 }else{
                     showDropdown(currentArr, select.textContent, select.name);
                 }
+                search.value = "";
                 myQuery();
             });
         });
@@ -518,6 +523,7 @@ async function getCate(arr = [], type = "area"){
                 "<a href='' class='cate-none dropdown-item'>"+ "目前無分類！" +"</a>";
     }
 
+    //給按鈕加上功能
     const cates = document.querySelectorAll('.cate-select');
     cates.forEach((cateBtn)=>{
         cateBtn.addEventListener("click",(e)=>{
@@ -529,6 +535,7 @@ async function getCate(arr = [], type = "area"){
                 "<a href='shop.html'>全部商品</a>" + " > " + selectedArea + " > " + selectedSchool + 
                 " > " + selectedCollege + " > " + selectedDepartment + " > " + cateBtn.textContent;
             changeCate(queryArr, cateBtn.textContent);
+            search.value = "";
         });
     });
 }
