@@ -208,6 +208,10 @@ onAuthStateChanged(auth, async (user) => {
                     updateDoc(oref, {
                         ordering: "已完成評價"
                     })
+                    .then(() => {
+                        alert("評價成功!");
+                        location.reload();
+                    });
                 })
             })
         })
@@ -230,6 +234,10 @@ onAuthStateChanged(auth, async (user) => {
                     updateDoc(oref, {
                         ordering: "已完成評價"
                     })
+                    .then(() => {
+                        alert("評價成功!");
+                        location.reload();
+                    });
                 })
             })
         })

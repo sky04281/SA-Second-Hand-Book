@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, getDocs, doc, deleteDoc, updateDoc} from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, getDocs, doc, deleteDoc, updateDoc,getDoc} from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 
 
@@ -173,6 +173,10 @@ onAuthStateChanged(auth, async (user) => {
                updateDoc(oref, {
                    ordering: "已完成評價"
                })
+               .then(() => {
+                alert("評價成功!");
+                location.reload();
+            });
            })
        })
    })
@@ -195,6 +199,10 @@ onAuthStateChanged(auth, async (user) => {
                updateDoc(oref, {
                    ordering: "已完成評價"
                })
+               .then(() => {
+                alert("評價成功!");
+                location.reload();
+            });
            })
        })
    })
