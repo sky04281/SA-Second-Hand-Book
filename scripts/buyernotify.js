@@ -13,6 +13,7 @@ onAuthStateChanged(auth, async (user) => {
         const p = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家接收訂單，交易成立"));
         const r = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家已出貨，待買家收取並完成訂單"));
         const a = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "已完成評價"));
+        const sellerscore = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成評價 待賣家評價"))
         const s = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成訂單"));
         const querySnapshot_q = await getDocs(q);
         const querySnapshot_p = await getDocs(p);
@@ -20,6 +21,7 @@ onAuthStateChanged(auth, async (user) => {
         const querySnapshot_s = await getDocs(s);
         const querySnapshot_n = await getDocs(n);
         const querySnapshot_a = await getDocs(a);
+        const querySnapshot_sellerscore = await getDocs(sellerscore);
         const view = document.getElementById("buyernotify");
 
         const check = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true));
@@ -136,6 +138,22 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>" + docs.data().ordering + "</td>" +
                 "<td class='align-middle'> 取消成功</td>" +
                 "</tr><br>";
+        });
+        querySnapshot_sellerscore.forEach( (docs) => {
+            view.innerHTML = view.innerHTML +
+            "<tr><td colspan='4'>待評價訂單</td></tr><tr>" +
+                "<td class='align-middle'><img src='' alt='' style='width: 50px;'>" + docs.data().book +"</td>" +
+                "<td class='align-middle text-left'>寄送方式: " + docs.data().order[0] +
+                    "<br>寄送地址: " + docs.data().order[1] +
+                    "<br>付款方式: " + docs.data().order[2] +
+                    "<br>備註: " + docs.data().order[3] +
+                "</td>" +
+                "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
+                "<td class='align-middle'>"+
+                "<button class='btn btn-sm''><i class='fas fa-times'></i></button>"+ 
+                    "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊買家</i></a>" +
+                "</td>"+
+            "</tr>";
         });
 
         //已評價
