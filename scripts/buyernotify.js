@@ -89,7 +89,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<br>付款方式: " + docs.data().order[2] +
                 "<br>備註: " + docs.data().order[3] +
                 "</td>" +
-<<<<<<< HEAD
+
                 "<td class='align-middle'>" + docs.data().ordering + "</td>" +
                 "<td class='align-middle'>" +
                 "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-up'></i></button>" +
@@ -97,7 +97,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<a class='btn btn-sm btn-inform' href='inform.html?bookId=" + docs.id + "'><i class='fas fa-exclamation'>檢舉</i></button>" +
                 "</td>" +
                 "</tr><br>";
-=======
+
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>" + 
                     "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId +"'><i class='fas fa-thumbs-up'></i></button>" + 
@@ -105,7 +105,6 @@ onAuthStateChanged(auth, async (user) => {
                     "<a class='btn btn-sm btn-inform' href='comment.html?bookId="+docs.id+"'><i class='fas fa-exclamation'>檢舉</i></button>" + 
                 "</td>"+
             "</tr><br>";
->>>>>>> 6faf2f0ba2c304fcf475fbddad231f8eb7f25839
         });
 
         // 已取消訂單
@@ -171,16 +170,13 @@ onAuthStateChanged(auth, async (user) => {
                 d.preventDefault();
                 var docRef = doc(db, 'Product', c.id);
                 updateDoc(docRef, {
-<<<<<<< HEAD
                     order: ["", "", "", "", false],
-                    ordering: "取消訂單"
-=======
+                    ordering: "取消訂單",
                     order:["", "", "", "", false],
                     ordering: "取消訂單",
                     deadline: "",
                     setuptime: "",
                     buyerId: ""
->>>>>>> 6faf2f0ba2c304fcf475fbddad231f8eb7f25839
                 })
                     .then(() => {
                         alert("取消成功!");
