@@ -44,7 +44,7 @@ if(myNav != null){
                 if (sure) {
                     signOut(auth)
                     .then(() => {
-                        localStorage.removeItem('userId');
+                        localStorage.clear();
                         alert("登出成功! 即將返回首頁");
                         location.href = "./index.html";
                     });
