@@ -12,7 +12,7 @@ onAuthStateChanged(auth, async (user) => {
         const p = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家接收訂單，交易成立"));
         const r = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "賣家已出貨，待買家收取並完成訂單"));
         const a = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "已完成評價"));
-        const s = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成訂單"));
+        const s = query(ref, where("sellerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "買家已完成評價"));
         const querySnapshot_q = await getDocs(q);
         const querySnapshot_p = await getDocs(p);
         const querySnapshot_r = await getDocs(r);
@@ -68,7 +68,7 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>"+
-                    "<button class='btn btn-sm btn-sent' id='" + docs.id +"'><i class='fas fa-times'></i></button>"+
+                    "<button class='btn btn-sm btn-sent' id='" + docs.id +"'><i class='fas fa-check'></i></button>"+
                     "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().buyerId+"'><i class='fas fa-comments text-primary'>私訊買家</i></a>" +
                 "</td>"+
             "</tr>";
@@ -164,7 +164,7 @@ onAuthStateChanged(auth, async (user) => {
            updateDoc(scoreRef, {
                score: scoreSnap.data().score + 1,
            })
-           const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
+           const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成評價"));
            const docreff = await getDocs(docRef)
            docreff.forEach(async (temp) => {
                const bookid = temp.id
@@ -190,7 +190,7 @@ onAuthStateChanged(auth, async (user) => {
            updateDoc(scoreRef, {
                score: scoreSnap.data().score - 1
            })
-           const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
+           const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成評價"));
            const docreff = await getDocs(docRef)
            docreff.forEach(async (temp) => {
                const bookid = temp.id
