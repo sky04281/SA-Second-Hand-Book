@@ -206,7 +206,7 @@ onAuthStateChanged(auth, async (user) => {
                     console.log(bookid)
                     const oref = doc(db, "Product", bookid);
                     updateDoc(oref, {
-                        ordering: "已完成評價"
+                        ordering: "買家已完成評價"
                     })
                     .then(() => {
                         alert("評價成功!");
@@ -232,7 +232,7 @@ onAuthStateChanged(auth, async (user) => {
                     console.log(bookid)
                     const oref = doc(db, "Product", bookid);
                     updateDoc(oref, {
-                        ordering: "已完成評價"
+                        ordering: "買家已完成評價"
                     })
                     .then(() => {
                         alert("評價成功!");
