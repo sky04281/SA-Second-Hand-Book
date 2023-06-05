@@ -35,7 +35,9 @@ onAuthStateChanged(auth, async (user) => {
                 "<br>備註: " + docs.data().order[3] +
                 "</td>" +
                 "<td class='align-middle'>" + docs.data().ordering + "</td>" +
-                "<td class='align-middle'><button class='btn btn-sm btn-cancel' id='" + docs.id + "'><i class='fas fa-xmark'>取消訂單</i></button>" + "</td>" +
+                "<td class='align-middle'><button class='btn btn-sm btn-cancel' id='" + docs.id + "'><i class='fas fa-xmark'>取消訂單</i></button>" + 
+                "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
+                "</td>" +
                 "</tr><br>";
         });
 
@@ -50,7 +52,9 @@ onAuthStateChanged(auth, async (user) => {
                 "<br>備註: " + docs.data().order[3] +
                 "</td>" +
                 "<td class='align-middle'>" + docs.data().ordering + "</td>" +
-                "<td class='align-middle'><i class='fas fa-times'></i></td>" +
+                "<td class='align-middle'><i class='fas fa-times'></i>" +
+                "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
+                "</td>" +
                 "</tr><br>";
         });
 
@@ -68,6 +72,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>" +
                 "<button class='btn btn-sm btn-finish' id='" + docs.id + "'><i class='fas fa-check'>完成訂單</i></button>" +
                 "<button class='btn btn-sm btn-unreceive' id='" + docs.id + "'><i class='fas fa-times'>未收到貨</i></button>" +
+                "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
                 "</td>" +
                 "</tr><br>";
         });
@@ -87,15 +92,8 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>" +
                 "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-up'></i></button>" +
                 "<button class='btn btn-sm btn-badcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-down'></i></button>" +
-                "<a class='btn btn-sm btn-inform' href='inform.html?bookId=" + docs.id + "'><i class='fas fa-exclamation'>檢舉</i></button>" +
-                "</td>" +
-                "</tr><br>";
-
-            "<td class='align-middle'>" + docs.data().ordering + "</td>" +
-                "<td class='align-middle'>" +
-                "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-up'></i></button>" +
-                "<button class='btn btn-sm btn-badcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-down'></i></button>" +
-                "<a class='btn btn-sm btn-inform' href='comment.html?bookId=" + docs.id + "'><i class='fas fa-exclamation'>檢舉</i></button>" +
+                "<a class='btn btn-sm btn-inform' href='inform.html?bookId=" + docs.id + "'><i class='fas fa-exclamation'>檢舉</i></a>" +
+                "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
                 "</td>" +
                 "</tr><br>";
         });

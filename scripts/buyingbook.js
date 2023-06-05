@@ -11,6 +11,8 @@ console.log(bookId);
 
 let bookRef = doc(db, "Product", bookId);
 let bookSnap = await getDoc(bookRef);
+let sellerRef = doc(db, "Account", bookSnap.data().sellerId);
+let sellerSnap = await getDoc(sellerRef);
 console.log(bookSnap.data());
 // 接到值了 bookSnap.data().book 是書名，以此類推
 
@@ -32,6 +34,7 @@ function show(){
                     "<h3 class='font-weight-semi-bold'>"+bookSnap.data().book+"</h3>"+
                     
                     "<h3 class='font-weight-semi-bold mb-4'>NT$ "+bookSnap.data().price+"</h3>"+
+                    "<h5 class='font-weight-semi-bold mb-4'>賣家："+sellerSnap.data().name+"</h5>"+
                     "<p class='mb-4'>"+
                         "作者：" + bookSnap.data().author +"<br>"+
                         "出版社：" + bookSnap.data().publish + "<br>"+
