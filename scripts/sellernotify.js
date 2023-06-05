@@ -139,33 +139,50 @@ onAuthStateChanged(auth, async (user) => {
                 });
             }); 
 
-            var btn3=document.querySelectorAll('.btn-goodcomment');
-            btn3.forEach((e) => {
-            e.addEventListener('click', (f)=>{
-                f.preventDefault();
-                var docRef=doc(db,'Account',e.id);
-                updateDoc(docRef,{
-                    score:score.increment(1)
-                })
-                .then(()=>{
-                    alert("評價成功!");
-                })
-            })
-        })
+   // 評價按鈕
+   var btn3 = document.querySelectorAll('.btn-goodcomment');
+   btn3.forEach((e) => {
+       e.addEventListener('click', async (f) => {
+           f.preventDefault();
+           const scoreRef = doc(db, "Account", e.id);
+           const scoreSnap = await getDoc(scoreRef);
+           updateDoc(scoreRef, {
+               score: scoreSnap.data().score + 1,
+           })
+           const docRef = query(ref, where("sellerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
+           const docreff = await getDocs(docRef)
+           docreff.forEach(async (temp) => {
+               const bookid = temp.id
+               console.log(bookid)
+               const oref = doc(db, "Product", bookid);
+               updateDoc(oref, {
+                   ordering: "已完成評價"
+               })
+           })
+       })
+   })
 
-            var btn4=document.querySelectorAll('.btn-goodcomment');
-            btn4.forEach((e) => {
-            e.addEventListener('click', (f)=>{
-                f.preventDefault();
-                var docRef=doc(db,'Account',e.id);
-                updateDoc(docRef,{
-                    score:score.increment(1)
-                })
-                .then(()=>{
-                    alert("評價成功!");
-                })
-            })
-        })
+   var btn4 = document.querySelectorAll('.btn-badcomment');
+   btn4.forEach((e) => {
+       e.addEventListener('click', async (f) => {
+           f.preventDefault();
+           const scoreRef = doc(db, "Account", e.id);
+           const scoreSnap = await getDoc(scoreRef);
+           updateDoc(scoreRef, {
+               score: scoreSnap.data().score - 1
+           })
+           const docRef = query(ref, where("sellerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
+           const docreff = await getDocs(docRef)
+           docreff.forEach(async (temp) => {
+               const bookid = temp.id
+               console.log(bookid)
+               const oref = doc(db, "Product", bookid);
+               updateDoc(oref, {
+                   ordering: "已完成評價"
+               })
+           })
+       })
+   })
 
     }else{
         alert("請先登入!");

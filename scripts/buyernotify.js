@@ -1,6 +1,6 @@
 import { auth, db } from "./firebase.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-auth.js";
-import { collection, query, where, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
+import { collection, query, where, getDocs, doc, updateDoc, getDoc, addDoc } from "https://www.gstatic.com/firebasejs/9.20.0/firebase-firestore.js";
 
 
 
@@ -35,7 +35,7 @@ onAuthStateChanged(auth, async (user) => {
             const deadline = docs.data().deadline;
             console.log(docs.data().deadline);
             console.log(docs.id);
-            if(Date.now() > deadline.toMillis()){
+            if (Date.now() > deadline.toMillis()) {
                 var docRef = doc(db, 'Product', docs.id);
                 updateDoc(docRef, {
                     buyerId: "",
@@ -63,8 +63,8 @@ onAuthStateChanged(auth, async (user) => {
                 "<br>備註: " + docs.data().order[3] +
                 "</td>" +
                 "<td class='align-middle'>" + docs.data().ordering + "</td>" +
-                "<td class='align-middle'><button class='btn btn-sm btn-cancel' id='" + docs.id + "'><i class='fas fa-poo'>取消訂單</i></button>" + 
-                "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
+                "<td class='align-middle'><button class='btn btn-sm btn-cancel' id='" + docs.id + "'><i class='fas fa-xmark'>取消訂單</i></button>" +
+                "<br><a class='btn btn-sm' href='chatroom.html?someoneId=" + docs.data().sellerId + "'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
                 "</td>" +
                 "</tr><br>";
         });
@@ -81,7 +81,7 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>" + docs.data().ordering + "</td>" +
                 "<td class='align-middle'><i class='fas fa-times'></i>" +
-                "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
+                "<br><a class='btn btn-sm' href='chatroom.html?someoneId=" + docs.data().sellerId + "'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
                 "</td>" +
                 "</tr><br>";
         });
@@ -100,7 +100,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<td class='align-middle'>" +
                 "<button class='btn btn-sm btn-finish' id='" + docs.id + "'><i class='fas fa-check'>完成訂單</i></button>" +
                 "<button class='btn btn-sm btn-unreceive' id='" + docs.id + "'><i class='fas fa-times'>未收到貨</i></button>" +
-                "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
+                "<br><a class='btn btn-sm' href='chatroom.html?someoneId=" + docs.data().sellerId + "'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
                 "</td>" +
                 "</tr><br>";
         });
@@ -121,7 +121,7 @@ onAuthStateChanged(auth, async (user) => {
                 "<button class='btn btn-sm btn-goodcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-up'></i></button>" +
                 "<button class='btn btn-sm btn-badcomment' id='" + docs.data().sellerId + "'><i class='fas fa-thumbs-down'></i></button>" +
                 "<a class='btn btn-sm btn-inform' href='inform.html?bookId=" + docs.id + "'><i class='fas fa-exclamation'>檢舉</i></a>" +
-                "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().sellerId+"'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
+                "<br><a class='btn btn-sm' href='chatroom.html?someoneId=" + docs.data().sellerId + "'><i class='fas fa-comments text-primary'>私訊賣家</i></a>" +
                 "</td>" +
                 "</tr><br>";
         });
@@ -156,15 +156,6 @@ onAuthStateChanged(auth, async (user) => {
                 "</tr><br>";
         });
 
-
-        //確定評價
-        querySnapshot_c.forEach((docs) => {
-            commentview.innerHTML = commentview.innerHTML +
-                "<tr><td colspan='4'>待評價訂單</td></tr><tr>" +
-                "<td class='align-middle'><button class='btn btn-sm btn-check' id='" + docs.id + "'><i class='fas fa-check'>確定評價</i></button>" +
-                "</tr><br>";
-        });
-
         // 完成訂單按鈕
         var btn1 = document.querySelectorAll('.btn-finish');
         btn1.forEach((b) => {
@@ -175,12 +166,12 @@ onAuthStateChanged(auth, async (user) => {
                 updateDoc(docRef, {
                     ordering: "買家已完成訂單"
                 })
-                //.then(() => {
+                .then(() => {
                 alert("已完成訂單!");
                 location.reload();
             });
         });
-        // });
+        });
 
         // 取消訂單按鈕
         var btn2 = document.querySelectorAll('.btn-cancel');
@@ -189,8 +180,6 @@ onAuthStateChanged(auth, async (user) => {
                 d.preventDefault();
                 var docRef = doc(db, 'Product', c.id);
                 updateDoc(docRef, {
-                    order: ["", "", "", "", false],
-                    ordering: "取消訂單",
                     order: ["", "", "", "", false],
                     ordering: "取消訂單",
                     deadline: "",
@@ -211,17 +200,20 @@ onAuthStateChanged(auth, async (user) => {
             e.addEventListener('click', async (f) => {
                 f.preventDefault();
                 const scoreRef = doc(db, "Account", e.id);
-                const scoreSnap = await getDoc(docRef);
+                const scoreSnap = await getDoc(scoreRef);
                 updateDoc(scoreRef, {
                     score: scoreSnap.data().score + 1,
-                    ordering: "已完成評價"
-
                 })
-                var docRef = doc(db,"Product",e.id);
-                updateDoc(docRef,{
-                    ordering:"已完成評價"
+                const docRef = query(ref, where("sellerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
+                const docreff = await getDocs(docRef)
+                docreff.forEach(async (temp) => {
+                    const bookid = temp.id
+                    console.log(bookid)
+                    const oref = doc(db, "Product", bookid);
+                    updateDoc(oref, {
+                        ordering: "已完成評價"
+                    })
                 })
-                
             })
         })
 
@@ -229,12 +221,20 @@ onAuthStateChanged(auth, async (user) => {
         btn4.forEach((e) => {
             e.addEventListener('click', async (f) => {
                 f.preventDefault();
-                const docRef = doc(db, "Account", e.id);
-                const scoreSnap = await getDoc(docRef);
-                updateDoc(docRef, {
-                    score: scoreSnap.data().score -1,
-                    ordering: "已完成評價"
-
+                const scoreRef = doc(db, "Account", e.id);
+                const scoreSnap = await getDoc(scoreRef);
+                updateDoc(scoreRef, {
+                    score: scoreSnap.data().score - 1
+                })
+                const docRef = query(ref, where("sellerId", "==", e.id), where("ordering", "==", "買家已完成訂單"));
+                const docreff = await getDocs(docRef)
+                docreff.forEach(async (temp) => {
+                    const bookid = temp.id
+                    console.log(bookid)
+                    const oref = doc(db, "Product", bookid);
+                    updateDoc(oref, {
+                        ordering: "已完成評價"
+                    })
                 })
             })
         })
@@ -254,25 +254,7 @@ onAuthStateChanged(auth, async (user) => {
                         location.href = "./chatroom.html?bookId=" + b.id + "";
                     });
             });
-        });
-
-        //確定評價
-        var btn6 = document.querySelectorAll('.btn-check');
-        btn6.forEach((c) => {
-            c.addEventListener('click', (d) => {
-                d.preventDefault();
-                var docRef = doc(db, 'Product', c.id);
-                updateDoc(docRef, {
-                    ordering: "已完成評價"
-                })
-                    .then(() => {
-                        alert("評價成功!");
-                        location.reload();
-                    });
-            });
-        });
-
-
+        })
     } else {
         alert("請先登入!");
         location.href = "./index.html";
