@@ -154,12 +154,12 @@ onAuthStateChanged(auth, async (user) => {
                 updateDoc(docRef, {
                     ordering: "買家已完成訂單"
                 })
-                //.then(() => {
+                .then(() => {
                 alert("已完成訂單!");
                 location.reload();
             });
         });
-        // });
+        });
 
         // 取消訂單按鈕
         var btn2 = document.querySelectorAll('.btn-cancel');
