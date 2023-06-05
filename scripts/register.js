@@ -21,7 +21,10 @@ console.log(totalArea);
 
 
 btn.addEventListener("click", (e) => {
-    if (password.value != passwordCheck.value) {
+    if (email.value.includes("gmail.com") | email.value.includes("yahoo") | email.value.includes("hotmail")) {
+        alert("請使用學校信箱！");
+    }
+    else if (password.value != passwordCheck.value) {
         alert("兩次輸入的密碼不符合！")
     }else{
         let sure = confirm("即將註冊 資料是否無誤？");

@@ -126,105 +126,124 @@ onAuthStateChanged(auth, async (user) => {
                 "</tr><br>";
         });
 
+            //賣家接收訂單
             var btn1 = document.querySelectorAll('.btn-check');
             btn1.forEach((b) => {
                 b.addEventListener('click', (e) => {
                     e.preventDefault();
-                    var docRef = doc(db, 'Product', b.id);
-                    updateDoc(docRef, {
-                        ordering: "賣家接收訂單，交易成立"
-                    })
-                    .then(() => {
-                        alert("您已確認訂單!");
-                        location.reload();
-                    });
+                    let sure = confirm("即將接收訂單 資料是否無誤？");
+                    if (sure) {
+                        var docRef = doc(db, 'Product', b.id);
+                        updateDoc(docRef, {
+                            ordering: "賣家接收訂單，交易成立"
+                        })
+                        .then(() => {
+                            alert("您已確認訂單!");
+                            location.reload();
+                        });
+                    }
                 });
             });
             
+            //賣家取消訂單
             var btn2 = document.querySelectorAll('.btn-delete');
             btn2.forEach((b) => {
                 b.addEventListener('click', (e) => {
                     e.preventDefault();
-                    var docRef = doc(db, 'Product', b.id);
-                    updateDoc(docRef, {
-                        buyerId: "",
-                        order: ["", "", "", "", false], 
-                        ordering: ""
-                    })
-                    .then(() => {
-                        alert("已取消訂單!");
-                        location.reload();
-                    });
+                    let sure = confirm("即將取消訂單 確定嗎？");
+                    if (sure) {
+                        var docRef = doc(db, 'Product', b.id);
+                        updateDoc(docRef, {
+                            buyerId: "",
+                            order: ["", "", "", "", false], 
+                            ordering: ""
+                        })
+                        .then(() => {
+                            alert("已取消訂單!");
+                            location.reload();
+                        });
+                    }
                 });
             });
 
+            //賣家出貨
             var btn3 = document.querySelectorAll('.btn-sent');
             btn3.forEach((b) => {
                 b.addEventListener('click', (e) => {
                     e.preventDefault();
-                    var docRef = doc(db, 'Product', b.id);
-                    updateDoc(docRef, {
-                        ordering: "賣家已出貨，待買家收取並完成訂單"
-                    })
-                    .then(() => {
-                        alert("已完成出貨!");
-                        location.reload();
-                    });
+                    let sure = confirm("是否已經出貨？");
+                    if (sure) {
+                        var docRef = doc(db, 'Product', b.id);
+                        updateDoc(docRef, {
+                            ordering: "賣家已出貨，待買家收取並完成訂單"
+                        })
+                        .then(() => {
+                            alert("已完成出貨!");
+                            location.reload();
+                        });
+                    }
                 });
             }); 
 
-   // 評價按鈕
-   var btn4 = document.querySelectorAll('.btn-goodcomment');
-   btn4.forEach((e) => {
-       e.addEventListener('click', async (f) => {
-           f.preventDefault();
-           const scoreRef = doc(db, "Account", e.id);
-           const scoreSnap = await getDoc(scoreRef);
-           updateDoc(scoreRef, {
-               score: scoreSnap.data().score + 1,
-           })
-           const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成評價"));
-           const docreff = await getDocs(docRef)
-           docreff.forEach(async (temp) => {
-               const bookid = temp.id
-               console.log(bookid)
-               const oref = doc(db, "Product", bookid);
-               updateDoc(oref, {
-                   ordering: "已完成評價"
-               })
-               .then(() => {
-                alert("評價成功!");
-                location.reload();
-            });
-           })
-       })
-   })
+            //評價按鈕-正讚
+            var btn4 = document.querySelectorAll('.btn-goodcomment');
+            btn4.forEach((e) => {
+                e.addEventListener('click', async (f) => {
+                    f.preventDefault();
+                    let sure = confirm("即將給予好評 確定嗎？");
+                    if (sure) {
+                        const scoreRef = doc(db, "Account", e.id);
+                        const scoreSnap = await getDoc(scoreRef);
+                        updateDoc(scoreRef, {
+                            score: scoreSnap.data().score + 1,
+                        })
+                        const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成評價"));
+                        const docreff = await getDocs(docRef)
+                        docreff.forEach(async (temp) => {
+                            const bookid = temp.id
+                            console.log(bookid)
+                            const oref = doc(db, "Product", bookid);
+                            updateDoc(oref, {
+                                ordering: "已完成評價"
+                            })
+                            .then(() => {
+                                alert("評價成功!");
+                                location.reload();
+                            });
+                        })
+                    }
+                })
+            })
 
-   var btn5 = document.querySelectorAll('.btn-badcomment');
-   btn5.forEach((e) => {
-       e.addEventListener('click', async (f) => {
-           f.preventDefault();
-           const scoreRef = doc(db, "Account", e.id);
-           const scoreSnap = await getDoc(scoreRef);
-           updateDoc(scoreRef, {
-               score: scoreSnap.data().score - 1
-           })
-           const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成評價"));
-           const docreff = await getDocs(docRef)
-           docreff.forEach(async (temp) => {
-               const bookid = temp.id
-               console.log(bookid)
-               const oref = doc(db, "Product", bookid);
-               updateDoc(oref, {
-                   ordering: "已完成評價"
-               })
-               .then(() => {
-                alert("評價成功!");
-                location.reload();
-            });
-           })
-       })
-   })
+            //評價按鈕-倒讚
+            var btn5 = document.querySelectorAll('.btn-badcomment');
+            btn5.forEach((e) => {
+                e.addEventListener('click', async (f) => {
+                    let sure = confirm("即將給予負評 確定嗎？");
+                    if (sure) {
+                        f.preventDefault();
+                        const scoreRef = doc(db, "Account", e.id);
+                        const scoreSnap = await getDoc(scoreRef);
+                        updateDoc(scoreRef, {
+                            score: scoreSnap.data().score - 1
+                        })
+                        const docRef = query(ref, where("buyerId", "==", e.id), where("ordering", "==", "買家已完成評價"));
+                        const docreff = await getDocs(docRef)
+                        docreff.forEach(async (temp) => {
+                            const bookid = temp.id
+                            console.log(bookid)
+                            const oref = doc(db, "Product", bookid);
+                            updateDoc(oref, {
+                                ordering: "已完成評價"
+                            })
+                            .then(() => {
+                                alert("評價成功!");
+                                location.reload();
+                            });
+                        })
+                    }
+                })
+            })
 
     }else{
         alert("請先登入!");
