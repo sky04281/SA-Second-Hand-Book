@@ -68,7 +68,7 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>"+
-                    "<button class='btn btn-sm btn-sent' id='" + docs.id +"'><i class='fas fa-check'></i></button>"+
+                    "<button class='btn btn-sm''><i class='fas fa-times'></i></button>"+
                     "<br><a class='btn btn-sm' href='chatroom.html?someoneId="+docs.data().buyerId+"'><i class='fas fa-comments text-primary'>私訊買家</i></a>" +
                 "</td>"+
             "</tr>";
