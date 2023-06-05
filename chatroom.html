@@ -51,16 +51,18 @@
 
 
     <!-- Shop Start -->
-    <div class="container-fluid pt-5">
+    <div class="container-fluid pt-2">
         <div class="row px-xl-5">
 
 
 
             <div
                 style="height: 90vh; width: 23%; background-color: #E0E0E0; float: left; margin-right: 2%; margin-left: 1%; overflow: auto;">
-                <div class="chat-select card-body">
-                    <h5 class="font-weight-medium mb-3"><b>聊天</b><input type="text" class="chat-form-control" placeholder="查詢用戶"></h5>                    
+                <div class="card-body">
+                    <h5 class="font-weight-medium mb-3"><b>聊天</b><input type="text" class="chat-list-search chat-form-control" placeholder="查詢用戶"></h5>                    
                     <hr>
+                    <div class="chat-list">
+                    </div>
                     <!-- <a href="">
                         <div class="d-flex justify-content-between  mb-2 pt-2">
                             <div style="height: 30%; width: 20%; margin-bottom: 6%;">
@@ -116,7 +118,7 @@
                 </div>
 
                 <div class="col-md-12 form-group">
-                    <input class="chat-input form-control" type="text" placeholder="輸入訊息">
+                    <textarea class="chat-input form-control" rows="1" placeholder="輸入訊息" style="resize: none;"></textarea>
                 </div>
                 
             </div>

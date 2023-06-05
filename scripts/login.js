@@ -9,6 +9,8 @@ btn.addEventListener("click", () => {
     signInWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
         localStorage.setItem('userId', userCredential.user.uid);
+        localStorage.setItem('userName', userCredential.user.displayName);
+        localStorage.setItem('isVerified', userCredential.user.emailVerified);
         alert("登入成功! 點擊返回首頁");
         window.location.replace("./index.html");
     })
