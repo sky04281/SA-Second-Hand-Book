@@ -81,9 +81,25 @@ showDropdown(totalArea, "全部地區", "reset");
 //arrToShow: 裝著書本的陣列
 function show(arrToShow = []){
     
+    //處理查詢
+    let searchedArr = [];
+    //假如有查書名
+    if (search.value != "") {
+        arrToShow.forEach((docs)=>{
+            let bookName = docs.data.book;
+            //找到書名中包含這個字
+            if (bookName.includes(search.value)) {
+                searchedArr.push(docs);
+            }
+        });
+    }
+    else{
+        searchedArr = arrToShow;
+    }
+
     //書籍
     viewBook.innerHTML = "";
-    arrToShow.forEach((docs) => {
+    searchedArr.forEach((docs) => {
         viewBook.innerHTML = viewBook.innerHTML +
             "<div class='col-lg-4 col-md-6 col-sm-12 pb-1'>"+
                 "<div class='card product-item border-0 mb-4'>"+
@@ -111,8 +127,8 @@ function show(arrToShow = []){
     sortPrice.forEach((sp)=>{
     sp.addEventListener('click', (e)=>{
         e.preventDefault();
-        arrSort(arrToShow, "price", parseInt(sp.id));
-        show(arrToShow);
+        arrSort(searchedArr, "price", parseInt(sp.id));
+        show(searchedArr);
         });
     });
 
@@ -145,21 +161,12 @@ function show(arrToShow = []){
     // "</div>";
 }
 
-//查詢功能
+//分類查詢功能
 async function myQuery(){
-
-    //有輸入書名
-    if (search.value == "") {
-        querySnapshot = await getDocs(booksRef);
-    }
-    //沒輸入書名
-    else{
-        q = query(booksRef, orderBy("book"), startAt(search.value), endAt(search.value + '\uf8ff'));
-        querySnapshot = await getDocs(q);
-    }
+    querySnapshot = await getDocs(booksRef);
+    queryArr = [];
 
     //放到自訂的陣列裡處理
-    queryArr = [];
     querySnapshot.forEach((docs) => {
         //假如書籍沒人下單
         if (docs.data().order[5] !== true) {
@@ -249,6 +256,7 @@ async function myQuery(){
             }
         }
     });
+
 
     //預設價格小到大
     arrSort(queryArr, "price");
@@ -420,6 +428,7 @@ async function showDropdown(currentTotal = [], selectedValue = "" , type = "area
                 }else{
                     showDropdown(currentArr, select.textContent, select.name);
                 }
+                search.value = "";
                 myQuery();
             });
         });
@@ -539,6 +548,7 @@ function changeCate(arr = [], cate = ""){
         }
     });
 
+    search.value = "";
     arrSort(changedArr, "price", 1);
     show(changedArr);
 }
