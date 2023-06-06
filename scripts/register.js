@@ -21,7 +21,7 @@ console.log(totalArea);
 
 
 btn.addEventListener("click", (e) => {
-    if (email.value.includes("gmail.com") | email.value.includes("yahoo") | email.value.includes("hotmail")) {
+    if (email.value.includes("yahoo") | email.value.includes("hotmail")) {
         alert("請使用學校信箱！");
     }
     else if (password.value != passwordCheck.value) {
@@ -124,4 +124,24 @@ btn.addEventListener("click", (e) => {
         }
     }
 });
+
+// school.addEventListener("focus", (e)=>{
+//     const datalist = document.getElementById('totalschool');
+//     datalist.innerHTML = "<option value='是否在以下的學校'>";
+//     totalArea.forEach((a)=>{
+//         if (a.area == area.value) {
+//             console.log(a.area);
+//             let totalSchool = a.totalSchool;
+//             totalSchool.forEach((s)=>{
+//                 datalist.innerHTML +=
+//                     "<option value="+ s.school +">";
+//             });
+//         }
+//     });
+// });
+
+// school.addEventListener("blur", (e)=>{
+//     const datalist = document.getElementById('totalschool');
+//     datalist.innerHTML = "<option value='是否在以下的學校'>";
+// });
 
