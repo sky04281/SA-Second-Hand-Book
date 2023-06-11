@@ -6,7 +6,7 @@ import { collection, query, where, getDocs, doc, updateDoc} from "https://www.gs
 
 onAuthStateChanged(auth, async (user) => {
     if(user){
-        // 用 sellerId 從資料庫抓出使用者上架的書
+        // 用 buyerId 從資料庫抓出使用者下單的書
         const ref = collection(db, "Product");
         const q = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "待賣家確認"));
         const n = query(ref, where("buyerId", "==", user.uid), where("order", "array-contains", true), where("ordering", "==", "取消訂單"));
@@ -20,9 +20,10 @@ onAuthStateChanged(auth, async (user) => {
         const querySnapshot_n = await getDocs(n);
         const view = document.getElementById("buyernotify");
 
-        
+
 
         // 把書本列出來
+        // 賣家待確認訂單
         querySnapshot_q.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
             "<tr><td colspan='4'>待處理訂單</td></tr><tr>" +
@@ -37,6 +38,7 @@ onAuthStateChanged(auth, async (user) => {
             "</tr><br>";
         });
 
+        // 賣家帶出貨訂單
         querySnapshot_p.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
             "<tr><td colspan='4'>待出貨訂單</td></tr><tr>" +
@@ -51,6 +53,7 @@ onAuthStateChanged(auth, async (user) => {
             "</tr><br>";
         });
 
+        // 商品已到貨待買家完成訂單
         querySnapshot_r.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
             "<tr><td colspan='4'>商品已到貨，請取貨並完成訂單</td></tr><tr>" +
@@ -62,12 +65,13 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>" +
                 "<td class='align-middle'>"+ docs.data().ordering+ "</td>" +
                 "<td class='align-middle'>" + 
-                    "<button class='btn btn-sm btn-delete' id='" + docs.id +"'><i class='fas fa-check'>完成訂單</i></button>" + 
+                    "<button class='btn btn-sm btn-finish' id='" + docs.id +"'><i class='fas fa-check'>完成訂單</i></button>" + 
                     "<button class='btn btn-sm btn-unreceive' id='" + docs.id +"'><i class='fas fa-times'>未收到貨</i></button>" + 
                 "</td>"+
             "</tr><br>";
         });
 
+        // 待評價訂單
         querySnapshot_s.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
             "<tr><td colspan='4'>待評價訂單</td></tr><tr>" +
@@ -85,6 +89,8 @@ onAuthStateChanged(auth, async (user) => {
                 "</td>"+
             "</tr><br>";
         });
+
+        // 已取消訂單
         querySnapshot_n.forEach( (docs) => {
             view.innerHTML = view.innerHTML +
             "<tr><td colspan='4'>已取消訂單</td></tr><tr>" +
@@ -99,8 +105,8 @@ onAuthStateChanged(auth, async (user) => {
             "</tr><br>";
         });
 
-        // 給下架按鈕加上刪除的功能
-        var btn1 = document.querySelectorAll('.btn-delete');
+        // 完成訂單按鈕
+        var btn1 = document.querySelectorAll('.btn-finish');
         btn1.forEach((b) => {
             b.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -115,6 +121,8 @@ onAuthStateChanged(auth, async (user) => {
                 });
             });
         });
+
+        // 取消訂單按鈕
         var btn2 = document.querySelectorAll('.btn-cancel');
         btn2.forEach((c) => {
             c.addEventListener('click', (d) => {
@@ -131,6 +139,7 @@ onAuthStateChanged(auth, async (user) => {
             });
         });
 
+        // 評價按鈕
         var btn3=document.querySelectorAll('.btn-goodcomment');
         btn3.forEach((e) => {
             e.addEventListener('click', (f)=>{
@@ -147,6 +156,22 @@ onAuthStateChanged(auth, async (user) => {
             })
         })
 
+        // 未收到貨按鈕
+        var btn4 = document.querySelectorAll('.btn-unreceive');
+        btn4.forEach((b) => {
+            b.addEventListener('click', (e) => {
+                e.preventDefault();
+                var docRef = doc(db, 'Product', b.id);
+                console.log(docRef);
+                updateDoc(docRef, {
+                    ordering: "買家未收到貨"
+                })
+                .then(() => {
+                    alert("與賣家進行聯絡");
+                    location.href = "./chatroom.html?bookId="+b.id+"";
+                });
+            });
+        });
 
     }else{
         alert("請先登入!");
